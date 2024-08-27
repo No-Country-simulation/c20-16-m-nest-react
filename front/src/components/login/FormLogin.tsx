@@ -1,12 +1,20 @@
 "use client";
+import { FromInputs } from "@/interfaces/FormInputs";
 import { useForm } from "react-hook-form";
 
 export default function FromLogin() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FromInputs>();
   return (
     <form
       className="max-w-sm mx-auto border px-4 py-3 rounded-md "
-      onSubmit={handleSubmit((data) => console.log(data))}
+      onSubmit={handleSubmit((data) => {
+        reset(), console.log(data);
+      })}
     >
       <div className="mb-5">
         <label
@@ -20,9 +28,11 @@ export default function FromLogin() {
           id="email"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="name@flowbite.com"
-          required
           {...register("email", { required: true })}
         />
+        {errors.email && (
+          <span className="text-red-500">El email es requerido</span>
+        )}
       </div>
       <div className="mb-5">
         <label
@@ -35,9 +45,11 @@ export default function FromLogin() {
           type="password"
           id="password"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
           {...register("password", { required: true })}
         />
+        {errors.password && (
+          <span className="text-red-500">La contraseña es requerido</span>
+        )}
       </div>
       <button
         type="submit"
