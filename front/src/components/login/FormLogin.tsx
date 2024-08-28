@@ -1,5 +1,6 @@
 "use client";
 import { FromInputs } from "@/interfaces/FormInputs";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 export default function FromLogin() {
@@ -11,7 +12,7 @@ export default function FromLogin() {
   } = useForm<FromInputs>();
   return (
     <form
-      className="max-w-sm mx-auto border px-4 py-3 rounded-md "
+      className="max-w-sm mx-auto  "
       onSubmit={handleSubmit((data) => {
         reset(), console.log(data);
       })}
@@ -51,6 +52,12 @@ export default function FromLogin() {
           <span className="text-red-500">La contraseña es requerido</span>
         )}
       </div>
+      <p className=" text-black">
+        No tenes cuenta?{" "}
+        <Link href={"/register"} className="font-semibold">
+          Registrate
+        </Link>
+      </p>
       <button
         type="submit"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

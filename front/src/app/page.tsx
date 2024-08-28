@@ -1,5 +1,9 @@
-import Image from "next/image";
+import Header from "@/components/ui/Header";
 
 export default function Home() {
-  return <main className="flex min-h-screen"></main>;
+  return (
+    <main>
+      <Header />
+    </main>
+  );
 }
