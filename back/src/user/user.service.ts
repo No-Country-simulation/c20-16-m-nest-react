@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
-import { UserDto } from "./dto/user-dto";
+import { UserDto, UserLogin } from "./dto/user-dto";
 
 @Injectable()
 export class UserService {
@@ -50,6 +50,14 @@ export class UserService {
     }
   }
 
+  async findOneByUsername(username: string): Promise<UserLogin> {
+    const users = await this.userRepository.findOne({ where: { user: username } });
+    try {
+      return plainToInstance(UserLogin, users);
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Users no encontrados')
+    }
+  }
   
   async findOne(id: number): Promise<UserDto> {
     const users = await this.userRepository.findOne({ where: { id: id } });

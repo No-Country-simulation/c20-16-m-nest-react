@@ -30,3 +30,17 @@ export class UserDto {
         return `${this.firstName} ${this.lastName}`;
     }
 }
+
+export class UserLogin {
+    @IsNumber()
+    @Expose()
+    id: number;
+
+    @IsString()
+    @Expose()
+    readonly username: string;
+    
+    @IsString()
+    @Expose()
+    readonly password: string;
+}
