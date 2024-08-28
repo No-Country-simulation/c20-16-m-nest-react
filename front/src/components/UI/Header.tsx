@@ -32,7 +32,7 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-black p-4">
+    <header className="bg-primary p-4">
       <div className="container mx-auto flex items-center justify-between lg:justify-around">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -103,7 +103,7 @@ const Header: React.FC = () => {
 const LoginButton: React.FC = () => (
   <a
     href="/login"
-    className="px-4 py-2 bg-blue-500 text-white flex items-center space-x-1 rounded-full animate-fade animate-duration-500 animate-delay-700"
+    className="px-4 py-2 bg-accent text-white flex items-center space-x-1 rounded-full animate-fade animate-duration-500 animate-delay-700"
   >
     <FaHome />
     <span>Inicio de sesión</span>

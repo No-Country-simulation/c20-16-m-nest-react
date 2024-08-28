@@ -16,14 +16,19 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        primary: "#6639CD",
+        secondary: {
+          v1: "#3947CD",
+          v2: "#4839CD",
+          v3: "#A139CD",
+        },
+        accent: "#CD3956",
+      },
     },
   },
   darkMode: "class",
-  plugins: [
-    nextui(),
-    tailwindcssAnimated,
-  ],
+  plugins: [nextui(), tailwindcssAnimated],
 };
 
 export default config;
-
