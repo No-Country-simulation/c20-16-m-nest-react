@@ -1,9 +1,8 @@
 "use client";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/input";
-import { Button } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button, Input } from "@nextui-org/react";
 
 const formSchema = z
   .object({
