@@ -1,10 +1,21 @@
 /* Primera versión del componente Header */
 
-"use client"; {/* Para renderizarse y ejecutarse en el lado del cliente */}
+"use client";
+{
+  /* Para renderizarse y ejecutarse en el lado del cliente */
+}
 
 import React, { useState } from "react";
 import { NavLink } from "@/interfaces/Header";
-import { FaPaw, FaClipboard, FaDonate, FaHeart, FaHome, FaClinicMedical, FaDog } from "react-icons/fa";
+import {
+  FaPaw,
+  FaClipboard,
+  FaDonate,
+  FaHeart,
+  FaHome,
+  FaClinicMedical,
+  FaDog,
+} from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 
 const navLinks: NavLink[] = [
@@ -21,7 +32,7 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-transparent p-4">
+    <header className="bg-black p-4">
       <div className="container mx-auto flex items-center justify-between lg:justify-around">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -30,9 +41,15 @@ const Header: React.FC = () => {
         </div>
 
         {/* Navbar */}
-        <nav className={`hidden lg:flex lg:items-center lg:space-x-4 lg:mx-auto`}>
+        <nav
+          className={`hidden lg:flex lg:items-center lg:space-x-4 lg:mx-auto`}
+        >
           {navLinks.map(({ label, href, icon: Icon }) => (
-            <a key={label} href={href} className="text-white flex items-center space-x-1">
+            <a
+              key={label}
+              href={href}
+              className="text-white flex items-center space-x-1"
+            >
               <Icon />
               <span>{label}</span>
             </a>
@@ -41,7 +58,11 @@ const Header: React.FC = () => {
 
         {/* Botón de menú mobile */}
         <div className="block lg:hidden">
-          <button onClick={toggleMenu} aria-label="Toggle menu" className="text-white text-2xl">
+          <button
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            className="text-white text-2xl"
+          >
             {isMenuOpen ? <HiX /> : <HiMenu />}
           </button>
         </div>
@@ -57,7 +78,11 @@ const Header: React.FC = () => {
         <div className="lg:hidden mt-4 bg-transparent animate-fade-right animate-duration-1000">
           <nav className="flex flex-col space-y-2">
             {navLinks.map(({ label, href, icon: Icon }) => (
-              <a key={label} href={href} className="text-white flex items-center space-x-1">
+              <a
+                key={label}
+                href={href}
+                className="text-white flex items-center space-x-1"
+              >
                 <Icon />
                 <span>{label}</span>
               </a>
@@ -72,7 +97,9 @@ const Header: React.FC = () => {
   );
 };
 
-{/* Login button, podría componetizarse, consideración a futuro */}
+{
+  /* Login button, podría componetizarse, consideración a futuro */
+}
 const LoginButton: React.FC = () => (
   <a
     href="/login"
