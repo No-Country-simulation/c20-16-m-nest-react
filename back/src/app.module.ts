@@ -13,6 +13,7 @@ import { dataSourceOptions } from "./db/data-source";
 
 // Modulos
 import { UserModule } from './user/user.module';
+import { FilesModule } from './files/files.modules';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserModule } from './user/user.module';
     ),
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
