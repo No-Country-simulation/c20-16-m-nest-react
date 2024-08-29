@@ -3,7 +3,7 @@ import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString } from "clas
 
 export class CreateUserDto {
     @ApiProperty()
-    @IsEmail()
+    @IsString()
     @IsOptional()
     user: string;
 

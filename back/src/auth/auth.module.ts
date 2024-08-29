@@ -4,14 +4,15 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtStrategy } from './jwt.strategy';
+import 'dotenv/config';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'SECRET_KEY', // Cambia esto por una variable de entorno
-      signOptions: { expiresIn: '60m' }, // Configuración de expiración del token
+      secret: process.env.SECRET, // Variable de entorno
+      signOptions: { expiresIn: process.env.EXPIRATION }, // Configuración de expiración del token
     }),
   ],
   providers: [AuthService, JwtStrategy],
