@@ -14,6 +14,7 @@ import { dataSourceOptions } from "./db/data-source";
 // Modulos
 import { UserModule } from './user/user.module';
 import { FilesModule } from './files/files.modules';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FilesModule } from './files/files.modules';
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     FilesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

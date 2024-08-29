@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
-import { UserDto } from "./dto/user-dto";
+import { UserDto, UserLogin } from "./dto/user-dto";
 
 @Injectable()
 export class UserService {
@@ -18,17 +18,31 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepository.findOne({
       where: { user: createUserDto.user },
-    })
-    if (user) throw new BadRequestException('User ya existe')
+    });
+
+    if (user) throw new BadRequestException('User ya existe');
+
     try {
-      const password = await bcrypt.hash(createUserDto.password.toString(), 10)
-      const newUser = { ...createUserDto, password }
+      // Inicializa el campo birthday como null por si no se proporciona
+      let birthday: Date | null = null;
+
+      // Solo convierte si el campo está presente y no es nulo
+      if (createUserDto.birthday) {
+        birthday = new Date(createUserDto.birthday);
+        if (isNaN(birthday.getTime())) {
+          throw new BadRequestException('Formato de Fecha de Nacimiento es Invalido');
+        }
+      }
+
+      const password = await bcrypt.hash(createUserDto.password.toString(), 10);
+      const newUser = { ...createUserDto, birthday, password };
+
       return await this.userRepository.save(newUser);
     } catch (error) {
-      throw new HttpException('User no guardado', HttpStatus.FOUND, error)
-
+      throw new HttpException('User no guardado', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
   async findActives(): Promise<UserDto[]> {
 
     const users = await this.userRepository.find({ where: { state: true } });
@@ -50,6 +64,14 @@ export class UserService {
     }
   }
 
+  async findOneByUsername(username: string): Promise<UserLogin> {
+    const users = await this.userRepository.findOne({ where: { user: username } });
+    try {
+      return plainToInstance(UserLogin, users);
+    } catch (error) {
+      throw new BadRequestException(error.message, 'User no encontrado')
+    }
+  }
   
   async findOne(id: number): Promise<UserDto> {
     const users = await this.userRepository.findOne({ where: { id: id } });
