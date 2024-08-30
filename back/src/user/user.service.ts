@@ -3,7 +3,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, InternalSer
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsOrder, FindOptionsWhere, MoreThanOrEqual, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
 import { UserDto, UserLogin } from "./dto/user-dto";
@@ -17,7 +17,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepository.findOne({
-      where: { user: createUserDto.user },
+      where: { username: createUserDto.username } as FindOptionsWhere<UserDto>,
     });
 
     if (user) throw new BadRequestException('User ya existe');
@@ -43,20 +43,27 @@ export class UserService {
     }
   }
 
-  async findActives(): Promise<UserDto[]> {
-
-    const users = await this.userRepository.find({ where: { state: true } });
+  async findActives(offset: number): Promise<UserDto[]> {
     try {
-      if (users.length) {
-        return plainToInstance(UserDto, users);
-      }
+      const users = await this.userRepository.find({
+        take: offset || 0,
+        order: { startDate: 'ASC' } as FindOptionsOrder<User>,
+        where: {
+          deletedAt: null,
+          createAt: MoreThanOrEqual(new Date())
+        } as FindOptionsWhere<User>
+      });
+      return plainToInstance(UserDto, users);
     } catch (error) {
-      throw new BadRequestException('Users no encontrados')
+      throw new BadRequestException(error.message, 'Users no encontrados')
     }
   }
 
-  async findAll(): Promise<UserDto[]> {
-    const users = await this.userRepository.find();
+  async findAll(offset: number): Promise<UserDto[]> {
+    const users = await this.userRepository.find({
+      take: offset || 0,
+      order: { username: 'ASC' } as FindOptionsOrder<User>,
+    });
     try {
       return plainToInstance(UserDto, users);
     } catch (error) {
@@ -64,17 +71,24 @@ export class UserService {
     }
   }
 
-  async findOneByUsername(username: string): Promise<UserLogin> {
-    const users = await this.userRepository.findOne({ where: { user: username } });
+  async findOneByUsername(username: string): Promise<UserDto> {
+    const users = await this.userRepository.findOne({
+      where: { username: username }
+    });
     try {
-      return plainToInstance(UserLogin, users);
+      return plainToInstance(UserDto, users);
     } catch (error) {
       throw new BadRequestException(error.message, 'User no encontrado')
     }
   }
-  
+
   async findOne(id: number): Promise<UserDto> {
-    const users = await this.userRepository.findOne({ where: { id: id } });
+    const users = await this.userRepository.findOne({
+      where: {
+        deletedAt: null,
+        id
+      } as FindOptionsWhere<User>
+    });
     try {
       return plainToInstance(UserDto, users);
     } catch (error) {
@@ -83,15 +97,18 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
-    try {
-      const user = await this.userRepository.findOne({ where: { id } });
-      if (!user) throw new NotFoundException('User no encontrado');
+    const user = await this.userRepository.preload({
+      id,
+      ...updateUserDto,
+    });
 
-      await this.userRepository.update(id, updateUserDto);
-      const updatedUser = await this.userRepository.findOne({ where: { id } });
-      return plainToInstance(UserDto, updatedUser);
+    try {
+      if (!user) {
+        throw new NotFoundException('Usuario no encontrado');
+      }
+      return this.userRepository.save(user);
     } catch (error) {
-      throw new InternalServerErrorException(error.message, 'User no actualizado');
+      throw new NotFoundException(error.message, 'Usuario no encontrado')
     }
   }
 
@@ -103,6 +120,18 @@ export class UserService {
       await this.userRepository.delete(id);
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'User no eliminado');
+    }
+  }
+
+  async restore(id: number): Promise<UserDto> {
+    try {
+      const result = await this.userRepository.restore(id);
+      if (result.affected === 0) {
+        throw new NotFoundException('User no encontrado');
+      }
+      return this.userRepository.findOne({ where: { id: id } });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message, 'User no Restaurado');
     }
   }
 }

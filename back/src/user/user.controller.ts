@@ -2,15 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException,
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
-import { User } from './entities/user.entity';
-import { UserDto } from './dto/user-dto';
+import { UserDto, UserLogin } from './dto/user-dto';
+
+const entityName = 'Usuario'
+const itemxpega = 10
 
 @ApiTags('Users')
 @Controller('users')
-@ApiCreatedResponse({ description: 'El Usuario ha sido creado' })
-@ApiForbiddenResponse({ description: 'Usuario no autorizado' })
+@ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
+@ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
 export class UserController {
     constructor(private readonly userService: UserService) { }
@@ -18,23 +20,14 @@ export class UserController {
     @Post()
     @ApiBody({ type: CreateUserDto })
     async create(@Body() createUserDto: CreateUserDto) {
-        if (!createUserDto) {
-            throw new BadRequestException()
-        }
-        try {
-            return this.userService.create(createUserDto);
-        } catch (error) {
-            throw new HttpException(error.message, HttpStatus.BAD_REQUEST)
-
-        }
+        return this.userService.create(createUserDto);
     }
 
     @Get()
-    @ApiResponse({ type: CreateUserDto })
-    @ApiOperation({ summary: 'Lista los usuarios activos' })
+    @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
     async findActives() {
         try {
-            const user = await this.userService.findActives()
+            const user = await this.userService.findActives(itemxpega)
             if (user.length > 0) {
                 return user
             } else {
@@ -46,14 +39,13 @@ export class UserController {
     }
 
     @Get('/all')
-    @ApiBody({ type: User })
-    @ApiOperation({ summary: 'Lista los usuarios activos e inactivos' })
-    async findAll(): Promise<UserDto[]> {
-        return this.userService.findAll();
+    findAll(): Promise<UserDto[]> {
+        return this.userService.findAll(itemxpega);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    @ApiParam({ name: "offset", description: 'Cantidad de registros a devolver, por defecto devuelve todos', type: 'number', required: false })
+    async findOne(@Param('id') id: number) {
         return this.userService.findOne(id);
     }
 

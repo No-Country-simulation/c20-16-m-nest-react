@@ -5,7 +5,7 @@ export class CreateUserDto {
     @ApiProperty()
     @IsString()
     @IsOptional()
-    user: string;
+    username: string;
 
     @ApiProperty()
     @IsString()
@@ -53,7 +53,7 @@ export class CreateUserDto {
     city: string;
 
     @ApiProperty()
-    @IsDate()
+    @IsString()
     @IsOptional()
     birthday: Date;
 

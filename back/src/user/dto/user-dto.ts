@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString, IsEmail, IsNumber } from 'class-validator';
 
 export class UserDto {
     @IsNumber()
@@ -20,15 +20,14 @@ export class UserDto {
 
     @IsString()
     @Expose()
+    readonly avatarUrl: string;
+
+    @IsString()
+    @Expose()
     readonly firstName: string;
 
     @Exclude() // Esta propiedad no será expuesta
     readonly password: string;
-    
-    @Expose()
-    get fullName(): string {
-        return `${this.firstName} ${this.lastName}`;
-    }
 }
 
 export class UserLogin {
@@ -39,7 +38,7 @@ export class UserLogin {
     @IsString()
     @Expose()
     readonly username: string;
-    
+
     @IsString()
     @Expose()
     readonly password: string;

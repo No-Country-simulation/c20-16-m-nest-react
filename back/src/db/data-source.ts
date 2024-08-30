@@ -1,4 +1,7 @@
 import 'dotenv/config'
+import { Animal } from 'src/animal/entities/animal.entity'
+import { AnimalShelter } from 'src/animalshelter/entities/animalshelter.entity'
+import { AnimalTypes } from 'src/animaltype/entities/animaltypes.entity'
 import { User } from 'src/user/entities/user.entity'
 import { DataSource, DataSourceOptions } from "typeorm"
 
@@ -12,7 +15,7 @@ export const dataSourceOptions: DataSourceOptions = {
     ssl: process.env.ENVIROMENT === "local" ? false : { rejectUnauthorized: false },
     synchronize: process.env.SYNCRONIZE === "Y" ? true : false,
     bigNumberStrings: true,
-    entities: [User]
+    entities: [User, AnimalTypes, AnimalShelter, Animal]
 }
 
 // Esto sirve para las Migraciones (Migrañas!!!!!)
@@ -26,7 +29,7 @@ const dataSourceOptionsMigrate: DataSourceOptions = {
     ssl: process.env.ENVIROMENT === "local" ? false : { rejectUnauthorized: false },
     synchronize: process.env.SYNCRONIZE === "Y" ? true : false,
     bigNumberStrings: true,
-    entities: [User],
+    entities: [User, AnimalTypes, AnimalShelter, Animal],
     migrations: ['./src/db/migrations/*.ts'],
     
 }
