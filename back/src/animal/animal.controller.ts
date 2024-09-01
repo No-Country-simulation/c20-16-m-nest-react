@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, NotFoundException } from '@nestjs/common';
 import { AnimalService } from './animal.service';
 import { CreateAnimalDto } from './dto/create-animal.dto';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
+import { AnimalDto } from './dto/animal.dto';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 const entityName = 'Animal'
 const itemxpega = 10
@@ -12,22 +15,76 @@ const itemxpega = 10
 @ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
 @ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 export class AnimalController {
   constructor(private readonly animalService: AnimalService) {}
 
   @Post()
+  @ApiBody({ type: AnimalDto })
   create(@Body() createAnimalDto: CreateAnimalDto) {
     return this.animalService.create(createAnimalDto);
   }
 
+  @Post('restore/:id')
+  async restore(@Param('id') id: number): Promise<AnimalDto> {
+    return this.animalService.restore(id);
+  }
+
+
   @Get()
-  findAll() {
-    return this.animalService.findAll();
+  @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
+  @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+  async findActives(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = itemxpega,
+  ): Promise<Pagination<AnimalDto>> {
+    try {
+      const options = {
+        page,
+        limit,
+        route: '/animal',
+      };
+      const animal = await this.animalService.findActives(options);
+
+      if (animal.items.length > 0) {
+        return animal;
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      throw new NotFoundException('Animales no encontrados', error.message);
+    }
+  }
+
+  @Get('/all')
+  @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
+  @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = itemxpega,
+  ): Promise<Pagination<AnimalDto>> {
+    try {
+      const options = {
+        page,
+        limit,
+        route: '/animal/all',
+      };
+      const animal = await this.animalService.findAll(options);
+
+      if (animal.items.length > 0) {
+        return animal;
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      throw new NotFoundException('Usuarios no encontrados', error.message);
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.animalService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.animalService.findOne(id);
   }
 
   @Patch(':id')

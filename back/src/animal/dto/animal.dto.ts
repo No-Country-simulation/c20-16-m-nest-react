@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateAnimalDto {
+export class AnimalDto {
     @IsNotEmpty()
     @IsString()
     name: string;
@@ -22,6 +22,6 @@ export class CreateAnimalDto {
     @IsNotEmpty()
     @IsNumber()
     @Type(() => Number)
-    animalshelterId: number;
+    idAnimalShelther: number;
 }
 

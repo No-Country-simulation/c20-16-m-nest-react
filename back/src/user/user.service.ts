@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
-import { UserDto, UserLogin } from "./dto/user-dto";
+import { UserDto } from "./dto/user-dto";
 import { IPaginationOptions, paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()

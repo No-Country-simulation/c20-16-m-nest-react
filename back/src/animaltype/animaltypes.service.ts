@@ -1,11 +1,12 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsOrder, FindOptionsWhere, MoreThanOrEqual, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateAnimalTypesDto } from './dto/create-animaltypes.dto';
 import { AnimalTypesDto } from './dto/animaltypes.dto';
 import { UpdateAnimalTypesDto } from './dto/update-animaltypes.dto';
 import { AnimalTypes } from './entities/animaltypes.entity';
 import { plainToInstance } from 'class-transformer';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class AnimalTypesService {
@@ -15,37 +16,46 @@ export class AnimalTypesService {
   ) { }
 
   async create(createAnimalTypesDto: CreateAnimalTypesDto) {
+    const animaltypes = await this.animaltypesRepository.findOne({
+      where: { name: createAnimalTypesDto.name },
+    });
+
+    if (animaltypes) throw new BadRequestException('Tipo ya existe');
     try {
       const animaltypes = this.animaltypesRepository.create(createAnimalTypesDto);
-      return await this.animaltypesRepository.save(animaltypes);
+      await this.animaltypesRepository.save(animaltypes);
+      return plainToInstance(AnimalTypesDto, animaltypes);
     } catch (error) {
       throw new HttpException('Tipo no guardado', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async findActives(offset: number): Promise<AnimalTypesDto[]> {
+  async findActives(options: IPaginationOptions): Promise<Pagination<AnimalTypesDto>> {
     try {
-      const animaltypes = await this.animaltypesRepository.find({
-        take: offset || 0,
-        order: { startDate: 'ASC' } as FindOptionsOrder<AnimalTypes>,
-        where: {
-          deletedAt: null,
-          createAt: MoreThanOrEqual(new Date())
-        } as FindOptionsWhere<AnimalTypes>
-      });
-      return plainToInstance(AnimalTypesDto, animaltypes);
+      const queryBuilder = this.animaltypesRepository.createQueryBuilder('animaltypes');
+      queryBuilder.orderBy('animaltypes.createAt', 'ASC');
+
+      const paginatedAnimalTypes = await paginate<AnimalTypes>(queryBuilder, options);
+      return new Pagination<AnimalTypesDto>(
+        plainToInstance(AnimalTypesDto, paginatedAnimalTypes.items),
+        paginatedAnimalTypes.meta, paginatedAnimalTypes.links
+      );
     } catch (error) {
       throw new BadRequestException(error.message, 'Tipos no encontrados')
     }
   }
 
-  async findAll(offset: number): Promise<AnimalTypesDto[]> {
+  async findAll(options: IPaginationOptions): Promise<Pagination<AnimalTypesDto>> {
     try {
-      const animaltypes = await this.animaltypesRepository.find({
-        take: offset || 0,
-        order: { name: 'ASC' } as FindOptionsOrder<AnimalTypes>,
-      });
-      return plainToInstance(AnimalTypesDto, animaltypes);
+      const queryBuilder = this.animaltypesRepository.createQueryBuilder('user');
+      queryBuilder.withDeleted();
+      queryBuilder.orderBy('user.createAt', 'ASC');
+
+      const paginatedAnimalTypes = await paginate<AnimalTypes>(queryBuilder, options);
+      return new Pagination<AnimalTypesDto>(
+        plainToInstance(AnimalTypesDto, paginatedAnimalTypes.items),
+        paginatedAnimalTypes.meta, paginatedAnimalTypes.links
+      );
     } catch (error) {
       throw new BadRequestException(error.message, 'Tipos no encontrados')
     }
@@ -54,7 +64,6 @@ export class AnimalTypesService {
   async findOne(id: number): Promise<AnimalTypesDto> {
     const animaltypes = await this.animaltypesRepository.findOne({
       where: {
-        deletedAt: null,
         id
       } as FindOptionsWhere<AnimalTypes>
     })
@@ -66,28 +75,24 @@ export class AnimalTypesService {
     }
   }
 
-  async update(id: number, updateAnimalTypesDto: UpdateAnimalTypesDto): Promise<AnimalTypesDto> {
-    const animaltypes = await this.animaltypesRepository.preload({
-      id,
-      ...updateAnimalTypesDto,
-    });
-
+  async update(id: number, updateAnimalTypesDto: UpdateAnimalTypesDto) {
     try {
-      if (!animaltypes) {
-        throw new NotFoundException('Tipo no encontrado');
-      }
-      return this.animaltypesRepository.save(animaltypes);
+      return this.animaltypesRepository.update(id, updateAnimalTypesDto);
     } catch (error) {
       throw new NotFoundException(error.message, 'Tipo no encontrado')
     }
   }
 
   async remove(id: number) {
-    const animaltypesToDelete = await this.animaltypesRepository.softDelete(id)
-    if (animaltypesToDelete.affected === 0) {
-      throw new NotFoundException('Tipo no encontrado');
-    } else {
-      return animaltypesToDelete
+    try {
+      const animaltypesToDelete = await this.animaltypesRepository.softDelete(id)
+      if (animaltypesToDelete.affected === 0) {
+        throw new NotFoundException('Tipo no encontrado');
+      } else {
+        return animaltypesToDelete
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error.message, 'Tipo no eliminado');
     }
   }
 

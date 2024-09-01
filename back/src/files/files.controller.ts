@@ -115,7 +115,6 @@ export class FilesController {
             nombre: archivo
           };
         });
-        // console.log(archivos);
         res.json(archivosInfo);
       }
     } catch (error) {

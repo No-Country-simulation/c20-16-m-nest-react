@@ -2,11 +2,10 @@ import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put, Que
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 import { UserDto } from './dto/user-dto';
-import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 const entityName = 'Usuario'
 const itemxpega = 10
@@ -25,6 +24,11 @@ export class UserController {
     @ApiBody({ type: CreateUserDto })
     async create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
+    }
+
+    @Post('restore/:id')
+    async restore(@Param('id') id: number): Promise<UserDto> {
+        return this.userService.restore(id);
     }
 
     @Get()
