@@ -1,12 +1,12 @@
-import { CommonEntity } from 'src/common/entities/common.entity';
+import { CommonEntity } from '../../common/entities/common.entity';
 import { Entity, Column } from 'typeorm';
 
 @Entity('users')
 export class User extends CommonEntity {
-    @Column({ nullable: true, unique: true })
+    @Column({ nullable: false, unique: true })
     username: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     password: string;
 
     @Column({ default: true })
@@ -18,10 +18,10 @@ export class User extends CommonEntity {
     @Column({ nullable: true })
     profileUrl: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     firstName: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     lastName: string;
 
     @Column({ nullable: true })

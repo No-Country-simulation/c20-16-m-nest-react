@@ -1,5 +1,5 @@
-import { AnimalShelter } from "src/animalshelter/entities/animalshelter.entity";
-import { CommonEntity } from "src/common/entities/common.entity";
+import { AnimalShelter } from "../../animalshelter/entities/animalshelter.entity";
+import { CommonEntity } from "../../common/entities/common.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity('animal')

@@ -1,5 +1,5 @@
-import { AnimalTypes } from "src/animaltype/entities/animaltypes.entity";
-import { CommonEntity } from "src/common/entities/common.entity";
+import { AnimalTypes } from "../../animaltype/entities/animaltypes.entity";
+import { CommonEntity } from "../../common/entities/common.entity";
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 
 @Entity('animalshelter')
@@ -34,10 +34,7 @@ export class AnimalShelter extends CommonEntity {
     @Column({ nullable: true })
     openingHours: string;
 
-    @Column()
-    idAnimalType: number
-
-    @ManyToMany(() => AnimalTypes)
+    @ManyToMany(() => AnimalTypes, (animaltype) => animaltype.id)
     @JoinTable()
     animaltypes: AnimalTypes[]
 }

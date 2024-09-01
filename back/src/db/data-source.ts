@@ -1,8 +1,8 @@
 import 'dotenv/config'
-import { Animal } from 'src/animal/entities/animal.entity'
-import { AnimalShelter } from 'src/animalshelter/entities/animalshelter.entity'
-import { AnimalTypes } from 'src/animaltype/entities/animaltypes.entity'
-import { User } from 'src/user/entities/user.entity'
+import { Animal } from '../animal/entities/animal.entity'
+import { AnimalShelter } from '../animalshelter/entities/animalshelter.entity'
+import { AnimalTypes } from '../animaltype/entities/animaltypes.entity'
+import { User } from '../user/entities/user.entity'
 import { DataSource, DataSourceOptions } from "typeorm"
 
 export const dataSourceOptions: DataSourceOptions = {

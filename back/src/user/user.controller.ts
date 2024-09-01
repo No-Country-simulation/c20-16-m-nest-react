@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, HttpException, HttpStatus, NotFoundException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
-import { UserDto, UserLogin } from './dto/user-dto';
+import { UserDto } from './dto/user-dto';
 
 const entityName = 'Usuario'
 const itemxpega = 10
@@ -24,7 +24,7 @@ export class UserController {
     }
 
     @Get()
-    @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
+    // @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
     async findActives() {
         try {
             const user = await this.userService.findActives(itemxpega)
@@ -39,12 +39,12 @@ export class UserController {
     }
 
     @Get('/all')
+    // @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
     findAll(): Promise<UserDto[]> {
         return this.userService.findAll(itemxpega);
     }
 
     @Get(':id')
-    @ApiParam({ name: "offset", description: 'Cantidad de registros a devolver, por defecto devuelve todos', type: 'number', required: false })
     async findOne(@Param('id') id: number) {
         return this.userService.findOne(id);
     }
