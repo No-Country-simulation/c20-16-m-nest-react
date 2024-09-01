@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
 import { UserDto, UserLogin } from "./dto/user-dto";
+import { IPaginationOptions, paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class UserService {
@@ -32,28 +33,34 @@ export class UserService {
     }
   }
 
-  async findActives(offset: number): Promise<UserDto[]> {
+  async findActives(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
-      const users = await this.userRepository.find({
-        take: offset || 0,
-        order: { createAt: 'ASC' },
-      });
-      return plainToInstance(UserDto, users);
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder.orderBy('user.createAt', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta, paginatedUsers.links
+      );
     } catch (error) {
-      throw new BadRequestException(error.message, 'Users no encontrados')
+      throw new BadRequestException(error.message, 'Users no encontrados');
     }
   }
 
-  async findAll(offset: number): Promise<UserDto[]> {
-    const users = await this.userRepository.find({
-      take: offset || 0,
-      order: { username: 'ASC' },
-      withDeleted : true
-    });
+  async findAll(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
-      return plainToInstance(UserDto, users);
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder.withDeleted();
+      queryBuilder.orderBy('user.username', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta,
+      );
     } catch (error) {
-      throw new BadRequestException(error.message, 'User no encontrados')
+      throw new BadRequestException(error.message, 'Users no encontrados');
     }
   }
 
@@ -87,7 +94,7 @@ export class UserService {
     }
   }
 
-  async remove(id: number){
+  async remove(id: number) {
     try {
       const user = await this.userRepository.softDelete(id);
       if (user.affected === 0) {

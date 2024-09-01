@@ -5,10 +5,13 @@ import { CreateAnimalShelterDto } from './dto/create-animalshelter.dto';
 import { AnimalShelterDto } from './dto/animalshelter.dto';
 import { UpdateAnimalShelterDto } from './dto/update-animalshelter.dto';
 
-@ApiTags('Animal Types')
+const entityName = 'Refugio'
+const itemxpega = 10
+
+@ApiTags('Animal Shelter')
 @Controller('animalshelter')
-@ApiCreatedResponse({ description: 'El Tipo ha sdio agregado' })
-@ApiForbiddenResponse({ description: 'Tipo no autorizado' })
+@ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
+@ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
 export class AnimalShelterController {
   constructor(private readonly eventsService: AnimalShelterService) { }

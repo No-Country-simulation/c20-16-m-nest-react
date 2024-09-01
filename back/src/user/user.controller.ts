@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 import { UserDto } from './dto/user-dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { AuthGuard } from '@nestjs/passport';
 
 const entityName = 'Usuario'
 const itemxpega = 10
@@ -14,6 +16,8 @@ const itemxpega = 10
 @ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
 @ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth('access-token')
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
@@ -24,24 +28,53 @@ export class UserController {
     }
 
     @Get()
-    // @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
-    async findActives() {
+    @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
+    @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+    async findActives(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = itemxpega,
+    ): Promise<Pagination<UserDto>> {
         try {
-            const user = await this.userService.findActives(itemxpega)
-            if (user.length > 0) {
-                return user
+            const options = {
+                page,
+                limit,
+                route: '/users',
+            };
+            const users = await this.userService.findActives(options);
+
+            if (users.items.length > 0) {
+                return users;
             } else {
-                throw new Error
+                throw new Error();
             }
         } catch (error) {
-            throw new NotFoundException(error.message, 'Usuarios no encontrados')
+            throw new NotFoundException('Usuarios no encontrados', error.message);
         }
     }
 
     @Get('/all')
-    // @ApiParam({ name: "offset", description: `Cantidad de registros a devolver, por defecto devuelve todos los ${entityName} activos`, type: 'number', required: false })
-    findAll(): Promise<UserDto[]> {
-        return this.userService.findAll(itemxpega);
+    @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
+    @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+    async findAll(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = itemxpega,
+    ): Promise<Pagination<UserDto>> {
+        try {
+            const options = {
+                page,
+                limit,
+                route: '/users/all',
+            };
+            const users = await this.userService.findAll(options);
+
+            if (users.items.length > 0) {
+                return users;
+            } else {
+                throw new Error();
+            }
+        } catch (error) {
+            throw new NotFoundException('Usuarios no encontrados', error.message);
+        }
     }
 
     @Get(':id')

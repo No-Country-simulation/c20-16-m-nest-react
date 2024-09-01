@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsString, MinLength } from "class-validator";
+import { IsNumber, IsString, MinLength } from "class-validator";
 
 export class LoginDto {
     @ApiProperty()

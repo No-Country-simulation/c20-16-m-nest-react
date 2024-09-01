@@ -1,30 +1,47 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from "@nestjs/common";
-import { LoginDto } from "./dto/login.dto";
-import { AuthService } from "./auth.service";
-import { AuthGuard } from "./auth.guard";
-import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+// src/auth/auth.controller.ts
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+import { LogoutDto } from './dto/logout.dto';
 
-@ApiTags('Auth')
-@Controller("auth")
+const entityName = 'Autenticacion'
+
+@ApiTags('Autenticacion')
+@Controller('auth')
+@ApiForbiddenResponse({ description: `${entityName} no autorizado` })
+@ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
-    
-    // @Post("register")
-    // register(@Body() registerDto: RegisterDTO) {
-    //     return this.authService.register(registerDto);
-    // }
-    
-    @HttpCode(HttpStatus.OK)
-    @Post("login")
-    login(@Body() loginDto: LoginDto) {
-        return this.authService.login(loginDto);
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    async googleAuth(@Req() req) { }
+
+    @Get('google/callback')
+    @UseGuards(AuthGuard('google'))
+    googleAuthRedirect(@Req() req) {
+        return this.authService.login(req.user);
     }
-    
+
+    @Post('login')
+    @ApiBody({ type: LoginDto })
+    async login(@Body('username') username: string, @Body('password') password: string) {
+        return this.authService.loginWithCredentials(username, password);
+    }
+
+    @Post('refresh')
+    async refreshToken(@Body('refresh_token') refreshToken: string, @Req() req) {
+        const userId = req.user.id; // obtener el ID del usuario desde el access token anterior (JWT)
+        return this.authService.refreshToken(userId, refreshToken);
+    }
+
+    @Post('logout')
+    @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-    @ApiUnauthorizedResponse({description:'Usuario no autorizado'})
-    @UseGuards(AuthGuard)
-    @Get('profile')
-    profile(@Request() req) {
-        return req.user;
+    async logout(@Req() req) { 
+        const userId = req.user.userId;
+        return this.authService.logout(userId);
     }
 }

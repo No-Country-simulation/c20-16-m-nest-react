@@ -44,4 +44,7 @@ export class User extends CommonEntity {
 
     @Column({ nullable: true })
     observations: string;
+
+    @Column({ nullable: true })
+    refreshToken: string;
 }

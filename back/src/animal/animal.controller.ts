@@ -2,8 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AnimalService } from './animal.service';
 import { CreateAnimalDto } from './dto/create-animal.dto';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+const entityName = 'Animal'
+const itemxpega = 10
+
+@ApiTags('Animal')
 @Controller('animal')
+@ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
+@ApiForbiddenResponse({ description: `${entityName} no autorizado` })
+@ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
 export class AnimalController {
   constructor(private readonly animalService: AnimalService) {}
 
