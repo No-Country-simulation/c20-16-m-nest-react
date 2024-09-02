@@ -1,13 +1,16 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
+import "swiper/css/autoplay";
+//import "swiper/modules/autoplay.scss";
 //import "./styles.css";
 
 export default function Carousel() {
   return (
     <div className="h-[595px] w-full">
-      <Swiper className="h-full">
+      <Swiper className="h-full" modules={[Autoplay]} autoplay={{delay: 3000}}>
         <SwiperSlide className="">
           <article className="flex items-center justify-around gap-5 w-full h-full bg-[url('/images/background-hero-carousel.png')] bg-bottom bg-no-repeat bg-cover overflow-hidden">
             <div className="max-w-[584px] w-full fled flex-col">

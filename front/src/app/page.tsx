@@ -1,17 +1,14 @@
 "use client";
-import Carousel from "@/components/UI/Carousel/Carousel";
+import Hero from "@/components/hero/Hero";
 import Header from "@/components/UI/Header";
 import { useTestCont } from "@/context/zustang";
 
 export default function Home() {
   const { inc, count, dec }: any = useTestCont();
   return (
-    <main>
+    <main className="w-full">
       <Header />
-      {/*secciont carrusel-hero*/}
-      <section>
-        <Carousel />
-      </section>
+      <Hero />
       <div>{count}</div>
       <button className="border-2 border-black" onClick={inc}>
         incrementar +1
