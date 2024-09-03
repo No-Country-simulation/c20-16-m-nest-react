@@ -1,4 +1,5 @@
 "use client";
+import Collage from "@/components/collage/Collage";
 import Hero from "@/components/hero/Hero";
 import Services from "@/components/services/Services";
 import Header from "@/components/UI/Header";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Services />
+      <Collage />
       <div>{count}</div>
       <button className="border-2 border-black" onClick={inc}>
         incrementar +1
