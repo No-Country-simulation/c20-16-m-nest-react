@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaFacebook, FaInstagram, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
-import LogoFooter from "@/assets/global/logofooter.svg"; 
+import LogoFooter from "@/assets/global/logofooter.svg";
 
 export interface NavLink {
   label: string;
@@ -89,36 +89,36 @@ const Footer: React.FC = () => {
         <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
           <h3 className="text-xl font-semibold pb-2">Menú</h3>
           <ul>
-  {menuLinks.map((link) => (
-    <li key={`menu-${link.href}`}>
-      <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
-        {link.label}
-      </a>
-    </li>
-  ))}
-</ul>
+            {menuLinks.map((link) => (
+              <li key={`menu-${link.href}`}>
+                <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
 
-</div>
-<div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
-  <h3 className="text-xl font-semibold pb-2">Sesión</h3>
-  <ul>
-  {sessionLinks.map((link) => (
-    <li key={`session-${link.href}`}>
-      <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
-        {link.label}
-      </a>
-    </li>
-  ))}
-</ul>
+        </div>
+        <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
+          <h3 className="text-xl font-semibold pb-2">Sesión</h3>
+          <ul>
+            {sessionLinks.map((link) => (
+              <li key={`session-${link.href}`}>
+                <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
         </div>
         <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center ">
           <h3 className="text-xl font-semibold">Contacto</h3>
           <div className="flex justify-center space-x-4">
-          <FaFacebook aria-label="Facebook" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
-          <FaInstagram aria-label="Instagram" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
-          <FaEnvelope aria-label="Correo electrónico" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
+            <FaFacebook aria-label="Facebook" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
+            <FaInstagram aria-label="Instagram" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
+            <FaEnvelope aria-label="Correo electrónico" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
 
           </div>
         </div>
@@ -130,48 +130,48 @@ const Footer: React.FC = () => {
           className="overflow-hidden whitespace-nowrap"
           style={{ whiteSpace: "nowrap" }}
         >
-         <div className="inline-block animate-marquee">
-  <span>DISEÑO UX/UI:</span>
-  <a href="https://www.linkedin.com/in/sofia-dolcemascolo" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Sofía
-  </a>
-  <span> | </span>
-  <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Ezequiel
-  </a>
-  <span> DESARROLLO FRONTEND: </span>
-  <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Ezequiel
-  </a>
-  <span> | </span>
-  <a href="https://www.linkedin.com/in/samudev" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Samuel Figueroa
-  </a>
-  <span> | </span>
-  <a href="https://linkedin.com/in/martin-bejarano" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Martin Bejarano
-  </a>
-  <span> DESARROLLO BACKEND: </span>
-  <a href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Daniel Cazabat
-  </a>
-  <span> | </span>
-  <a href="https://www.linkedin.com/in/ornella-ferrario-988223169" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Ornella Ferrario
-  </a>
-  <span> | </span>
-  <a href="https://" target="_blank" rel="noopener noreferrer" style={highlightStyle}>
-    Luca Consiglio
-  </a>
-  <span> | </span>
-  <a href="https://github.com/DieCau" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Diego Caucota
-  </a>
-  <span> TESTER: </span>
-  <a href="https://www.linkedin.com/in/agustinmahona" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
-    Agustin Mahona
-  </a>
-</div>
+          <div className="inline-block animate-marquee">
+            <span>DISEÑO UX/UI:</span>
+            <a href="https://www.linkedin.com/in/sofia-dolcemascolo" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Sofía
+            </a>
+            <span> | </span>
+            <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Ezequiel
+            </a>
+            <span> DESARROLLO FRONTEND: </span>
+            <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Ezequiel
+            </a>
+            <span> | </span>
+            <a href="https://www.linkedin.com/in/samudev" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Samuel Figueroa
+            </a>
+            <span> | </span>
+            <a href="https://linkedin.com/in/martin-bejarano" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Martin Bejarano
+            </a>
+            <span> DESARROLLO BACKEND: </span>
+            <a href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Daniel Cazabat
+            </a>
+            <span> | </span>
+            <a href="https://www.linkedin.com/in/ornella-ferrario-988223169" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Ornella Ferrario
+            </a>
+            <span> | </span>
+            <a href="https://" target="_blank" rel="noopener noreferrer" style={highlightStyle}>
+              Luca Consiglio
+            </a>
+            <span> | </span>
+            <a href="https://github.com/DieCau" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Diego Caucota
+            </a>
+            <span> TESTER: </span>
+            <a href="https://www.linkedin.com/in/agustinmahona" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+              Agustin Mahona
+            </a>
+          </div>
         </div>
       </div>
     </footer>
@@ -179,8 +179,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-
-//pendiente: Reviso pronto.
-//   Warning: Each child in a list should have a unique "key" prop.
-// Check the top-level render call using <ul>.
-//     at li
