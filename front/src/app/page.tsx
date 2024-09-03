@@ -14,13 +14,13 @@ export default function Home() {
       <Hero />
       <Services />
       <Collage />
-      <div>{count}</div>
+      {/* <div>{count}</div>
       <button className="border-2 border-black" onClick={inc}>
         incrementar +1
       </button>
       <button className="border-2 border-black" onClick={dec}>
         decrementa -1
-      </button>
+      </button> */}
     </main>
   );
 }
