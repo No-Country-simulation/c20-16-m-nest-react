@@ -3,16 +3,17 @@
 import React, { useState } from "react";
 import { NavLink } from "@/interfaces/Header";
 import Image from "next/image";
-import Logo from "@/assets/global/logo.svg"; 
+import Link from "next/link";
+import Logo from "@/assets/global/logo.svg";
 
 import { HiMenu, HiX } from "react-icons/hi";
 
 const navLinks: NavLink[] = [
-  { label: "Reporte", href: "/reporte",},
-  { label: "Donación", href: "/donacion",},
-  { label: "Adopción", href: "/adopcion",},
-  { label: "Veterinarias", href: "/veterinarias",},
-  { label: "Refugios", href: "/refugios",},
+  { label: "Reporte", href: "/report" },
+  { label: "Donación", href: "/donacion" },
+  { label: "Adopción", href: "/adopcion" },
+  { label: "Veterinarias", href: "/veterinarias" },
+  { label: "Refugios", href: "/refugios" },
 ];
 
 const Header: React.FC = () => {
@@ -29,17 +30,11 @@ const Header: React.FC = () => {
         </div>
 
         {/* Navbar */}
-        <nav
-          className={`hidden lg:flex lg:items-center lg:space-x-4 lg:mx-auto`}
-        >
-          {navLinks.map(({ label, href,}) => (
-            <a
-              key={label}
-              href={href}
-              className="text-white text-xl flex items-center space-x-1 hover:text-secondary-v2 hover:duration-700"
-            >
+        <nav className={`hidden lg:flex lg:items-center lg:space-x-4 lg:mx-auto`}>
+          {navLinks.map(({ label, href }) => (
+            <Link key={label} href={href} className="text-white text-xl flex items-center space-x-1 hover:text-secondary-v2 hover:duration-700">
               <span>{label}</span>
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -64,19 +59,14 @@ const Header: React.FC = () => {
       {isMenuOpen && (
         <div className="lg:hidden mt-4 bg-transparent animate-fade-right animate-duration-500">
           <nav className="flex flex-col space-y-3 items-center">
-            {navLinks.map(({ label, href}, index) => (
-              <a
-                key={label}
-                href={href}
-                className={"text-white flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500`"}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                >
+            {navLinks.map(({ label, href }, index) => (
+              <Link key={label} href={href} className="text-white flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500" style={{ animationDelay: `${index * 0.1}s` }}>
                 <span>{label}</span>
-              </a>
+              </Link>
             ))}
             <div
               className="mt-4 mx-auto opacity-0 animate-fade animate-duration-500"
-              style={{ animationDelay: `${navLinks.length * 0.1}s` }} 
+              style={{ animationDelay: `${navLinks.length * 0.1}s` }}
             >
               <LoginButton />
             </div>
@@ -88,15 +78,12 @@ const Header: React.FC = () => {
 };
 
 {
-  /* Login button, podría componetizarse, consideración a futuro */
+  /* Login button */
 }
 const LoginButton: React.FC = () => (
-  <a
-    href="/login"
-    className="px-4 py-2 bg-primary text-white flex items-center space-x-1 rounded-full animate-fade animate-duration-500 animate-delay-700 hover:bg-secondary-v2 hover:duration-300"
-  >
+  <Link href="/login" className="px-4 py-2 bg-primary text-white flex items-center space-x-1 rounded-full animate-fade animate-duration-500 animate-delay-700 hover:bg-secondary-v2 hover:duration-300">
     <span>Iniciar sesión</span>
-  </a>
+  </Link>
 );
 
 export default Header;
