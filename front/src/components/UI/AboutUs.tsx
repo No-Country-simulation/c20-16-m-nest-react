@@ -5,7 +5,7 @@ import { AiOutlineCloud } from "react-icons/ai";
 
 export default function AboutUs() {
   return (
-    <section className="relative flex justify-center items-center w-full h-[600px] bg-[url('/images/background-about-us.png')] bg-cover bg-no-repeat">
+    <section className="relative flex justify-center items-center w-full h-[600px] bg-[url('/images/background-about-us.png')] bg-cover bg-no-repeat mt-12">
       <div className="relative size-[300px] bg-[url('/images/picture-about-us.png')] bg-cover bg-center md:size-[400px]">
         <div className="absolute p-3 top-0 left-0 bg-secondary-v3 rounded-full md:p-6">
           <FaRegHeart className="text-4xl text-white" />

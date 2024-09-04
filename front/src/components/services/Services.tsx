@@ -38,8 +38,8 @@ export default function Services() {
         Que encontraras?{" "}
       </h2>
       <ul className="flex items-center justify-around">
-        {listServices.map((item) => (
-          <li className=" flex gap-x-5">
+        {listServices.map((item,index) => (
+          <li className=" flex gap-x-5" key={index}>
             <div
               className={`rounded-2xl ${item.bgIcon} w-[144px] h-[115px] flex items-center justify-center`}
             >

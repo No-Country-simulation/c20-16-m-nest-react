@@ -1,11 +1,10 @@
 import AboutUs from "@/components/UI/AboutUs";
-import Hero from "@/components/hero/Hero";
-import Services from "@/components/services/Services";
 import ContactUs from "@/components/UI/ContactUs";
 import Footer from "@/components/UI/Footer";
 import Header from "@/components/UI/Header";
-import { useTestCont } from "@/context/zustang";
-import { FaHouseChimney } from "react-icons/fa6";
+import Collage from "@/components/collage/Collage";
+import Hero from "@/components/hero/Hero";
+import Services from "@/components/services/Services";
 
 export default function Home() {
   return (
@@ -13,6 +12,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Services />
+      <Collage />
       <AboutUs />
       <ContactUs />
       <Footer />
