@@ -3,7 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { RedirectMiddleware } from './redirect.middleware';
+import { RedirectMiddleware } from './middleware/redirect.middleware';
 import * as os from 'os';
 
 async function bootstrap() {
