@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { FaFacebook, FaInstagram, FaEnvelope } from "react-icons/fa";
 import Image from "next/image";
 import LogoFooter from "@/assets/global/logofooter.svg";
+import Link from "next/link";
 
 export interface NavLink {
   label: string;
@@ -23,16 +24,16 @@ const Footer: React.FC = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
 
   const menuLinks: NavLink[] = [
-    { label: "Reportes", href: "/reporte" },
-    { label: "Donaciones", href: "/donacion" },
-    { label: "Adopción", href: "/adopcion" },
-    { label: "Veterinarias", href: "/veterinarias" },
-    { label: "Refugios", href: "/refugios" },
+    { label: "Reporte", href: "/report" },
+    { label: "Donación", href: "/donation" },
+    { label: "Adopción", href: "/adoption" },
+    { label: "Veterinarias", href: "/veterinaries" },
+    { label: "Refugios", href: "/shelters" },
   ];
 
   const sessionLinks: NavLink[] = [
     { label: "Iniciar sesión", href: "/login" },
-    { label: "Registro", href: "/register" },
+    { label: "Registrarse", href: "/register" },
   ];
 
   useEffect(() => {
@@ -87,39 +88,35 @@ const Footer: React.FC = () => {
           <Image src={LogoFooter} alt="Logo" width={250} height={250} />
         </div>
         <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
-          <h3 className="text-xl font-semibold pb-2">Menú</h3>
+          <h3 className="text-2xl font-semibold pb-2">Menú</h3>
           <ul>
             {menuLinks.map((link) => (
               <li key={`menu-${link.href}`}>
-                <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
+                <Link className="hover:text-secondary-black hover:duration-300" href={link.href}>
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-
-
         </div>
         <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
-          <h3 className="text-xl font-semibold pb-2">Sesión</h3>
+          <h3 className="text-2xl font-semibold pb-2">Sesión</h3>
           <ul>
             {sessionLinks.map((link) => (
               <li key={`session-${link.href}`}>
-                <a className="hover:text-secondary-v3 hover:duration-300" href={link.href}>
+                <Link className="hover:text-secondary-black hover:duration-300" href={link.href}>
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-
         </div>
-        <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center ">
-          <h3 className="text-xl font-semibold">Contacto</h3>
+        <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
+          <h3 className="text-xl font-semibold">Contact</h3>
           <div className="flex justify-center space-x-4">
-            <FaFacebook aria-label="Facebook" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
-            <FaInstagram aria-label="Instagram" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
-            <FaEnvelope aria-label="Correo electrónico" className="hover:text-secondary-v3 hover:duration-300 cursor-pointer" size={32} />
-
+            <FaFacebook aria-label="Facebook" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
+            <FaInstagram aria-label="Instagram" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
+            <FaEnvelope aria-label="Email" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
           </div>
         </div>
       </div>
@@ -131,46 +128,46 @@ const Footer: React.FC = () => {
           style={{ whiteSpace: "nowrap" }}
         >
           <div className="inline-block animate-marquee">
-            <span>DISEÑO UX/UI:</span>
-            <a href="https://www.linkedin.com/in/sofia-dolcemascolo" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <span>UX/UI DESIGN:</span>
+            <Link href="https://www.linkedin.com/in/sofia-dolcemascolo" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Sofía
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Ezequiel
-            </a>
-            <span> DESARROLLO FRONTEND: </span>
-            <a href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            </Link>
+            <span> FRONTEND DEVELOPMENT: </span>
+            <Link href="https://www.linkedin.com/in/ezequiel-ulises-garcia-b23585266" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Ezequiel
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://www.linkedin.com/in/samudev" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://www.linkedin.com/in/samudev" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Samuel Figueroa
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://linkedin.com/in/martin-bejarano" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://linkedin.com/in/martin-bejarano" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Martin Bejarano
-            </a>
-            <span> DESARROLLO BACKEND: </span>
-            <a href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            </Link>
+            <span> BACKEND DEVELOPMENT: </span>
+            <Link href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Daniel Cazabat
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://www.linkedin.com/in/ornella-ferrario-988223169" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://www.linkedin.com/in/ornella-ferrario-988223169" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Ornella Ferrario
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://" target="_blank" rel="noopener noreferrer" style={highlightStyle}>
+            <Link href="https://" target="_blank" rel="noopener noreferrer" style={highlightStyle}>
               Luca Consiglio
-            </a>
+            </Link>
             <span> | </span>
-            <a href="https://github.com/DieCau" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://github.com/DieCau" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Diego Caucota
-            </a>
+            </Link>
             <span> TESTER: </span>
-            <a href="https://www.linkedin.com/in/agustinmahona" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-primary hover:duration-300">
+            <Link href="https://www.linkedin.com/in/agustinmahona" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Agustin Mahona
-            </a>
+            </Link>
           </div>
         </div>
       </div>
