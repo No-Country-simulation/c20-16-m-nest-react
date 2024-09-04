@@ -33,7 +33,7 @@ export default function CardCollage({
       </Link>
       <img
         src={src}
-        className="w-full h-full object-contain object-center"
+        className="w-full h-full object-cover sm:object-contain object-center"
         alt={alt}
       />
     </li>
