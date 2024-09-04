@@ -1,3 +1,4 @@
+import AboutUs from "@/components/UI/AboutUs";
 import Hero from "@/components/hero/Hero";
 import Services from "@/components/services/Services";
 import ContactUs from "@/components/UI/ContactUs";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Services />
+      <AboutUs />
       <ContactUs />
       <Footer />
     </main>
