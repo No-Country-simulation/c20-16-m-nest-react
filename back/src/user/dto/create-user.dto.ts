@@ -5,7 +5,7 @@ export class CreateUserDto {
     @ApiProperty()
     @IsString()
     @IsOptional()
-    user: string;
+    name: string;
 
     @ApiProperty()
     @IsString()
@@ -31,11 +31,6 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     profileUrl: string;
-
-    @ApiProperty()
-    @IsString()
-    @IsOptional()
-    firstName: string;
 
     @ApiProperty()
     @IsString()

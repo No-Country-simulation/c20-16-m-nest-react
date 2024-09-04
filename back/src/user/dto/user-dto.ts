@@ -2,10 +2,6 @@ import { Exclude, Expose } from 'class-transformer';
 import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UserDto {
-    @IsNumber()
-    @Expose()
-    id: number;
-
     @IsString()
     @Expose()
     readonly username: string;

@@ -1,18 +1,20 @@
 import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { v4 as uuid } from 'uuid';
+
 
 export abstract class CommonEntity {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryGeneratedColumn('uuid')
+id: string = uuid();
 
-    @Column({default:true})
-    state?: boolean
+@Column({default:true})
+state?: boolean
 
-    @CreateDateColumn()
-    createAt?: Date
+@CreateDateColumn()
+createAt?: Date
 
-    @UpdateDateColumn()
-    updateAt?: Date
+@UpdateDateColumn()
+updateAt?: Date
 
-    @DeleteDateColumn()
-    deleteAt?: Date
+@DeleteDateColumn()
+deleteAt?: Date
 }

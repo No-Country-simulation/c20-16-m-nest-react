@@ -17,10 +17,6 @@ export class AdoptanteController {
     return this.adoptanteService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adoptanteService.findOne(+id);
-  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdoptanteDto: UpdateAdoptanteDto) {
