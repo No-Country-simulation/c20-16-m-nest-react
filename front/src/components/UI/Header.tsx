@@ -10,10 +10,10 @@ import { HiMenu, HiX } from "react-icons/hi";
 
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
-  { label: "Donación", href: "/donacion" },
-  { label: "Adopción", href: "/adopcion" },
-  { label: "Veterinarias", href: "/veterinarias" },
-  { label: "Refugios", href: "/refugios" },
+  { label: "Donación", href: "/donation" },
+  { label: "Adopción", href: "/adoption" },
+  { label: "Veterinarias", href: "/veterinary" },
+  { label: "Refugios", href: "/shelter" },
 ];
 
 const Header: React.FC = () => {
@@ -22,17 +22,17 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-transparent p-4">
-      <div className="container mx-auto flex items-center justify-between lg:justify-around">
+    <header className="bg-transparent w-full py-4 absolute z-10">
+      <div className="container mx-auto max-w-screen-xl flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
         <div className="flex items-center space-x-2">
           <Image src={Logo} alt="Logo" width={150} height={150} />
         </div>
 
         {/* Navbar */}
-        <nav className={`hidden lg:flex lg:items-center lg:space-x-4 lg:mx-auto`}>
+        <nav className={`hidden lg:flex lg:items-center lg:space-x-6 lg:px-8 lg:mx-auto`}>
           {navLinks.map(({ label, href }) => (
-            <Link key={label} href={href} className="text-white text-xl flex items-center space-x-1 hover:text-secondary-v2 hover:duration-700">
+            <Link key={label} href={href} className="text-white text-xl flex items-center space-x-1 hover:scale-110 hover:duration-300">
               <span>{label}</span>
             </Link>
           ))}
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="lg:hidden mt-4 bg-transparent animate-fade-right animate-duration-500">
+        <div className="lg:hidden mt-4 bg-secondary-black animate-fade-right animate-duration-500">
           <nav className="flex flex-col space-y-3 items-center">
             {navLinks.map(({ label, href }, index) => (
               <Link key={label} href={href} className="text-white flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -81,7 +81,7 @@ const Header: React.FC = () => {
   /* Login button */
 }
 const LoginButton: React.FC = () => (
-  <Link href="/login" className="px-4 py-2 bg-primary text-white flex items-center space-x-1 rounded-full animate-fade animate-duration-500 animate-delay-700 hover:bg-secondary-v2 hover:duration-300">
+  <Link href="/login" className="px-4 py-2 bg-primary text-white flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-secondary-hovcolor1 hover:duration-300">
     <span>Iniciar sesión</span>
   </Link>
 );
