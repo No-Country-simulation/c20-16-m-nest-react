@@ -6,7 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { plainToInstance } from "class-transformer";
-import { UserDto, UserLogin } from "./dto/user-dto";
+import { UserDto } from "./dto/user-dto";
+import { IPaginationOptions, paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class UserService {
@@ -17,64 +18,84 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepository.findOne({
-      where: { user: createUserDto.user },
+      where: { username: createUserDto.username },
     });
 
     if (user) throw new BadRequestException('User ya existe');
 
     try {
-      // Inicializa el campo birthday como null por si no se proporciona
-      let birthday: Date | null = null;
-
-      // Solo convierte si el campo está presente y no es nulo
-      if (createUserDto.birthday) {
-        birthday = new Date(createUserDto.birthday);
-        if (isNaN(birthday.getTime())) {
-          throw new BadRequestException('Formato de Fecha de Nacimiento es Invalido');
-        }
-      }
-
       const password = await bcrypt.hash(createUserDto.password.toString(), 10);
-      const newUser = { ...createUserDto, birthday, password };
-
-      return await this.userRepository.save(newUser);
+      const newUser = { ...createUserDto, password };
+      await this.userRepository.save(newUser);
+      return plainToInstance(UserDto, newUser);
     } catch (error) {
       throw new HttpException('User no guardado', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async findActives(): Promise<UserDto[]> {
-
-    const users = await this.userRepository.find({ where: { state: true } });
+  async findActives(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
-      if (users.length) {
-        return plainToInstance(UserDto, users);
-      }
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder.orderBy('user.createAt', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta, paginatedUsers.links
+      );
     } catch (error) {
-      throw new BadRequestException('Users no encontrados')
+      throw new BadRequestException(error.message, 'Users no encontrados');
     }
   }
 
-  async findAll(): Promise<UserDto[]> {
-    const users = await this.userRepository.find();
+  async findPendingAcceptance(options: IPaginationOptions): Promise<Pagination<UserDto>> {
+    try {
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder
+      .where('user.state = :state', { state: false })
+      .orderBy('user.createAt', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta, paginatedUsers.links
+      );
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Users no encontrados');
+    }
+  }
+
+  async findAll(options: IPaginationOptions): Promise<Pagination<UserDto>> {
+    try {
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder.withDeleted();
+      queryBuilder.orderBy('user.username', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta,
+      );
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Users no encontrados');
+    }
+  }
+
+  async findOneByUsername(username: string): Promise<UserDto> {
+    const users = await this.userRepository.findOne({
+      where: { username: username }
+    });
     try {
       return plainToInstance(UserDto, users);
-    } catch (error) {
-      throw new BadRequestException(error.message, 'User no encontrados')
-    }
-  }
-
-  async findOneByUsername(username: string): Promise<UserLogin> {
-    const users = await this.userRepository.findOne({ where: { user: username } });
-    try {
-      return plainToInstance(UserLogin, users);
     } catch (error) {
       throw new BadRequestException(error.message, 'User no encontrado')
     }
   }
-  
+
   async findOne(id: number): Promise<UserDto> {
-    const users = await this.userRepository.findOne({ where: { id: id } });
+    const users = await this.userRepository.findOne({
+      where: { id }
+    });
     try {
       return plainToInstance(UserDto, users);
     } catch (error) {
@@ -82,27 +103,36 @@ export class UserService {
     }
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.userRepository.findOne({ where: { id } });
-      if (!user) throw new NotFoundException('User no encontrado');
-
-      await this.userRepository.update(id, updateUserDto);
-      const updatedUser = await this.userRepository.findOne({ where: { id } });
-      return plainToInstance(UserDto, updatedUser);
+      return await this.userRepository.update(id, updateUserDto);
     } catch (error) {
-      throw new InternalServerErrorException(error.message, 'User no actualizado');
+      throw new NotFoundException(error.message, 'Usuario no encontrado')
     }
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number) {
     try {
-      const user = await this.userRepository.findOne({ where: { id } });
-      if (!user) throw new NotFoundException('User no encontrado');
-
-      await this.userRepository.delete(id);
+      const user = await this.userRepository.softDelete(id);
+      if (user.affected === 0) {
+        throw new NotFoundException('User no encontrado');
+      } else {
+        return user
+      }
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'User no eliminado');
+    }
+  }
+
+  async restore(id: number): Promise<UserDto> {
+    try {
+      const result = await this.userRepository.restore(id);
+      if (result.affected === 0) {
+        throw new NotFoundException('User no encontrado');
+      }
+      return this.userRepository.findOne({ where: { id: id } });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message, 'User no Restaurado');
     }
   }
 }

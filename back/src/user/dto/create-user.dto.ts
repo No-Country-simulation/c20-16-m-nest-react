@@ -1,81 +1,72 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateUserDto {
     @ApiProperty()
     @IsString()
-    @IsOptional()
-    user: string;
+    @Length(6,15)
+    username: string;
 
     @ApiProperty()
     @IsString()
-    @IsOptional()
     password: string;
 
     @ApiProperty()
     @IsBoolean()
     @IsOptional()
-    userState: boolean;
+    userState?: boolean;
 
     @ApiProperty()
     @IsBoolean()
-    @IsOptional()
-    updatePassword: boolean;
+    updatePassword?: boolean;
 
     @ApiProperty({ nullable: true })
     @IsString()
-    @IsOptional()
-    avatarUrl: string;
+    avatarUrl?: string;
 
     @ApiProperty()
     @IsString()
-    @IsOptional()
-    profileUrl: string;
+    profileUrl?: string;
 
     @ApiProperty()
     @IsString()
-    @IsOptional()
     firstName: string;
 
     @ApiProperty()
     @IsString()
-    @IsOptional()
     lastName: string;
 
     @ApiProperty()
     @IsString()
     @IsOptional()
-    address: string;
+    address?: string;
 
     @ApiProperty()
     @IsString()
     @IsOptional()
-    city: string;
+    city?: string;
 
     @ApiProperty()
     @IsDate()
+    @Type(() => Date)
     @IsOptional()
-    birthday: Date;
+    birthday?: Date;
 
     @ApiProperty()
     @IsNumber()
     @IsOptional()
-    zipCode: number;
+    zipCode?: number;
 
     @ApiProperty()
     @IsString()
     @IsOptional()
-    phoneNumber: string;
+    phoneNumber?: string;
 
-    @ApiProperty()
+    @ApiProperty({example: 'user@email.com'})
     @IsEmail()
     @IsOptional()
-    email: string;
-
-    @ApiProperty()
-    @IsBoolean()
-    @IsOptional()
-    state: boolean;
+    email?: string;
 
     @ApiProperty()
     @IsString()

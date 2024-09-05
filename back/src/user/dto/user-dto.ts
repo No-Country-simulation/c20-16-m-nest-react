@@ -1,46 +1,39 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
+import { CommonDto } from 'src/common/entities/common.dto';
 
-export class UserDto {
-    @IsNumber()
-    @Expose()
-    id: number;
+export class UserDto extends CommonDto{
+    @ApiProperty()
+    @Exclude()
+    username: string;
 
-    @IsString()
+    @ApiProperty()
     @Expose()
-    readonly username: string;
+    email: string;
 
-    @IsEmail()
+    @ApiProperty()
     @Expose()
-    readonly email: string;
+    lastName: string;
 
-    @IsString()
+    @ApiProperty()
     @Expose()
-    readonly lastName: string;
+    avatarUrl: string;
 
-    @IsString()
+    @ApiProperty()
     @Expose()
-    readonly firstName: string;
+    firstName: string;
 
     @Exclude() // Esta propiedad no será expuesta
-    readonly password: string;
-    
-    @Expose()
-    get fullName(): string {
-        return `${this.firstName} ${this.lastName}`;
-    }
+    password: string;
 }
 
 export class UserLogin {
-    @IsNumber()
+    @IsString()
     @Expose()
-    id: number;
+    username: string;
 
     @IsString()
     @Expose()
-    readonly username: string;
-    
-    @IsString()
-    @Expose()
-    readonly password: string;
+    password: string;
 }

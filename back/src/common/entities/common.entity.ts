@@ -4,7 +4,7 @@ export abstract class CommonEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({default:true})
+    @Column({default:false})
     state?: boolean
 
     @CreateDateColumn()
