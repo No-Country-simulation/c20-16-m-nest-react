@@ -1,9 +1,13 @@
+import { AnimalTypes } from "../../animaltype/entities/animaltypes.entity";
 import { AnimalShelter } from "../../animalshelter/entities/animalshelter.entity";
 import { CommonEntity } from "../../common/entities/common.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne } from "typeorm";
+import { ReportState } from "../../reportstate/entities/reportstate.entity";
+import { AnimalFeatures } from "../../animalfeatures/entities/animalfeatures.entity";
+import { Adoption } from "../../adoption/entities/adoption.entity";
 
 @Entity('animal')
-export class Animal extends CommonEntity{
+export class Animal extends CommonEntity {
     @Column({ nullable: false })
     name: string;
 
@@ -16,9 +20,19 @@ export class Animal extends CommonEntity{
     @Column({ nullable: true })
     observations: string;
 
-    @Column()
-    idAnimalShelther: number
+    @ManyToOne(() => AnimalShelter, (animalshelter) => animalshelter.animal)
+    idAnimalShelther: AnimalShelter
 
-    @ManyToOne(() => AnimalShelter, (animalshelter) => animalshelter.id)
-    animalshelter: AnimalShelter
+    @ManyToOne(() => AnimalTypes, (animaltypes) => animaltypes.animal)
+    idAnimalTypes: AnimalTypes
+
+    @ManyToOne(() => AnimalFeatures, (animalfeatures) => animalfeatures.animal)
+    idAnimalFeatures: AnimalFeatures
+
+    @ManyToOne(() => ReportState, (reportstate) => reportstate.animal)
+    idReportState: ReportState
+
+    // Relación OneToOne inversa con Adoption
+    @OneToOne(() => Adoption, (adoption) => adoption.idAnimal)
+    adoption: Adoption;
 }

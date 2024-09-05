@@ -48,6 +48,23 @@ export class UserService {
     }
   }
 
+  async findPendingAcceptance(options: IPaginationOptions): Promise<Pagination<UserDto>> {
+    try {
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder
+      .where('user.state = :state', { state: false })
+      .orderBy('user.createAt', 'ASC');
+
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+      return new Pagination<UserDto>(
+        plainToInstance(UserDto, paginatedUsers.items),
+        paginatedUsers.meta, paginatedUsers.links
+      );
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Users no encontrados');
+    }
+  }
+
   async findAll(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
       const queryBuilder = this.userRepository.createQueryBuilder('user');

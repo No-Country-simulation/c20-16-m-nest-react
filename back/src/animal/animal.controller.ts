@@ -3,34 +3,37 @@ import { AnimalService } from './animal.service';
 import { CreateAnimalDto } from './dto/create-animal.dto';
 import { UpdateAnimalDto } from './dto/update-animal.dto';
 import { AnimalDto } from './dto/animal.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
-const entityName = 'Animal'
-const itemxpega = 10
+const entityName = 'Animal';
+const itemxpega = 10;
 
 @ApiTags('Animal')
 @Controller('animal')
-@ApiCreatedResponse({ description: `El ${entityName} ha sdio agregado` })
+@ApiCreatedResponse({ description: `El ${entityName} ha sido agregado` })
 @ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
-@UseGuards(AuthGuard('jwt'))
-@ApiBearerAuth('access-token')
 export class AnimalController {
   constructor(private readonly animalService: AnimalService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
   @ApiBody({ type: AnimalDto })
+  @ApiCreatedResponse({ description: `El ${entityName} ha sido agregado` })
   create(@Body() createAnimalDto: CreateAnimalDto) {
     return this.animalService.create(createAnimalDto);
   }
 
   @Post('restore/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
+  @ApiOkResponse({ description: `El ${entityName} ha sido restaurado` })
   async restore(@Param('id') id: number): Promise<AnimalDto> {
     return this.animalService.restore(id);
   }
-
 
   @Get()
   @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
@@ -88,11 +91,17 @@ export class AnimalController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
+  @ApiOkResponse({ description: `El ${entityName} ha sido modificado` })
   update(@Param('id') id: string, @Body() updateAnimalDto: UpdateAnimalDto) {
     return this.animalService.update(+id, updateAnimalDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('access-token')
+  @ApiOkResponse({ description: `El ${entityName} ha sido eliminado` })
   remove(@Param('id') id: string) {
     return this.animalService.remove(+id);
   }

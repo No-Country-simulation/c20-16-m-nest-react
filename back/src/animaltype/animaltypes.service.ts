@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, InternalSer
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateAnimalTypesDto } from './dto/create-animaltypes.dto';
-import { AnimalTypesDto } from './dto/animaltypes.dto';
+import { AnimalTypesAnimalDTO, AnimalTypesDto } from './dto/animaltypes.dto';
 import { UpdateAnimalTypesDto } from './dto/update-animaltypes.dto';
 import { AnimalTypes } from './entities/animaltypes.entity';
 import { plainToInstance } from 'class-transformer';
@@ -16,12 +16,12 @@ export class AnimalTypesService {
   ) { }
 
   async create(createAnimalTypesDto: CreateAnimalTypesDto) {
-    const animaltypes = await this.animaltypesRepository.findOne({
-      where: { name: createAnimalTypesDto.name },
-    });
-
-    if (animaltypes) throw new BadRequestException('Tipo ya existe');
     try {
+      const resanimaltypes = await this.animaltypesRepository.findOne({
+        where: { name: createAnimalTypesDto.name },
+      });
+
+      if (resanimaltypes) throw new BadRequestException('Tipo ya existe');
       const animaltypes = this.animaltypesRepository.create(createAnimalTypesDto);
       await this.animaltypesRepository.save(animaltypes);
       return plainToInstance(AnimalTypesDto, animaltypes);
@@ -75,6 +75,23 @@ export class AnimalTypesService {
     }
   }
 
+  async findAnimals(id: number): Promise<AnimalTypesDto> {
+    try {
+      const animaltypes = await this.animaltypesRepository.findOne({
+        where: {
+          id
+        } as FindOptionsWhere<AnimalTypes>,
+        relations: ['animals']  // Incluye la relación de los animales
+      });
+  
+      if (!animaltypes) throw new NotFoundException('Tipo no encontrado');
+      
+      return plainToInstance(AnimalTypesAnimalDTO, animaltypes); // Convierte a DTO
+    } catch (error) {
+      throw new NotFoundException(error.message, 'Tipo no encontrado');
+    }
+  }
+
   async update(id: number, updateAnimalTypesDto: UpdateAnimalTypesDto) {
     try {
       return this.animaltypesRepository.update(id, updateAnimalTypesDto);
@@ -98,12 +115,10 @@ export class AnimalTypesService {
 
   async restore(id: number): Promise<AnimalTypes> {
     try {
-
       const result = await this.animaltypesRepository.restore(id);
       if (result.affected === 0) {
         throw new NotFoundException('Tipo no encontrado');
       }
-
       return this.animaltypesRepository.findOne({ where: { id: id } });
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'Tipo no Restaurado');

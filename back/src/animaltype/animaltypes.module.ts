@@ -8,6 +8,6 @@ import { AnimalTypesService } from './animaltypes.service';
   imports: [TypeOrmModule.forFeature([AnimalTypes])],
   controllers: [AnimalTypesController],
   providers: [AnimalTypesService],
-  exports:[AnimalTypesService]
+  exports:[TypeOrmModule]
 })
 export class AnimalTypesModule {}

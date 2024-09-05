@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { join } from 'path';
 import { Response } from 'express';
 
-@ApiTags('Patitas')
+@ApiTags('App Patitas')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

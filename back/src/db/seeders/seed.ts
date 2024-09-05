@@ -1,6 +1,8 @@
+import { AnimalTypesSeeder } from './animaltypes.seeder';
 import { DataSource } from 'typeorm';
 import { dataSourceOptions } from '../data-source';
-import { ClientSeeder } from './user.seeder';
+import { UserSeeder } from './user.seeder';
+import { AnimalFeaturesSeeder } from './animalfeatures.seeder';
 
 export const AppDataSource = new DataSource(dataSourceOptions);
 AppDataSource.initialize()
@@ -13,10 +15,19 @@ AppDataSource.initialize()
 async function runSeeders() {
     const dataSource = await AppDataSource.initialize();
 
-    const clientSeeder = new ClientSeeder();
-    await clientSeeder.run(dataSource);
+    // Agregamos Usuario Base
+    const usersSeeder = new UserSeeder();
+    await usersSeeder.run(dataSource);
 
+    // Agregamos Tipos de Animales Base
+    const animaltypes = new AnimalTypesSeeder();
+    await animaltypes.run(dataSource);
+
+    // Agregamos Tipos de Caracteristicas de Animales
+    const animalfeatures = new AnimalFeaturesSeeder();
+    await animalfeatures.run(dataSource);
     await dataSource.destroy();
+
 }
 
 runSeeders().catch((error) => console.error('Error al ejecutar el seeder:', error));

@@ -23,5 +23,10 @@ export class CreateAnimalDto {
     @IsNumber()
     @Type(() => Number)
     animalshelterId: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @Type(() => Number)
+    animalfeaturesId: number;
 }
 

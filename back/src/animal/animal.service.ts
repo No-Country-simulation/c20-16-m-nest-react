@@ -33,7 +33,10 @@ export class AnimalService {
   async findActives(options: IPaginationOptions): Promise<Pagination<AnimalDto>> {
     try {
       const queryBuilder = this.animalRepository.createQueryBuilder('animal');
-      queryBuilder.orderBy('animal.createAt', 'ASC');
+      queryBuilder
+        .leftJoinAndSelect('animal.idAnimalShelther', 'animalShelter') // Se contemplan las realciones planteadas en la Entity
+        .leftJoinAndSelect('animal.idAnimalTypes', 'animalTypes')
+        .orderBy('animal.createAt', 'ASC');
 
       const paginatedAnimal = await paginate<Animal>(queryBuilder, options);
       return new Pagination<AnimalDto>(
@@ -48,8 +51,11 @@ export class AnimalService {
   async findAll(options: IPaginationOptions): Promise<Pagination<AnimalDto>> {
     try {
       const queryBuilder = this.animalRepository.createQueryBuilder('animal');
-      queryBuilder.withDeleted();
-      queryBuilder.orderBy('animal.createAt', 'ASC');
+      queryBuilder
+        .withDeleted()
+        .leftJoinAndSelect('animal.idAnimalShelther', 'animalShelter')
+        .leftJoinAndSelect('animal.idAnimalTypes', 'animalTypes')
+        .orderBy('animal.createAt', 'ASC');
 
       const paginatedAnimal = await paginate<Animal>(queryBuilder, options);
       return new Pagination<AnimalDto>(

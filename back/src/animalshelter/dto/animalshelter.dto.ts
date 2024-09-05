@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { AnimalTypesDto } from "src/animaltype/dto/animaltypes.dto";
+import { AnimalTypesDto } from "../../animaltype/dto/animaltypes.dto";
 
 export class AnimalShelterDto {
     @ApiProperty()
@@ -35,6 +35,7 @@ export class AnimalShelterDto {
     @ApiProperty()
     openingHours: string;
 
-    @ApiProperty()
-    animaltypes: AnimalTypesDto[]
+    // Relación many-to-many con AnimalTypes
+    @ApiProperty({ type: () => [AnimalTypesDto] }) // Indica que es un array de AnimalTypesDto
+    animalTypes: AnimalTypesDto[];
 }

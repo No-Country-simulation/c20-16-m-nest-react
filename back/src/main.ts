@@ -32,16 +32,24 @@ async function bootstrap() {
   // Aplica el middleware globalmente
   app.use(new RedirectMiddleware().use);
 
-  // Configuracionn de Documentador SWAGGER
+  // Configuracionn de Documentador SWAGGER 
   function Swagger() {
     const config = new DocumentBuilder()
-      .setTitle('Paittas Api')
+      .setTitle('Patitas Api')
       .setDescription('Api de Sitio de Patitas')
       .setVersion('1.0')
       .addServer(`http://${host}:${port}/`, 'Ambiente Local')
       .addServer('https://staging.yourapi.com/', 'Staging')
       .addServer('https://production.yourapi.com/', 'Production')
-      .addTag('Users', 'Endpoints de Manejo de Usuarios')
+      .addTag('App Patitas', 'Endpoints Basicos de la Api')
+      .addTag('Authentication', 'Endpoints de Autenticacion')
+      .addTag('Users', 'Endpoints de Manejo de Entidad Usuarios')
+      .addTag('Animal', 'Endpoints de Entidad Animales')
+      .addTag('Animal Shelter', 'Endpoints de Entidad Refugios de Animales')
+      .addTag('Animal Types', 'Endpoints de Entidad Tipos de Animales')
+      .addTag('Animal Features', 'Endpoints de Entidad Caracteristicas de Animales')
+      .addTag('Report State', 'Endpoints de Entidad Estado de Reporte de Animales')
+      .addTag('Donation', 'Endpoints de Entidad de Donaciones')
       .addBearerAuth({
         // I was also testing it without prefix 'Bearer ' before the JWT
         description: `[just text field] Please enter token in following format: Bearer <JWT>`,

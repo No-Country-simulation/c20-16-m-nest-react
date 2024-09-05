@@ -8,7 +8,7 @@ import { LogoutDto } from './dto/logout.dto';
 
 const entityName = 'Autenticacion'
 
-@ApiTags('Autenticacion')
+@ApiTags('Authentication')
 @Controller('auth')
 @ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
