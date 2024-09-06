@@ -1,6 +1,6 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsOrder, FindOptionsWhere, MoreThanOrEqual, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { CreateAnimalShelterDto } from './dto/create-animalshelter.dto';
 import { AnimalShelterDto } from './dto/animalshelter.dto';
 import { UpdateAnimalShelterDto } from './dto/update-animalshelter.dto';
@@ -18,32 +18,29 @@ export class AnimalShelterService {
 
   async create(createAnimalShelterDto: CreateAnimalShelterDto) {
     try {
-      const resanimalshelter = await this.animalshelterRepository.findOne({
-        where: { name: createAnimalShelterDto.name },
+      const { animalTypeIds, ...shelterData } = createAnimalShelterDto;
+
+      // Buscar los tipos de animales por sus IDs
+      const animalTypes = await this.animalTypesRepository.find({
+        where: {
+            id: In(animalTypeIds),
+        },
+    });
+
+      if (animalTypes.length !== animalTypeIds.length) {
+          throw new Error('Algunos tipos de animales no fueron encontrados');
+      }
+
+      const newShelter = this.animalshelterRepository.create({
+          ...shelterData,
+          animalTypes,
       });
 
-      if (resanimalshelter) throw new BadRequestException('Tipo ya existe');
-      const animalshelter = this.animalshelterRepository.create(createAnimalShelterDto);
-      await this.animalshelterRepository.save(animalshelter);
-      return plainToInstance(AnimalShelterDto, animalshelter);
+      await this.animalshelterRepository.save(newShelter);
+      return plainToInstance(AnimalShelterDto, newShelter);
     } catch (error) {
       throw new HttpException('Tipo no guardado', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-  }
-
-  async addAnimalTypeToAnimalShelter(animalShelterId: number, animalTypesId: number): Promise<AnimalShelterDto> {
-    const animalshelter = await this.animalshelterRepository.findOne({
-      where: { id: animalShelterId },
-      relations: ['animaltypes'],
-    });
-    const animaltype = await this.animalTypesRepository.findOneBy({ id: animalTypesId });
-
-    if (!animalshelter || !animaltype) {
-      throw new Error('Animal Shelter or Animal Type not found');
-    }
-
-    animalshelter.animalTypes.push(animaltype);
-    return this.animalshelterRepository.save(animalshelter);
   }
 
   async findActives(options: IPaginationOptions): Promise<Pagination<AnimalShelterDto>> {
