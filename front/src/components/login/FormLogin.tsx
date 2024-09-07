@@ -65,7 +65,7 @@ export default function FromLogin() {
       </p>
       <button
         type="submit"
-        className="bg-primary px-6 py-2 rounded-2xl text-white font-semibold text-xl md:w-fit w-full "
+        className="bg-primary  py-2 rounded-2xl text-white font-semibold text-xl md:w-[215px] w-full "
       >
         Ingresar
       </button>
