@@ -9,10 +9,10 @@ import { FaHouseChimney } from "react-icons/fa6";
 export default function Home() {
   return (
     <main className="w-full">
-      <Header />
+      {/* <Header />
       <Hero />
       <Services />
-      <ContactUs />
+      <ContactUs /> */}
       <AboutUs />
     </main>
   );
