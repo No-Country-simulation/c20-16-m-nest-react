@@ -84,7 +84,6 @@ const ReportPage: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen text-white">
-      
       <div className="pt-[2rem] flex-grow bg-[url('/images/background-report.png')] bg-bottom bg-no-repeat bg-cover overflow-hidden">
         <div className="container mx-auto px-4 my-32 md:px-6 lg:px-8">
           <h1 className="text-4xl text-primary font-bold my-8 w-full md:w-3/4 lg:w-2/6">
@@ -118,7 +117,6 @@ const ReportPage: React.FC = () => {
         ))}
       </div>
       <ReportButton />
-     
     </div>
   );
 };

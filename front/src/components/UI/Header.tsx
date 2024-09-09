@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/assets/global/logo.svg";
 import { HiMenu, HiX } from "react-icons/hi";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
@@ -19,12 +19,18 @@ const navLinks: NavLink[] = [
 // aplicando path para dinamismo en diferentes pages
 // notas de lo aprendido
 type RouteStyles = {
-  [key: string]: { textColor: string; bgColor: string; bgColorMenu: string; };
+  [key: string]: { textColor: string; bgColor: string; bgColorMenu: string };
 };
 const routeStyles: RouteStyles = {
-  '/report/reportForm': { textColor: 'text-black', bgColor: 'bg-transparent', bgColorMenu: 'bg-white' },
-  '/login': {
-    textColor: 'text-black', bgColor: 'bg-transparent', bgColorMenu: 'bg-white'
+  "/report/reportForm": {
+    textColor: "text-black",
+    bgColor: "bg-transparent",
+    bgColorMenu: "bg-white",
+  },
+  "/login": {
+    textColor: "text-black",
+    bgColor: "bg-transparent",
+    bgColorMenu: "bg-white",
   },
   // se va agregando mas pages de ser necesario ir customizando, al igual que las propiedades, si las propiedades no se encuentran definidas por defecto devuelve los valores de matchingRoute, (ver abajo).
 };
@@ -35,15 +41,27 @@ const Header: React.FC = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const getStylesForRoute = (path: string): { textColor: string; bgColor: string; bgColorMenu: string } => {
-    const matchingRoute = Object.keys(routeStyles).find(route => path.startsWith(route));
-    return matchingRoute ? routeStyles[matchingRoute] : { textColor: 'text-white', bgColor: 'bg-transparent', bgColorMenu: 'bg-secondary-black' };
+  const getStylesForRoute = (
+    path: string
+  ): { textColor: string; bgColor: string; bgColorMenu: string } => {
+    const matchingRoute = Object.keys(routeStyles).find((route) =>
+      path.startsWith(route)
+    );
+    return matchingRoute
+      ? routeStyles[matchingRoute]
+      : {
+          textColor: "text-white",
+          bgColor: "bg-transparent",
+          bgColorMenu: "bg-secondary-black",
+        };
   };
 
-  const { textColor, bgColor, bgColorMenu } = getStylesForRoute(pathname || '/');
+  const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
+    pathname || "/"
+  );
 
   return (
-    <header className={`w-full py-4 absolute z-10`}>
+    <header className={`w-full py-4 relative z-10`}>
       <div className="container mx-auto max-w-screen-xl flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -51,9 +69,15 @@ const Header: React.FC = () => {
         </div>
 
         {/* Navbar */}
-        <nav className={`hidden lg:flex lg:items-center lg:space-x-6 lg:px-8 lg:mx-auto`}>
+        <nav
+          className={`hidden lg:flex lg:items-center lg:space-x-6 lg:px-8 lg:mx-auto`}
+        >
           {navLinks.map(({ label, href }) => (
-            <Link key={label} href={href} className={`${textColor} text-xl flex items-center space-x-1 hover:scale-110 hover:duration-300`}>
+            <Link
+              key={label}
+              href={href}
+              className={`${textColor} text-xl flex items-center space-x-1 hover:scale-110 hover:duration-300`}
+            >
               <span>{label}</span>
             </Link>
           ))}
@@ -78,10 +102,17 @@ const Header: React.FC = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className={`"lg:hidden ${bgColorMenu} bg-opacity-90 animate-fade-right animate-duration-500"`}>
+        <div
+          className={`"lg:hidden ${bgColorMenu} bg-opacity-90 animate-fade-right animate-duration-500"`}
+        >
           <nav className="flex flex-col space-y-3 items-center">
             {navLinks.map(({ label, href }, index) => (
-              <Link key={label} href={href} className={`${textColor} flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500`} style={{ animationDelay: `${index * 0.1}s` }}>
+              <Link
+                key={label}
+                href={href}
+                className={`${textColor} flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <span>{label}</span>
               </Link>
             ))}
@@ -99,7 +130,10 @@ const Header: React.FC = () => {
 };
 
 const LoginButton: React.FC = () => (
-  <Link href="/login" className={`px-4 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-accent hover:duration-300`}>
+  <Link
+    href="/login"
+    className={`px-4 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-accent hover:duration-300`}
+  >
     <span>Iniciar sesión</span>
   </Link>
 );
