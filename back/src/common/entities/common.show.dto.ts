@@ -1,9 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger"
 import { Exclude, Expose } from "class-transformer"
 import { IsBoolean, IsNumber } from "class-validator"
 
-export abstract class CommonDto {
-    @ApiProperty()
+export abstract class CommonShowDto {
     @Expose()
     @IsNumber()
     id: number
@@ -12,7 +10,7 @@ export abstract class CommonDto {
     @IsBoolean()
     state?: boolean
 
-    @Exclude()
+    @Expose()
     createAt?: Date
 
     @Exclude()

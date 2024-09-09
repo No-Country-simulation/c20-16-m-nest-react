@@ -23,6 +23,8 @@ import { AnimalModule } from './animal/animal.module';
 import { AnimalShelterModule } from './animalshelter/animalshelter.module';
 import { AnimalTypesModule } from './animaltype/animaltypes.module';
 import { ReportStateModule } from './reportstate/reportstate.module';
+import { AnimalFeaturesModule } from './animalfeatures/animalfeatures.module';
+// import { DonationModule } from './danation/donation.module';
 
 @Module({
   imports: [
@@ -42,14 +44,13 @@ import { ReportStateModule } from './reportstate/reportstate.module';
     AnimalModule,
     AnimalShelterModule,
     AnimalTypesModule,
+    AnimalFeaturesModule,
+    // DonationModule,
     FilesModule,
     ReportStateModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    { provide: APP_GUARD, useClass: RolesGuard, },
-  ],
+  providers: [ AppService, RolesGuard, ],
   exports: [TypeOrmModule]
 })
 

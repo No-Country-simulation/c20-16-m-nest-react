@@ -1,3 +1,4 @@
+import { Roles } from './../common/decorators/roles.decorator';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,7 +33,7 @@ export class AuthService {
 
     async login(user: any) {
         // En el Payload le agregamos los campos necesarios en el Token
-        const payload = { username: user.username, id: user.id };
+        const payload = { username: user.username, id: user.id, roles: user.roles };
 
         const accessToken = this.jwtService.sign(payload, { expiresIn: '30m' });
         const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
@@ -49,7 +50,7 @@ export class AuthService {
     async refreshToken(userId: number, refreshToken: string) {
         const user = await this.usersRepository.findOne({ where: { id: userId } });
         if (!user || !user.refreshToken) {
-            throw new Error('Invalid refresh token');
+            throw new Error('Invalid User ');
         }
 
         const isMatch = await bcrypt.compare(refreshToken, user.refreshToken);
@@ -57,7 +58,7 @@ export class AuthService {
             throw new Error('Invalid refresh token');
         }
 
-        const payload = { username: user.username, id: user.id };
+        const payload = { username: user.username, id: user.id, roles: user.roles };
         const newAccessToken = this.jwtService.sign(payload);
         return {
             access_token: newAccessToken,

@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, IsEmail, IsNumber, ArrayNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateAnimalShelterDto {
     @ApiProperty({

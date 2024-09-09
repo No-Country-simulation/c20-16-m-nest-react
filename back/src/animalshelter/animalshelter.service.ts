@@ -46,7 +46,9 @@ export class AnimalShelterService {
   async findActives(options: IPaginationOptions): Promise<Pagination<AnimalShelterDto>> {
     try {
       const queryBuilder = this.animalshelterRepository.createQueryBuilder('animalshelter');
-      queryBuilder.orderBy('animaltypes.createAt', 'ASC');
+      queryBuilder
+      .leftJoinAndSelect('animalshelter.animalTypes', 'animalTypes')  
+      .orderBy('animalshelter.createAt', 'ASC');
 
       const paginatedAnimalShelter = await paginate<AnimalShelter>(queryBuilder, options);
       return new Pagination<AnimalShelterDto>(
@@ -62,8 +64,9 @@ export class AnimalShelterService {
     try {
       const queryBuilder = this.animalshelterRepository.createQueryBuilder('animalshelter');
       queryBuilder
+      .leftJoinAndSelect('animalshelter.animalTypes', 'animalTypes')  
       .where('animalshelter.state = :state', { state: false })
-      .orderBy('animaltypes.createAt', 'ASC');
+      .orderBy('animalshelter.createAt', 'ASC');
 
       const paginatedAnimalShelter = await paginate<AnimalShelter>(queryBuilder, options);
       return new Pagination<AnimalShelterDto>(
@@ -78,8 +81,10 @@ export class AnimalShelterService {
   async findAll(options: IPaginationOptions): Promise<Pagination<AnimalShelterDto>> {
     try {
       const queryBuilder = this.animalshelterRepository.createQueryBuilder('animalshelter');
-      queryBuilder.withDeleted();
-      queryBuilder.orderBy('animaltypes.createAt', 'ASC');
+      queryBuilder
+        .withDeleted()
+        .leftJoinAndSelect('animalshelter.animalTypes', 'animalTypes')
+        .orderBy('animalshelter.createAt', 'ASC');
 
       const paginatedAnimalShelter = await paginate<AnimalShelter>(queryBuilder, options);
       return new Pagination<AnimalShelterDto>(
@@ -95,11 +100,12 @@ export class AnimalShelterService {
     const animalshelter = await this.animalshelterRepository.findOne({
       where: {
         id
-      } as FindOptionsWhere<AnimalShelter>
+      } as FindOptionsWhere<AnimalShelter>,
+      relations: ['animalTypes']
     })
     try {
       if (!animalshelter) throw new Error
-      return animalshelter;
+      return plainToInstance(AnimalShelterDto, animalshelter);
     } catch (error) {
       throw new NotFoundException(error.message, 'Tipo no encontrado')
     }
@@ -107,7 +113,12 @@ export class AnimalShelterService {
 
   async update(id: number, updateAnimalShelterDto: UpdateAnimalShelterDto) {
     try {
-      return this.animalshelterRepository.update(id, updateAnimalShelterDto);
+      const animalshelterToUpdate = await this.animalshelterRepository.update(id, updateAnimalShelterDto);
+      if (animalshelterToUpdate.affected === 0) {
+        throw new NotFoundException('Tipo no encontrado');
+      } else {
+        return plainToInstance(AnimalShelterDto, animalshelterToUpdate);
+      }
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'Tipo no eliminado');
     }

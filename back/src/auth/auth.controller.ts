@@ -33,7 +33,8 @@ export class AuthController {
 
     @Post('refresh')
     async refreshToken(@Body('refresh_token') refreshToken: string, @Req() req) {
-        const userId = req.user.id; // obtener el ID del usuario desde el access token anterior (JWT)
+        console.log(req);
+        const userId = req.id; // obtener el ID del usuario desde el access token anterior (JWT)
         return this.authService.refreshToken(userId, refreshToken);
     }
 
