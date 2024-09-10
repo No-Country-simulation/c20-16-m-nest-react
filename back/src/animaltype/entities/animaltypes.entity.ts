@@ -1,5 +1,4 @@
 import { Animal } from "../../animal/entities/animal.entity";
-import { AnimalFeatures } from "../../animalfeatures/entities/animalfeatures.entity";
 import { AnimalShelter } from "../../animalshelter/entities/animalshelter.entity";
 import { CommonEntity } from "../../common/entities/common.entity";
 import { Column, Entity, ManyToMany, OneToMany } from "typeorm";

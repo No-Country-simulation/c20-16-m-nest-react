@@ -1,19 +1,21 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { CommonDto } from "src/common/entities/common.dto";
-import { AnimalTypesDto } from "../../animaltype/dto/animaltypes.dto";
+import { AnimalDto } from "../../animal/dto/animal.dto";
 
 export class AnimalFeaturesDto extends CommonDto {
-    @ApiProperty()
-    @Expose()
-    name: string
-}
-
-export class AnimalFeaturesAnimalTypesDTO extends CommonDto {
-    @ApiProperty()
+    @ApiProperty({ description: 'Caracteristica', example: 'Blanco // Negro // Pequeño' })
     @Expose()
     name: string
 
-    // Relación con Animal Types
-    animaltypes: AnimalTypesDto[];
+    @ApiProperty({
+        description: 'Lista de animales asociados',
+        type: () => [AnimalDto], // Array de AnimalDto
+        example: [
+            { id: 1, name: 'Firulais' },
+            { id: 2, name: 'Manchita' }
+        ],
+    })
+    @Type(() => AnimalDto)
+    animal: AnimalDto[];
 }

@@ -5,6 +5,7 @@ import { AnimalFeatures } from '../../animalfeatures/entities/animalfeatures.ent
 import { CommonDto } from '../../common/entities/common.dto';
 import { AnimalTypesDto } from '../../animaltype/dto/animaltypes.dto';
 import { Type } from 'class-transformer';
+import { AnimalFeaturesDto } from '../../animalfeatures/dto/animalfeatures.dto';
 
 export class AnimalDto extends CommonDto {
     @ApiProperty({ description: 'Nombre del animal', example: 'Firulais' })
@@ -40,7 +41,8 @@ export class AnimalDto extends CommonDto {
 
     @ApiProperty({ description: 'Lista de características del animal', example: [{ id: 1, name: 'Pelaje corto' }, { id: 2, name: 'Ojos azules' }] })
     @IsNotEmpty()
-    idAnimalFeatures: AnimalFeatures[];
+    @Type(() => AnimalFeaturesDto)
+    animalFeatures: AnimalFeaturesDto[];
 
     @ApiProperty({ description: 'ID del estado del reporte asociado al animal', example: 1 })
     @IsNotEmpty()

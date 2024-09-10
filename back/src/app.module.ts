@@ -24,6 +24,7 @@ import { AnimalShelterModule } from './animalshelter/animalshelter.module';
 import { AnimalTypesModule } from './animaltype/animaltypes.module';
 import { ReportStateModule } from './reportstate/reportstate.module';
 import { AnimalFeaturesModule } from './animalfeatures/animalfeatures.module';
+import { AdoptionModule } from './adoption/adoption.module';
 // import { DonationModule } from './danation/donation.module';
 
 @Module({
@@ -41,6 +42,7 @@ import { AnimalFeaturesModule } from './animalfeatures/animalfeatures.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UserModule,
+    AdoptionModule,
     AnimalModule,
     AnimalShelterModule,
     AnimalTypesModule,

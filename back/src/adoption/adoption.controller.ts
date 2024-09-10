@@ -3,7 +3,7 @@ import { AdoptionService } from './adoption.service';
 import { CreateAdoptionDto } from './dto/create-adoption.dto';
 import { UpdateAdoptionDto } from './dto/update-adoption.dto';
 import { AdoptionDto } from './dto/adoption.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
@@ -12,7 +12,6 @@ const itemxpega = 10;
 
 @ApiTags('Adoption')
 @Controller('adoption')
-@ApiCreatedResponse({ description: `El ${entityName} ha sido agregado` })
 @ApiForbiddenResponse({ description: `${entityName} no autorizado` })
 @ApiBadRequestResponse({ description: 'Los datos enviados son incorrectos' })
 export class AdoptionController {
@@ -21,8 +20,9 @@ export class AdoptionController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  @ApiBody({ type: AdoptionDto })
-  @ApiCreatedResponse({ description: `El ${entityName} ha sido agregado` })
+  @ApiBody({ type: CreateAdoptionDto, description: 'Datos necesarios para crear una adopción' })
+  @ApiCreatedResponse({ description: `El ${entityName} ha sido agregado`, type: AdoptionDto })
+  @ApiBadRequestResponse({ description: 'Error al crear la adopción' })
   create(@Body() createAdoptionDto: CreateAdoptionDto) {
     return this.adoptionService.create(createAdoptionDto);
   }
@@ -30,14 +30,17 @@ export class AdoptionController {
   @Post('restore/:id')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  @ApiOkResponse({ description: `El ${entityName} ha sido restaurado` })
-  async restore(@Param('id') id: number): Promise<AdoptionDto> {
+  @ApiOkResponse({ description: `El ${entityName} ha sido restaurado`, type: AdoptionDto })
+  @ApiNotFoundResponse({ description: `El ${entityName} con el id proporcionado no fue encontrado` })
+  restore(@Param('id') id: number): Promise<AdoptionDto> {
     return this.adoptionService.restore(id);
   }
 
   @Get()
-  @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
-  @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+  @ApiQuery({ name: "page", description: 'Número de página a devolver, por defecto es 1', type: 'number', required: false })
+  @ApiQuery({ name: "limit", description: `Cantidad de registros por página, por defecto ${itemxpega}`, type: 'number', required: false })
+  @ApiOkResponse({ description: `Lista de adopciones activas`, type: Pagination<AdoptionDto> })
+  @ApiNotFoundResponse({ description: 'No se encontraron adopciones activas' })
   async findActives(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = itemxpega,
@@ -56,13 +59,15 @@ export class AdoptionController {
         throw new Error();
       }
     } catch (error) {
-      throw new NotFoundException('Adoptiones no encontrados', error.message);
+      throw new NotFoundException('Adopciones no encontradas', error.message);
     }
   }
 
   @Get('/all')
-  @ApiQuery({ name: "page", description: 'Numero de la pagina que quiero que me devuelva, por defecto es la pagina 1', type: 'number', required: false })
-  @ApiQuery({ name: "limit", description: `Cantidad de registros a devolver, por pagina devuelve ${itemxpega} sino se envia`, type: 'number', required: false })
+  @ApiQuery({ name: "page", description: 'Número de página a devolver, por defecto es 1', type: 'number', required: false })
+  @ApiQuery({ name: "limit", description: `Cantidad de registros por página, por defecto ${itemxpega}`, type: 'number', required: false })
+  @ApiOkResponse({ description: `Lista de todas las adopciones`, type: Pagination<AdoptionDto> })
+  @ApiNotFoundResponse({ description: 'No se encontraron adopciones' })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = itemxpega,
@@ -81,11 +86,13 @@ export class AdoptionController {
         throw new Error();
       }
     } catch (error) {
-      throw new NotFoundException('Usuarios no encontrados', error.message);
+      throw new NotFoundException('Adopciones no encontradas', error.message);
     }
   }
 
   @Get(':id')
+  @ApiOkResponse({ description: `Detalles de la adopción con ID proporcionado`, type: AdoptionDto })
+  @ApiNotFoundResponse({ description: `No se encontró la adopción con el ID proporcionado` })
   findOne(@Param('id') id: number) {
     return this.adoptionService.findOne(id);
   }
@@ -93,7 +100,9 @@ export class AdoptionController {
   @Patch(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
-  @ApiOkResponse({ description: `El ${entityName} ha sido modificado` })
+  @ApiBody({ type: UpdateAdoptionDto, description: 'Datos necesarios para modificar una adopción' })
+  @ApiOkResponse({ description: `El ${entityName} ha sido modificado`, type: AdoptionDto })
+  @ApiBadRequestResponse({ description: 'Error al modificar la adopción' })
   update(@Param('id') id: string, @Body() updateAdoptionDto: UpdateAdoptionDto) {
     return this.adoptionService.update(+id, updateAdoptionDto);
   }
@@ -102,6 +111,7 @@ export class AdoptionController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   @ApiOkResponse({ description: `El ${entityName} ha sido eliminado` })
+  @ApiNotFoundResponse({ description: `No se encontró el ${entityName} con el ID proporcionado` })
   remove(@Param('id') id: string) {
     return this.adoptionService.remove(+id);
   }
