@@ -4,6 +4,7 @@ import Footer from "@/components/UI/Footer";
 import Header from "@/components/UI/Header";
 import { FaSearch } from "react-icons/fa";
 import ReportButton from "@/components/report/ReportButton";
+import ReportFilterBtn from "@/components/report/ReportFilterBtn";
 
 const ReportPage: React.FC = () => {
   const reports = [
@@ -98,9 +99,7 @@ const ReportPage: React.FC = () => {
               />
               <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-black text-2xl" />
             </div>
-            <button className="p-2 bg-primary rounded-lg hover:bg-secondary-hovcolor transition-all duration-300">
-              Filtrar
-            </button>
+            <ReportFilterBtn />
           </div>
         </div>
       </div>
