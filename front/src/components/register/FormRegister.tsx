@@ -3,12 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button, Input } from "@nextui-org/react";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const formSchema = z
   .object({
     name: z.string(),
     email: z.string().email(),
-    password: z.string().min(3),
+    password: z.string().min(3).max(30),
     passwordConfirm: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
@@ -26,6 +28,8 @@ export default function FormRegister() {
       passwordConfirm: "",
     },
   });
+
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
@@ -53,10 +57,24 @@ export default function FormRegister() {
       />
       <Input
         {...form.register("password")}
-        type="password"
+        type={isVisible ? "text" : "password"}
         label="Contraseña"
         variant="flat"
         className="max-w-md"
+        endContent={
+          <button
+            className="focus:outline-none"
+            type="button"
+            onClick={() => setIsVisible(!isVisible)}
+            aria-label="toggle password visibility"
+          >
+            {isVisible ? (
+              <FaEye className="text-2xl text-default-400 pointer-events-none" />
+            ) : (
+              <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+            )}
+          </button>
+        }
       />
       <Input
         {...form.register("passwordConfirm")}
@@ -67,9 +85,18 @@ export default function FormRegister() {
         isInvalid={!!form.formState.errors.passwordConfirm}
         errorMessage={form.formState.errors.passwordConfirm?.message}
       />
-      <Button type="submit" className="w-full mt-6" color="primary">
+      <p className="font-normal text-base text-[#232323]">
+        La contraseña debe incluir una{" "}
+        <span className="font-semibold">mayuscula</span> y un{" "}
+        <span className="font-semibold ">numero</span>.
+      </p>
+      <button
+        type="submit"
+        className="bg-primary py-2 rounded-2xl text-white font-medium text-xl md:w-[215px] w-full mx-auto"
+        /*  color="primary" */
+      >
         Crear cuenta
-      </Button>
+      </button>
     </form>
   );
 }

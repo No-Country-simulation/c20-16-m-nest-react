@@ -14,7 +14,7 @@ export default function FormLogin() {
     formState: { errors },
   } = useForm<FromInputs>();
   const [isVisible, setIsVisible] = useState(false);
-  console.log(errors.email);
+  //console.log(errors.email);
   return (
     <form
       className="w-full flex flex-col gap-y-3"
@@ -65,7 +65,7 @@ export default function FormLogin() {
       </p>
       <button
         type="submit"
-        className="bg-primary  py-2 rounded-2xl text-white font-semibold text-xl md:w-[215px] w-full "
+        className="bg-primary py-2 rounded-2xl text-white font-medium text-xl md:w-[215px] w-full mx-auto"
       >
         Ingresar
       </button>

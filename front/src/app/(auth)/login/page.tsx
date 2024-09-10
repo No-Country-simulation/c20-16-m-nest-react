@@ -3,8 +3,8 @@ import FormLogin from "@/components/login/FormLogin";
 export default function login() {
   return (
     <main className="w-full min-h-screen flex justify-center md:justify-start items-center max-w-[1440px] mx-auto">
-      <section className="w-full max-w-md h-fit flex flex-col items-start gap-y-8 bg-white rounded-2xl p-4 md:bg-transparent">
-        <h1 className="w-full md:text-left text-center text-2xl sx:text-5xl text-primary font-semibold">
+      <section className=" w-full max-w-md h-fit flex flex-col items-start gap-y-8 bg-white rounded-2xl p-4 md:bg-transparent">
+        <h1 className="w-full md:text-left text-center text-2xl sm:text-4xl text-primary font-semibold">
           Iniciar Sesion
         </h1>
         <FormLogin />

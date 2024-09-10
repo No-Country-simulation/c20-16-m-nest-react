@@ -2,9 +2,9 @@ import FormRegister from "@/components/register/FormRegister";
 
 export default function RegisterPage() {
   return (
-    <main className="flex justify-center items-center min-h-screen p-12">
+    <main className="w-full min-h-screen flex justify-center md:justify-start items-center max-w-[1440px] mx-auto">
       <section className="w-full max-w-md h-fit flex flex-col items-start gap-y-8 bg-white rounded-2xl p-4 md:bg-transparent">
-        <h1 className="w-full md:text-left text-center text-2xl sx:text-5xl text-primary font-semibold">
+        <h1 className="w-full md:text-left text-center text-2xl sm:text-4xl text-primary font-semibold">
           Registrate
         </h1>
         <FormRegister />
