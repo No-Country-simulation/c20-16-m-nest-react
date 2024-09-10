@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-export default function FromLogin() {
+export default function FormLogin() {
   const {
     register,
     handleSubmit,

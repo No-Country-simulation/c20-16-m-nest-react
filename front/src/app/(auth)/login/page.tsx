@@ -1,4 +1,4 @@
-import FromLogin from "@/components/login/FormLogin";
+import FormLogin from "@/components/login/FormLogin";
 
 export default function login() {
   return (
@@ -7,7 +7,7 @@ export default function login() {
         <h1 className="w-full md:text-left text-center text-2xl sx:text-5xl text-primary font-semibold">
           Iniciar Sesion
         </h1>
-        <FromLogin />
+        <FormLogin />
       </section>
       <img
         src="/svg/background-login-animals.svg"
