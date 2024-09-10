@@ -32,6 +32,11 @@ const routeStyles: RouteStyles = {
     bgColor: "bg-transparent",
     bgColorMenu: "bg-white",
   },
+  "/veterinary": {
+    textColor: "text-black",
+    bgColor: "bg-transparent",
+    bgColorMenu: "bg-white",
+  },
   // se va agregando mas pages de ser necesario ir customizando, al igual que las propiedades, si las propiedades no se encuentran definidas por defecto devuelve los valores de matchingRoute, (ver abajo).
 };
 
@@ -50,10 +55,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-          textColor: "text-white",
-          bgColor: "bg-transparent",
-          bgColorMenu: "bg-secondary-black",
-        };
+        textColor: "text-white",
+        bgColor: "bg-transparent",
+        bgColorMenu: "bg-secondary-black",
+      };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -61,7 +66,7 @@ const Header: React.FC = () => {
   );
 
   return (
-    <header className={`w-full py-4 relative z-10`}>
+    <header className={`w-full py-4 absolute z-10`}>
       <div className="container mx-auto max-w-screen-xl flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
         <div className="flex items-center space-x-2">
