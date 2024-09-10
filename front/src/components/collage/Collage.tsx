@@ -1,9 +1,8 @@
 "use client";
-import { Collage } from "@/interfaces/Collage";
+import { Collage as CollageList } from "@/interfaces/Collage";
 import CardCollage from "../UI/CardCollage/CardCollage";
 
-
-const listCollage: Collage[] = [
+const listCollage: CollageList[] = [
   {
     hoverBgColor: "bg-accent/70",
     href: "/reports",
@@ -50,13 +49,16 @@ export default function Collage() {
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-2	gap-5 items-center pt-12 w-full max-w-[1440px] mx-auto">
       {listCollage.map((item, index) => (
-        <CardCollage index={index}
-        subClass={item.subClass}
-        href={item.href}
-        hoverBgColor={item.hoverBgColor}
-        title={item.title}
-        src={item.src}
-        alt={item.alt}/>
+        <CardCollage
+          key={index}
+          index={index}
+          subClass={item.subClass}
+          href={item.href}
+          hoverBgColor={item.hoverBgColor}
+          title={item.title}
+          src={item.src}
+          alt={item.alt}
+        />
       ))}
     </ul>
   );
