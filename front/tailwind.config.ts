@@ -22,9 +22,13 @@ const config: Config = {
           v1: "#3947CD",
           v2: "#4839CD",
           v3: "#A139CD",
+          black: "#232323",
         },
         accent: "#CD3956",
       },
+      boxShadow:{
+        collageImage: "0px 0px 4px 0px rgba(0, 0, 0, 0.25)"
+      }
     },
   },
   darkMode: "class",

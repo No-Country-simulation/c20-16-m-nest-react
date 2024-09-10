@@ -1,7 +1,10 @@
 "use client";
 import { FromInputs } from "@/interfaces/FormInputs";
+import { Input } from "@nextui-org/react";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 export default function FromLogin() {
   const {
@@ -10,48 +13,50 @@ export default function FromLogin() {
     reset,
     formState: { errors },
   } = useForm<FromInputs>();
+  const [isVisible, setIsVisible] = useState(false);
+  console.log(errors.email);
   return (
     <form
-      className="max-w-sm mx-auto  "
+      className="w-full flex flex-col gap-y-3"
       onSubmit={handleSubmit((data) => {
         reset(), console.log(data);
       })}
     >
-      <div className="mb-5">
-        <label
-          htmlFor="email"
-          className="block mb-2 text-sm font-medium text-gray-900 "
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="name@flowbite.com"
-          {...register("email", { required: true })}
-        />
-        {errors.email && (
-          <span className="text-red-500">El email es requerido</span>
-        )}
-      </div>
-      <div className="mb-5">
-        <label
-          htmlFor="password"
-          className="block mb-2 text-sm font-medium text-gray-900 "
-        >
-          Contraseña
-        </label>
-        <input
-          type="password"
-          id="password"
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          {...register("password", { required: true })}
-        />
-        {errors.password && (
-          <span className="text-red-500">La contraseña es requerido</span>
-        )}
-      </div>
+      <Input
+        {...register("email", { required: true })}
+        type="email"
+        label="Usuario o email"
+        variant="flat"
+        className="max-w-full"
+        radius="lg"
+        isInvalid={errors.email ? true : false}
+        errorMessage="Email incorrecto"
+      />
+      <Input
+        {...register("password", { required: true })}
+        key={"inside"}
+        label="Password"
+        variant="flat"
+        className="max-w-full "
+        radius="lg"
+        isInvalid={errors.password ? true : false}
+        errorMessage="Contraseña incorrecto"
+        endContent={
+          <button
+            className="focus:outline-none"
+            type="button"
+            onClick={() => setIsVisible(!isVisible)}
+            aria-label="toggle password visibility"
+          >
+            {isVisible ? (
+              <FaEye className="text-2xl text-default-400 pointer-events-none" />
+            ) : (
+              <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+            )}
+          </button>
+        }
+        type={isVisible ? "text" : "password"}
+      />
       <p className=" text-black">
         No tenes cuenta?{" "}
         <Link href={"/register"} className="font-semibold">
@@ -60,9 +65,9 @@ export default function FromLogin() {
       </p>
       <button
         type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="bg-primary  py-2 rounded-2xl text-white font-semibold text-xl md:w-[215px] w-full "
       >
-        Iniciar sesion
+        Ingresar
       </button>
     </form>
   );
