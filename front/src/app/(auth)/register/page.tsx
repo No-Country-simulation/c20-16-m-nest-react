@@ -1,77 +1,24 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button, Input } from "@nextui-org/react";
-
-const formSchema = z
-  .object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(3),
-    passwordConfirm: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "Las contraseñas no son iguales",
-    path: ["passwordConfirm"],
-  });
+import FormRegister from "@/components/register/FormRegister";
 
 export default function RegisterPage() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      passwordConfirm: "",
-    },
-  });
-
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-  };
-
   return (
-    <main className="flex justify-center items-center min-h-screen p-12 bg-white">
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-4 max-w-md w-full"
-      >
-        <Input
-          {...form.register("name")}
-          type="text"
-          label="Nombre completo"
-          variant="flat"
-          className="max-w-md"
-        />
-        <Input
-          {...form.register("email")}
-          label="Email"
-          variant="flat"
-          className="max-w-md"
-          isInvalid={!!form.formState.errors.email}
-          errorMessage={form.formState.errors.email?.message}
-        />
-        <Input
-          {...form.register("password")}
-          type="password"
-          label="Contraseña"
-          variant="flat"
-          className="max-w-md"
-        />
-        <Input
-          {...form.register("passwordConfirm")}
-          type="password"
-          label="Confirmar contraseña"
-          variant="flat"
-          className="max-w-md"
-          isInvalid={!!form.formState.errors.passwordConfirm}
-          errorMessage={form.formState.errors.passwordConfirm?.message}
-        />
-        <Button type="submit" className="w-full mt-6" color="primary">
-          Crear cuenta
-        </Button>
-      </form>
+    <main className="w-full min-h-screen flex justify-center md:justify-start items-center max-w-[1440px] mx-auto">
+      <section className="w-full max-w-md h-fit flex flex-col items-start gap-y-8 bg-white rounded-2xl p-4 md:bg-transparent">
+        <h1 className="w-full md:text-left text-center text-2xl sm:text-4xl text-primary font-semibold">
+          Registrate
+        </h1>
+        <FormRegister />
+      </section>
+      <img
+        src="/svg/background-register-animals.svg"
+        className=" max-w-[474px] max-h-[345px] sm:max-w-[574px] sm:max-h-[445px] absolute bottom-0 right-0 sm:right-28 -z-40"
+        alt="Mascotas login"
+      />
+      <img
+        src="/svg/background-login-register.svg"
+        className="absolute top-0 right-0 w-full max-w-fit h-full object-cover -z-50 "
+        alt="fondo-login"
+      />
     </main>
   );
 }

@@ -5,6 +5,10 @@
 :root {
 }
 
+body{
+  color: #232323;
+} 
+
 .animate-marquee {
   display: inline-block;
   padding-left: 100%;
