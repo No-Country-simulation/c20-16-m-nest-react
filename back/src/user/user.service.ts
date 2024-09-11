@@ -33,21 +33,6 @@ export class UserService {
     }
   }
 
-  async findActives(options: IPaginationOptions): Promise<Pagination<UserDto>> {
-    try {
-      const queryBuilder = this.userRepository.createQueryBuilder('user');
-      queryBuilder.orderBy('user.createAt', 'ASC');
-
-      const paginatedUsers = await paginate<User>(queryBuilder, options);
-      return new Pagination<UserDto>(
-        plainToInstance(UserDto, paginatedUsers.items),
-        paginatedUsers.meta, paginatedUsers.links
-      );
-    } catch (error) {
-      throw new BadRequestException(error.message, 'Users no encontrados');
-    }
-  }
-
   async findPendingAcceptance(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
       const queryBuilder = this.userRepository.createQueryBuilder('user');
@@ -55,51 +40,117 @@ export class UserService {
       .where('user.state = :state', { state: false })
       .orderBy('user.createAt', 'ASC');
 
+
+      // Añadir las relaciones necesarias para cargar los datos
+      queryBuilder.leftJoinAndSelect('user.donation', 'donation');
+      queryBuilder.leftJoinAndSelect('user.adoption', 'adoption');
+      queryBuilder.leftJoinAndSelect('user.animalShelter', 'animalshelter');
+
+      // Paginar los resultados
       const paginatedUsers = await paginate<User>(queryBuilder, options);
-      return new Pagination<UserDto>(
-        plainToInstance(UserDto, paginatedUsers.items),
-        paginatedUsers.meta, paginatedUsers.links
-      );
+
+      // Transformar los usuarios a UserDto
+      const userDtos = plainToInstance(UserDto, paginatedUsers.items, {
+        excludeExtraneousValues: true, // Excluye campos que no están en el DTO
+      });
+
+      return new Pagination<UserDto>(userDtos, paginatedUsers.meta);
     } catch (error) {
-      throw new BadRequestException(error.message, 'Users no encontrados');
+      throw new BadRequestException(error.message, 'Usuarios no encontrados');
+    }
+  }
+
+  async findActives(options: IPaginationOptions): Promise<Pagination<UserDto>> {
+    try {
+      // Crear el query builder para los usuarios
+      const queryBuilder = this.userRepository.createQueryBuilder('user');
+      queryBuilder.orderBy('user.createAt', 'ASC');
+
+      // Añadir las relaciones necesarias para cargar los datos
+      queryBuilder.leftJoinAndSelect('user.donation', 'donation');
+      queryBuilder.leftJoinAndSelect('user.adoption', 'adoption');
+      queryBuilder.leftJoinAndSelect('user.animalShelter', 'animalshelter');
+
+      // Paginar los resultados
+      const paginatedUsers = await paginate<User>(queryBuilder, options);
+
+      // Transformar los usuarios a UserDto
+      const userDtos = plainToInstance(UserDto, paginatedUsers.items, {
+        excludeExtraneousValues: true, // Excluye campos que no están en el DTO
+      });
+
+      return new Pagination<UserDto>(userDtos, paginatedUsers.meta);
+    } catch (error) {
+      throw new BadRequestException(error.message, 'Usuarios no encontrados');
     }
   }
 
   async findAll(options: IPaginationOptions): Promise<Pagination<UserDto>> {
     try {
+      // Crear el query builder para los usuarios
       const queryBuilder = this.userRepository.createQueryBuilder('user');
       queryBuilder.withDeleted();
-      queryBuilder.orderBy('user.username', 'ASC');
+      queryBuilder.orderBy('user.createAt', 'ASC');
 
+      // Añadir las relaciones necesarias para cargar los datos
+      queryBuilder.leftJoinAndSelect('user.donation', 'donation');
+      queryBuilder.leftJoinAndSelect('user.adoption', 'adoption');
+      queryBuilder.leftJoinAndSelect('user.animalShelter', 'animalshelter');
+
+      // Paginar los resultados
       const paginatedUsers = await paginate<User>(queryBuilder, options);
-      return new Pagination<UserDto>(
-        plainToInstance(UserDto, paginatedUsers.items),
-        paginatedUsers.meta,
-      );
+
+      // Transformar los usuarios a UserDto
+      const userDtos = plainToInstance(UserDto, paginatedUsers.items, {
+        excludeExtraneousValues: true, // Excluye campos que no están en el DTO
+      });
+
+      return new Pagination<UserDto>(userDtos, paginatedUsers.meta);
     } catch (error) {
-      throw new BadRequestException(error.message, 'Users no encontrados');
+      throw new BadRequestException(error.message, 'Usuarios no encontrados');
     }
   }
 
   async findOneByUsername(username: string): Promise<UserDto> {
     const users = await this.userRepository.findOne({
-      where: { username: username }
+      where: { username: username },
+      relations: ['donation', 'adoption', 'animalshelter'], // Carga las relaciones necesarias
     });
+
+    // Si no encuentra al usuario, lanza una excepción
+    if (!users) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
     try {
-      return plainToInstance(UserDto, users);
+      // Transforma la entidad User a UserDto
+      return plainToInstance(UserDto, users, {
+        excludeExtraneousValues: true, // Excluye campos que no están definidos en el DTO
+      });
     } catch (error) {
-      throw new BadRequestException(error.message, 'User no encontrado')
+      throw new BadRequestException(error.message, 'Error al transformar los datos del usuario');
     }
   }
 
   async findOne(id: number): Promise<UserDto> {
-    const users = await this.userRepository.findOne({
-      where: { id }
+    // Busca el usuario con las relaciones necesarias
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['donation', 'adoption', 'animalshelter'], // Carga las relaciones necesarias
     });
+
+    // Si no encuentra al usuario, lanza una excepción
+    if (!user) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
     try {
-      return plainToInstance(UserDto, users);
+      // Transforma la entidad User a UserDto
+      return plainToInstance(UserDto, user, {
+        excludeExtraneousValues: true, // Excluye campos que no están definidos en el DTO
+      });
     } catch (error) {
-      throw new BadRequestException(error.message, 'Users no encontrados')
+      throw new BadRequestException(error.message, 'Error al transformar los datos del usuario');
     }
   }
 
@@ -130,7 +181,9 @@ export class UserService {
       if (result.affected === 0) {
         throw new NotFoundException('User no encontrado');
       }
-      return this.userRepository.findOne({ where: { id: id } });
+      return plainToInstance(UserDto, result, {
+        excludeExtraneousValues: true, // Excluye campos que no están definidos en el DTO
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'User no Restaurado');
     }

@@ -3,11 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnimalShelter } from './entities/animalshelter.entity';
 import { AnimalShelterController } from './animalshelter.controller';
 import { AnimalShelterService } from './animalshelter.service';
-import { AnimalTypesModule } from '../animaltype/animaltypes.module';
+import { AnimalTypes } from '../animaltype/entities/animaltypes.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AnimalShelter]),
-  AnimalTypesModule],
+  imports: [TypeOrmModule.forFeature([AnimalShelter, AnimalTypes])],
   controllers: [AnimalShelterController],
   providers: [AnimalShelterService],
   exports:[TypeOrmModule]

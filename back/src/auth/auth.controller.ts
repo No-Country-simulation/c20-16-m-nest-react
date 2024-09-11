@@ -2,9 +2,16 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiBody,
+    ApiForbiddenResponse,
+    ApiOkResponse,
+    ApiTags,
+    ApiUnauthorizedResponse
+} from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
-import { LogoutDto } from './dto/logout.dto';
 
 const entityName = 'Autenticacion'
 
@@ -17,30 +24,41 @@ export class AuthController {
 
     @Get('google')
     @UseGuards(AuthGuard('google'))
+    @ApiOkResponse({ description: 'Redireccionamiento a la autenticación de Google' })
     async googleAuth(@Req() req) { }
 
     @Get('google/callback')
     @UseGuards(AuthGuard('google'))
+    @ApiOkResponse({ description: 'Autenticación exitosa con Google' })
+    @ApiUnauthorizedResponse({ description: 'Autenticación fallida con Google' })
     googleAuthRedirect(@Req() req) {
         return this.authService.login(req.user);
     }
 
     @Post('login')
     @ApiBody({ type: LoginDto })
+    @ApiOkResponse({ description: 'Inicio de sesión exitoso' })
+    @ApiUnauthorizedResponse({ description: 'Credenciales incorrectas' })
     async login(@Body('username') username: string, @Body('password') password: string) {
         return this.authService.loginWithCredentials(username, password);
     }
 
     @Post('refresh')
+    @ApiBody({ description: 'Token de actualización', type: String })
+    @ApiOkResponse({ description: 'Token actualizado exitosamente' })
+    @ApiUnauthorizedResponse({ description: 'Token de actualización inválido o expirado' })
     async refreshToken(@Body('refresh_token') refreshToken: string, @Req() req) {
-        const userId = req.user.id; // obtener el ID del usuario desde el access token anterior (JWT)
+        console.log(req);
+        const userId = req.id; // obtener el ID del usuario desde el access token anterior (JWT)
         return this.authService.refreshToken(userId, refreshToken);
     }
 
     @Post('logout')
     @UseGuards(AuthGuard('jwt'))
     @ApiBearerAuth('access-token')
-    async logout(@Req() req) { 
+    @ApiOkResponse({ description: 'Cierre de sesión exitoso' })
+    @ApiUnauthorizedResponse({ description: 'Token de acceso inválido o expirado' })
+    async logout(@Req() req) {
         const userId = req.user.userId;
         return this.authService.logout(userId);
     }

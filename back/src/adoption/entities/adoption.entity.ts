@@ -20,7 +20,7 @@ export class Adoption extends CommonEntity {
     @Column({ nullable: true })
     observations: string;
 
-    @OneToOne(() => Animal, (animal) => animal.adoption)
+    @OneToOne(() => Animal, (animal) => animal.id)
     idAnimal: Animal;
 
     @OneToOne(() => User, (user) => user.adoption)

@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
 import { User } from '../../user/entities/user.entity';
-import { CommonDto } from '../../common/entities/common.dto';
+import { CommonDto } from '../../common/dto/common.dto';
 
 export class DonationDto extends CommonDto{
     @ApiProperty()
