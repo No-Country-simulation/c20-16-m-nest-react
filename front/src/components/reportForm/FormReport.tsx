@@ -83,108 +83,89 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
 
     return (
         <form className="space-y-4 py-8" onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <Input
+                {...register('title')}
+                label="Título"
+                variant='flat'
+                isInvalid={!!errors.title}
+                errorMessage={errors.title?.message}
+            />
+            <Textarea
+                {...register('description')}
+                label="Descripción"
+                variant='flat'
+                rows={2}
+                isInvalid={!!errors.description}
+                errorMessage={errors.description?.message}
+            />
+            <Select
+                {...register('species')}
+                label="Selecciona especie"
+                isInvalid={!!errors.species}
+                errorMessage={errors.species?.message}
+            >
+                {species.map((specie) => (
+                    <SelectItem key={specie.key} value={specie.key}>
+                        {specie.label}
+                    </SelectItem>
+                ))}
+            </Select>
+            <Select
+                {...register('sex')}
+                label="Selecciona el sexo"
+                isInvalid={!!errors.sex}
+                errorMessage={errors.sex?.message}
+            >
+                {sexs.map((sex) => (
+                    <SelectItem key={sex.key} value={sex.key}>
+                        {sex.label}
+                    </SelectItem>
+                ))}
+            </Select>
+            <Select
+                {...register('province')}
+                label="Selecciona provincia"
+                isInvalid={!!errors.province}
+                errorMessage={errors.province?.message}
+            >
+                {provincias.map((provincia) => (
+                    <SelectItem key={provincia.key} value={provincia.key}>
+                        {provincia.label}
+                    </SelectItem>
+                ))}
+            </Select>
+            <Input
+                {...register('locality')}
+                label="Localidad"
+                variant='flat'
+                isInvalid={!!errors.locality}
+                errorMessage={errors.locality?.message}
+            />
+            <div className="w-full flex space-x-4">
                 <Input
-                    {...register('title')}
-                    label="Título"
+                    {...register('street')}
+                    label="Calle"
                     variant='flat'
-                    isInvalid={!!errors.title}
-                    errorMessage={errors.title?.message}
+                    isInvalid={!!errors.street}
+                    errorMessage={errors.street?.message}
+                    className='w-4/6'
                 />
-            </div>
-            <div>
-                <Textarea
-                    {...register('description')}
-                    label="Descripción"
-                    variant='flat'
-                    rows={2}
-                    isInvalid={!!errors.description}
-                    errorMessage={errors.description?.message}
-                />
-            </div>
-            <div>
-                <Select
-                    {...register('species')}
-                    label="Selecciona especie"
-                    className="max-w-xs"
-                    isInvalid={!!errors.species}
-                    errorMessage={errors.species?.message}
-                >
-                    {species.map((specie) => (
-                        <SelectItem key={specie.key} value={specie.key}>
-                            {specie.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-            </div>
-            <div>
-                <Select
-                    {...register('sex')}
-                    label="Selecciona el sexo"
-                    className="max-w-xs"
-                    isInvalid={!!errors.sex}
-                    errorMessage={errors.sex?.message}
-                >
-                    {sexs.map((sex) => (
-                        <SelectItem key={sex.key} value={sex.key}>
-                            {sex.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-            </div>
-            <div>
-                <Select
-                    {...register('province')}
-                    label="Selecciona provincia"
-                    className="max-w-xs"
-                    isInvalid={!!errors.province}
-                    errorMessage={errors.province?.message}
-                >
-                    {provincias.map((provincia) => (
-                        <SelectItem key={provincia.key} value={provincia.key}>
-                            {provincia.label}
-                        </SelectItem>
-                    ))}
-                </Select>
-            </div>
-            <div>
                 <Input
-                    {...register('locality')}
-                    label="Localidad"
+                    {...register('number', { valueAsNumber: true })}
+                    label="Altura"
                     variant='flat'
-                    isInvalid={!!errors.locality}
-                    errorMessage={errors.locality?.message}
+                    isInvalid={!!errors.number}
+                    errorMessage={errors.number?.message}
+                    className='w-2/6 '
                 />
             </div>
-            <div className="flex space-x-4">
-                <div className="flex-1">
-                    <Input
-                        {...register('street')}
-                        label="Calle"
-                        variant='flat'
-                        isInvalid={!!errors.street}
-                        errorMessage={errors.street?.message}
-                    />
-                </div>
-                <div className="w-2/6">
-                    <Input
-                        {...register('number', { valueAsNumber: true })}
-                        label="Altura"
-                        variant='flat'
-                        isInvalid={!!errors.number}
-                        errorMessage={errors.number?.message}
-                    />
-                </div>
-            </div>
-            <div>
-                <Input
-                    {...register('postalCode', { valueAsNumber: true })}
-                    label="Código Postal"
-                    variant='flat'
-                    isInvalid={!!errors.postalCode}
-                    errorMessage={errors.postalCode?.message}
-                />
-            </div>
+            <Input
+                {...register('postalCode', { valueAsNumber: true })}
+                label="Código Postal"
+                variant='flat'
+                isInvalid={!!errors.postalCode}
+                errorMessage={errors.postalCode?.message}
+            />
             <button
                 type="submit"
                 className="w-3/6 lg:w-2/6 p-2 bg-primary text-white rounded-3xl hover:bg-accent hover:duration-300"

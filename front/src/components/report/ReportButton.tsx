@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
+import { Tooltip, Button } from "@nextui-org/react";
 
 const ReportButton = () => {
     return (
-        <Link href="/report/reportForm">
-            <button className="fixed bg-primary rounded-full shadow-lg p-2 right-2 -bottom-1 transform -translate-y-1/2 text-white text-4xl md:text-5xl z-20 hover:scale-110 hover:duration-300">
-                <FaPlus />
+        <Tooltip content="Agregar Reporte" placement='top-end' className='text-black text-2xl bg-white shadow-lg p-4 rounded-2xl'>
+            <button className="fixed bg-primary right-2 bottom-2 md:right-8 md:bottom-8 rounded-full z-20 hover:scale-110 hover:duration-300">
+                <Link href="/report/reportForm"><FaPlus className='text-5xl text-white p-2' /></Link >
             </button>
-        </Link>
+        </Tooltip>
     );
 };
 
