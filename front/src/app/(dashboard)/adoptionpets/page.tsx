@@ -1,3 +1,3 @@
 export default function adoptionpets() {
-  return <div>mis adopciones</div>;
+  return <div>Mis adopciones</div>;
 }

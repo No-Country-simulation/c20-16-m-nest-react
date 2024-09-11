@@ -1,3 +1,3 @@
 export default function frequentlyquestions() {
-  return <div>Preguntas frecuenets</div>;
+  return <div>Preguntas frecuentes</div>;
 }
