@@ -1,7 +1,6 @@
 export interface ReportCardProps {
   title: string;
   description: string;
-  images: string;
   species: string;
   sex: string;
   location: {

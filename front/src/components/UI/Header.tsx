@@ -80,10 +80,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-          textColor: "text-white",
-          bgColor: "bg-transparent",
-          bgColorMenu: "bg-secondary-black",
-        };
+        textColor: "text-white",
+        bgColor: "bg-transparent",
+        bgColorMenu: "bg-secondary-black",
+      };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
