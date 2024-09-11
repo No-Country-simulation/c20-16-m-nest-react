@@ -16,7 +16,6 @@ export default function CardCollage({
   const [isIndex, setIsIndex] = useState<number>();
   return (
     <li
-      key={index}
       className={`w-full h-[305px] rounded-2xl shadow-collageImage overflow-hidden relative ${subClass}`}
       onMouseEnter={() => {
         setIsHover(true), setIsIndex(index);
