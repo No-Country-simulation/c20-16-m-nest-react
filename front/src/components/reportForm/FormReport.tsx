@@ -76,7 +76,7 @@ interface FormReportProps {
     onSubmit: (data: FormData) => void;
 }
 
-const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
+const FormReport: React.FC<FormReportProps> = ({ onSubmit }: any) => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(formReportSchema),
     });

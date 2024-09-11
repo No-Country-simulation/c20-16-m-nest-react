@@ -10,7 +10,7 @@ const ReportFormPage: React.FC = () => {
     setImages(uploadedImages);
   };
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = (formData: /* FormData */any) => {
     console.log("Enviando datos del formulario...", formData);
 
     // Para conexion back
@@ -24,7 +24,7 @@ const ReportFormPage: React.FC = () => {
             <h1 className="text-4xl text-primary font-bold mb-8">
               Reportar Mascota
             </h1>
-            <FormReport images={images} onSubmit={handleSubmit} />
+            <FormReport /* images={images} */ onSubmit={handleSubmit} />
           </div>
           <div className="w-full min-h-screen py-24 md:w-1/2">
             <ImgLoader onImageUpload={handleImageUpload} />
