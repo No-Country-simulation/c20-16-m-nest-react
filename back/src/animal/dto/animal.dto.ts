@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsUrl } from 'class-validator';
 import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
 import { AnimalFeatures } from '../../animalfeatures/entities/animalfeatures.entity';
-import { CommonDto } from '../../common/entities/common.dto';
+import { CommonDto } from '../../common/dto/common.dto';
 import { AnimalTypesDto } from '../../animaltype/dto/animaltypes.dto';
 import { Type } from 'class-transformer';
 import { AnimalFeaturesDto } from '../../animalfeatures/dto/animalfeatures.dto';

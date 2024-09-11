@@ -3,7 +3,7 @@ import { UserRole } from '../user-role.enum';
 import { Donation } from '../../danation/entities/donation.entity';
 import { Adoption } from '../../adoption/entities/adoption.entity';
 import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
-import { CommonDto } from '../../common/entities/common.dto';
+import { CommonDto } from '../../common/dto/common.dto';
 import { DonationDto } from '../../danation/dto/donation.dto';
 import { AdoptionDto } from '../../adoption/dto/adoption.dto';
 import { AnimalShelterDto } from '../../animalshelter/dto/animalshelter.dto';

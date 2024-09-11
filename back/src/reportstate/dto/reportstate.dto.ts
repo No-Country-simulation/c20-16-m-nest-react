@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose, Type } from "class-transformer";
-import { CommonDto } from "src/common/entities/common.dto";
+import { CommonDto } from "../../common/dto/common.dto";
 import { AnimalDto } from "../../animal/dto/animal.dto";
 
 export class ReportStateDto extends CommonDto {

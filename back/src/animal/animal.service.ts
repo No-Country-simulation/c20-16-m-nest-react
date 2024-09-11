@@ -74,7 +74,7 @@ export class AnimalService {
     try {
       const animal = await this.animalRepository.findOne({
         where: { id } as FindOptionsWhere<Animal>,
-        relations: ['idAnimalTypes']
+        relations: ['animaltypes']
       });
 
       if (!animal) {

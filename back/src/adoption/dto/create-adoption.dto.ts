@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { CommonDto } from '../../common/entities/common.dto';
+import { CommonDto } from '../../common/dto/common.dto';
 import { AdoptionStatus } from '../../adoption/entities/adoption.entity';
 
 export class CreateAdoptionDto extends CommonDto {

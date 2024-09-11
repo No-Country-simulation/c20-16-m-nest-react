@@ -41,7 +41,7 @@ export class AnimalShelterController {
   @ApiBearerAuth('access-token')
   @ApiResponse({ status: 200, description: 'Animal shelter restored successfully', type: AnimalShelterDto })
   @ApiResponse({ status: 404, description: 'Animal shelter not found' })
-  async restore(@Param('id') id: number): Promise<AnimalShelterDto> {
+  async restore(@Param('id') id: number){
     return this.animalShelterService.restore(id);
   }
 

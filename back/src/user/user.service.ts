@@ -181,7 +181,9 @@ export class UserService {
       if (result.affected === 0) {
         throw new NotFoundException('User no encontrado');
       }
-      return this.userRepository.findOne({ where: { id: id } });
+      return plainToInstance(UserDto, result, {
+        excludeExtraneousValues: true, // Excluye campos que no están definidos en el DTO
+      });
     } catch (error) {
       throw new InternalServerErrorException(error.message, 'User no Restaurado');
     }

@@ -51,7 +51,6 @@ export class AnimalFeaturesService {
       queryBuilder
         .withDeleted()
         .leftJoinAndSelect('animalfeatures.idAnimalShelther', 'animalShelter')
-        .leftJoinAndSelect('animalfeatures.idAnimalTypes', 'animalTypes')
         .orderBy('animalfeatures.createdAt', 'ASC');
       
       const paginatedAnimalFeatures = await paginate<AnimalFeatures>(queryBuilder, options);
