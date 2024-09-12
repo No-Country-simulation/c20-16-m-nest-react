@@ -45,13 +45,13 @@ export default function ContactUs() {
           ))}
         </div>
       </article>
-      <form className="flex flex-col gap-4">
-        <Input variant="flat" label="Nombre" className="w-80 md:w-[450px] " />
-        <Input variant="flat" label="Email" className="w-80 md:w-[450px]" />
+      <form className="flex flex-col gap-4 border border-red-500">
+        <Input variant="flat" label="Nombre" className="w-full md:w-[450px] " />
+        <Input variant="flat" label="Email" className="w-full md:w-[450px]" />
         <Textarea
           variant="flat"
           label="Mensaje"
-          className="w-80 md:w-[450px]"
+          className="w-full md:w-[450px]"
         />
         <Button type="submit" color="primary" className="max-w-28">
           Enviar
