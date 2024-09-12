@@ -44,7 +44,7 @@ export default function FormContact() {
         type="text"
         label="Nombre"
         radius="lg"
-        className="w-full md:w-[450px] "
+        className="w-full md:w-[450px] z-0"
         errorMessage={errors.name?.message}
       />
       <Input
@@ -55,7 +55,7 @@ export default function FormContact() {
         type="email"
         label="Email"
         radius="lg"
-        className="w-full md:w-[450px]"
+        className="w-full md:w-[450px] z-0"
         errorMessage={errors.email?.message}
       />
       <Textarea
@@ -64,7 +64,7 @@ export default function FormContact() {
         variant="flat"
         type="text"
         label="Mensaje"
-        className="w-full md:w-[450px]"
+        className="w-full md:w-[450px] z-0"
         isInvalid={errors.sms ? true : false}
         radius="lg"
         errorMessage={errors.sms?.message}
