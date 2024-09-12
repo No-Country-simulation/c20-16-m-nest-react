@@ -31,7 +31,7 @@ const socials: ISocial[] = [
 
 export default function ContactUs() {
   return (
-    <section className="flex flex-col gap-8 px-4 py-24 md:justify-center md:flex-row-reverse">
+    <section className="flex flex-col gap-y-8 gap-x-16 px-4 py-24 md:justify-center md:flex-row-reverse w-full border-2">
       <article className="flex flex-col gap-4">
         <h3 className="text-3xl text-primary font-semibold">
           Contáctate con nosotros
@@ -45,7 +45,7 @@ export default function ContactUs() {
           ))}
         </div>
       </article>
-      <form className="flex flex-col gap-4 border border-red-500">
+      <form className="flex flex-col gap-4">
         <Input variant="flat" label="Nombre" className="w-full md:w-[450px] " />
         <Input variant="flat" label="Email" className="w-full md:w-[450px]" />
         <Textarea
@@ -53,9 +53,9 @@ export default function ContactUs() {
           label="Mensaje"
           className="w-full md:w-[450px]"
         />
-        <Button type="submit" color="primary" className="max-w-28">
+        <button type="submit" color="primary" className="bg-primary py-3 px-8 rounded-full font-medium text-lg text-white w-full lg:w-fit">
           Enviar
-        </Button>
+        </button>
       </form>
     </section>
   );

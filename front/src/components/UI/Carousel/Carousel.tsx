@@ -81,7 +81,7 @@ export default function Carousel() {
                 <p className=" text-white pb-5 text-base md:text-xl font-normal text-center lg:text-left">
                   {item.description}
                 </p>
-                <button className="bg-primary py-3 px-4 rounded-full font-medium text-lg text-white w-full lg:w-fit">
+                <button className="bg-primary py-3 px-8 rounded-full font-medium text-lg text-white w-full lg:w-fit">
                   {item.textbutton}
                 </button>
               </div>
