@@ -80,10 +80,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-        textColor: "text-white",
-        bgColor: "bg-transparent",
-        bgColorMenu: "bg-secondary-black",
-      };
+          textColor: "text-white",
+          bgColor: "bg-transparent",
+          bgColorMenu: "bg-secondary-black",
+        };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className={`${textColor} text-2xl`}
+            className={`text-primary text-2xl`}
           >
             {isMenuOpen ? <HiX /> : <HiMenu />}
           </button>
@@ -133,14 +133,14 @@ const Header: React.FC = () => {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div
-          className={`"lg:hidden ${bgColorMenu} bg-opacity-90 animate-fade-right animate-duration-500"`}
+          className={`"lg:hidden ${bgColorMenu} animate-fade-right animate-duration-500"`}
         >
-          <nav className="flex flex-col space-y-3 items-center">
+          <nav className="flex flex-col space-y-3 items-center h-fit ">
             {navLinks.map(({ label, href }, index) => (
               <Link
                 key={label}
                 href={href}
-                className={`${textColor} flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500`}
+                className={`${textColor} flex items-center space-x-1 font-normal text-xl opacity-0 py-2 animate-fade-down animate-duration-500`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <span>{label}</span>
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
 const LoginButton: React.FC = () => (
   <Link
     href="/login"
-    className={`px-4 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-accent hover:duration-300`}
+    className={` text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-accent hover:duration-300`}
   >
     <span>Iniciar sesión</span>
   </Link>

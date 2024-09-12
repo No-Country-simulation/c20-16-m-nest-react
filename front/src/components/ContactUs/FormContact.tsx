@@ -72,7 +72,7 @@ export default function FormContact() {
       <button
         type="submit"
         color="primary"
-        className="bg-primary py-3 px-8 rounded-full font-medium text-lg text-white w-full lg:w-fit"
+        className="bg-primary py-3 px-8 rounded-full font-medium text-lg text-white w-full md:w-fit"
       >
         Enviar
       </button>
