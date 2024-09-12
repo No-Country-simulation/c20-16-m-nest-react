@@ -34,14 +34,14 @@ export default function ContactUs() {
   return (
     <section className="flex flex-col gap-y-8 gap-x-16 px-4 py-24 md:justify-center md:flex-row-reverse w-full border-2">
       <article className="flex flex-col gap-4">
-        <h3 className="text-3xl text-primary font-semibold">
+        <h3 className=" text-center md:text-left text-3xl text-primary font-semibold">
           Contáctate con nosotros
         </h3>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-row gap-4 justify-center md:justify-start">
           {socials.map(({ Icon, text, link }) => (
-            <Link href={link} key={link} className="flex items-center gap-2">
-              <Icon className="size-8" />
-              <span>{text}</span>
+            <Link href={link} key={link} className="flex items-center gap-2 ">
+              <Icon className="size-8 " />
+              {/* <span>{text}</span> */}
             </Link>
           ))}
         </div>
