@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, InternalSer
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateReportStateDto } from './dto/create-reportstate.dto';
-import { ReportStateAnimalDTO, ReportStateDto } from './dto/reportstate.dto';
+import { ReportStateDto } from './dto/reportstate.dto';
 import { UpdateReportStateDto } from './dto/update-reportstate.dto';
 import { ReportState } from './entities/reportstate.entity';
 import { plainToInstance } from 'class-transformer';
@@ -65,28 +65,17 @@ export class ReportStateService {
     const reportstate = await this.reportStateRepository.findOne({
       where: {
         id
-      } as FindOptionsWhere<ReportState>
-    })
-    try {
-      if (!reportstate) throw new Error
-      return reportstate;
-    } catch (error) {
-      throw new NotFoundException(error.message, 'Tipo no encontrado')
-    }
-  }
-
-  async findAnimals(id: number): Promise<ReportStateDto> {
-    try {
-      const reportstate = await this.reportStateRepository.findOne({
-        where: {
-          id
-        } as FindOptionsWhere<ReportState>,
-        relations: ['animals']  // Incluye la relación de los animales
-      });
+      } as FindOptionsWhere<ReportState>,
+      relations: ['animals'], 
+    });
   
-      if (!reportstate) throw new NotFoundException('Tipo no encontrado');
+    try {
+      if (!reportstate) throw new Error('Estado de reporte no encontrado');
       
-      return plainToInstance(ReportStateAnimalDTO, reportstate); // Convierte a DTO
+      // Transforma la entidad en el DTO
+      return plainToInstance(ReportStateDto, reportstate, {
+        excludeExtraneousValues: true, // Asegura exponer solo las propiedades decoradas con @Expose en el DTO
+      });
     } catch (error) {
       throw new NotFoundException(error.message, 'Tipo no encontrado');
     }

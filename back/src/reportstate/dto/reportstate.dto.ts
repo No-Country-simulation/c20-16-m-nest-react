@@ -1,19 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
-import { CommonDto } from "src/common/entities/common.dto";
+import { Expose, Type } from "class-transformer";
+import { CommonDto } from "../../common/dto/common.dto";
 import { AnimalDto } from "../../animal/dto/animal.dto";
 
 export class ReportStateDto extends CommonDto {
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Nombre del estado del reporte',
+        example: 'Perdido',
+    })
     @Expose()
-    name: string
-}
+    name: string;
 
-export class ReportStateAnimalDTO extends CommonDto {
-    @ApiProperty()
-    @Expose()
-    name: string
-
-    // Relación con Animal
+    @ApiProperty({
+        description: 'Lista de animales asociados a este estado del reporte',
+        type: () => [AnimalDto], // Especifica que es un array de AnimalDto
+        example: [
+            { id: 1, name: 'Firulais', },
+            { id: 2, name: 'Manchita' },
+        ],
+    })
+    @Type(() => AnimalDto)
     animals: AnimalDto[];
 }

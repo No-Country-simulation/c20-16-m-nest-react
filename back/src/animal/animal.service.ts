@@ -16,17 +16,18 @@ export class AnimalService {
   ) { }
 
   async create(createAnimalDto: CreateAnimalDto) {
-    const animal = await this.animalRepository.findOne({
+    const existingAnimal = await this.animalRepository.findOne({
       where: { name: createAnimalDto.name },
     });
 
-    if (animal) throw new BadRequestException('Animal ya existe');
+    if (existingAnimal) throw new BadRequestException('Animal ya existe');
+    
     try {
-      const animal = this.animalRepository.create(createAnimalDto);
-      await this.animalRepository.save(animal);
-      return plainToInstance(AnimalDto, animal);
+      const newAnimal = this.animalRepository.create(createAnimalDto);
+      await this.animalRepository.save(newAnimal);
+      return plainToInstance(AnimalDto, newAnimal);
     } catch (error) {
-      throw new HttpException('Animal no guardado', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new InternalServerErrorException('Error al guardar el animal', error.message);
     }
   }
 
@@ -34,17 +35,18 @@ export class AnimalService {
     try {
       const queryBuilder = this.animalRepository.createQueryBuilder('animal');
       queryBuilder
-        .leftJoinAndSelect('animal.idAnimalShelther', 'animalShelter') // Se contemplan las realciones planteadas en la Entity
+        .leftJoinAndSelect('animal.idAnimalShelther', 'animalShelter')
         .leftJoinAndSelect('animal.idAnimalTypes', 'animalTypes')
-        .orderBy('animal.createAt', 'ASC');
+        // .orderBy('animal.createdAt', 'ASC');
 
       const paginatedAnimal = await paginate<Animal>(queryBuilder, options);
       return new Pagination<AnimalDto>(
         plainToInstance(AnimalDto, paginatedAnimal.items),
-        paginatedAnimal.meta, paginatedAnimal.links
+        paginatedAnimal.meta,
+        paginatedAnimal.links
       );
     } catch (error) {
-      throw new BadRequestException(error.message, 'Animal no encontrados')
+      throw new BadRequestException('Error al buscar animales activos', error.message);
     }
   }
 
@@ -55,64 +57,78 @@ export class AnimalService {
         .withDeleted()
         .leftJoinAndSelect('animal.idAnimalShelther', 'animalShelter')
         .leftJoinAndSelect('animal.idAnimalTypes', 'animalTypes')
-        .orderBy('animal.createAt', 'ASC');
+        .orderBy('animal.createdAt', 'ASC');
 
       const paginatedAnimal = await paginate<Animal>(queryBuilder, options);
       return new Pagination<AnimalDto>(
         plainToInstance(AnimalDto, paginatedAnimal.items),
-        paginatedAnimal.meta, paginatedAnimal.links
+        paginatedAnimal.meta,
+        paginatedAnimal.links
       );
     } catch (error) {
-      throw new BadRequestException(error.message, 'Animal no encontrados')
+      throw new BadRequestException('Error al buscar animales', error.message);
     }
   }
 
   async findOne(id: number): Promise<AnimalDto> {
-    const animal = await this.animalRepository.findOne({
-      where: {
-        id
-      } as FindOptionsWhere<Animal>
-    })
     try {
-      if (!animal) throw new Error
-      return animal;
+      const animal = await this.animalRepository.findOne({
+        where: { id } as FindOptionsWhere<Animal>,
+        relations: ['animaltypes']
+      });
+
+      if (!animal) {
+        throw new NotFoundException('Animal no encontrado');
+      }
+
+      return plainToInstance(AnimalDto, animal);
     } catch (error) {
-      throw new NotFoundException(error.message, 'Animal no encontrado')
+      throw new InternalServerErrorException('Error al buscar el animal', error.message);
     }
   }
 
   async update(id: number, updateAnimalDto: UpdateAnimalDto) {
     try {
-      return this.animalRepository.update(id, updateAnimalDto);
+      const updateResult = await this.animalRepository.update(id, updateAnimalDto);
+  
+      if (updateResult.affected === 0) {
+        throw new NotFoundException('Animal no encontrado');
+      }
+  
+      const updatedAnimal = await this.animalRepository.findOne({ where: { id } });
+      return plainToInstance(AnimalDto, updatedAnimal);
     } catch (error) {
-      throw new NotFoundException(error.message, 'Animal no encontrado')
+      throw new InternalServerErrorException('Error al actualizar el animal', error.message);
     }
   }
+  
 
   async remove(id: number) {
     try {
-      const animalToDelete = await this.animalRepository.softDelete(id)
-      if (animalToDelete.affected === 0) {
+      const deleteResult = await this.animalRepository.softDelete(id);
+
+      if (deleteResult.affected === 0) {
         throw new NotFoundException('Animal no encontrado');
-      } else {
-        return animalToDelete
       }
+
+      return deleteResult;
     } catch (error) {
-      throw new InternalServerErrorException(error.message, 'Animal no eliminado');
+      throw new InternalServerErrorException('Error al eliminar el animal', error.message);
     }
   }
 
-  async restore(id: number): Promise<Animal> {
+  async restore(id: number): Promise<AnimalDto> {
     try {
+      const restoreResult = await this.animalRepository.restore(id);
 
-      const result = await this.animalRepository.restore(id);
-      if (result.affected === 0) {
+      if (restoreResult.affected === 0) {
         throw new NotFoundException('Animal no encontrado');
       }
 
-      return this.animalRepository.findOne({ where: { id: id } });
+      const restoredAnimal = await this.animalRepository.findOne({ where: { id } });
+      return plainToInstance(AnimalDto, restoredAnimal);
     } catch (error) {
-      throw new InternalServerErrorException(error.message, 'Animal no Restaurado');
+      throw new InternalServerErrorException('Error al restaurar el animal', error.message);
     }
   }
 }

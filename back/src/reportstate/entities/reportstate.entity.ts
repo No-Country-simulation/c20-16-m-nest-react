@@ -8,5 +8,5 @@ export class ReportState extends CommonEntity {
     name: string
 
     @OneToMany(() => Animal, (animal) => animal.idReportState, { cascade: true })
-    animal: Animal[];
+    animals: Animal[];
 }

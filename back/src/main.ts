@@ -44,6 +44,7 @@ async function bootstrap() {
       .addTag('App Patitas', 'Endpoints Basicos de la Api')
       .addTag('Authentication', 'Endpoints de Autenticacion')
       .addTag('Users', 'Endpoints de Manejo de Entidad Usuarios')
+      .addTag('Adoption', 'Endpoints de Entidad de Adopciones')
       .addTag('Animal', 'Endpoints de Entidad Animales')
       .addTag('Animal Shelter', 'Endpoints de Entidad Refugios de Animales')
       .addTag('Animal Types', 'Endpoints de Entidad Tipos de Animales')

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, UseGuards, NotFoundException, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, UseGuards, NotFoundException, Patch } from '@nestjs/common';
 import { AnimalTypesService } from './animaltypes.service';
 import { CreateAnimalTypesDto } from './dto/create-animaltypes.dto';
 import { AnimalTypesDto } from './dto/animaltypes.dto';
@@ -30,7 +30,7 @@ export class AnimalTypesController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   @ApiOkResponse({ description: `El ${entityName} ha sido restaurado` })
-  async restore(@Param('id') id: number): Promise<AnimalTypesDto> {
+  async restore(@Param('id') id: number){
     return this.animalTypesService.restore(id);
   }
 
@@ -89,12 +89,7 @@ export class AnimalTypesController {
     return this.animalTypesService.findOne(id);
   }
 
-  @Get('/animals/:id')
-  async findAnimals(@Param('id') id: number) {
-    return this.animalTypesService.findAnimals(id);
-  }
-
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   @ApiOkResponse({ description: `El ${entityName} ha sido modificado` })

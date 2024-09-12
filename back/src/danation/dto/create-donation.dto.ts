@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsUrl, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { CommonDto } from '../../common/entities/common.dto';
+import { CommonDto } from '../../common/dto/common.dto';
 
 export class CreateDonationDto extends CommonDto{
     @ApiProperty()

@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, InternalSer
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateAnimalFeaturesDto } from './dto/create-animalfeatures.dto';
-import { AnimalFeaturesAnimalTypesDTO, AnimalFeaturesDto } from './dto/animalfeatures.dto';
+import { AnimalFeaturesDto } from './dto/animalfeatures.dto';
 import { UpdateAnimalFeaturesDto } from './dto/update-animalfeatures.dto';
 import { AnimalFeatures } from './entities/animalfeatures.entity';
 import { plainToInstance } from 'class-transformer';
@@ -47,10 +47,12 @@ export class AnimalFeaturesService {
 
   async findAll(options: IPaginationOptions): Promise<Pagination<AnimalFeaturesDto>> {
     try {
-      const queryBuilder = this.animalfeaturesRepository.createQueryBuilder('user');
-      queryBuilder.withDeleted();
-      queryBuilder.orderBy('user.createAt', 'ASC');
-
+      const queryBuilder = this.animalfeaturesRepository.createQueryBuilder('animalfeatures');
+      queryBuilder
+        .withDeleted()
+        .leftJoinAndSelect('animalfeatures.idAnimalShelther', 'animalShelter')
+        .orderBy('animalfeatures.createdAt', 'ASC');
+      
       const paginatedAnimalFeatures = await paginate<AnimalFeatures>(queryBuilder, options);
       return new Pagination<AnimalFeaturesDto>(
         plainToInstance(AnimalFeaturesDto, paginatedAnimalFeatures.items),
@@ -64,32 +66,19 @@ export class AnimalFeaturesService {
   async findOne(id: number): Promise<AnimalFeaturesDto> {
     const animalfeatures = await this.animalfeaturesRepository.findOne({
       where: {
-        id
-      } as FindOptionsWhere<AnimalFeatures>
-    })
-    try {
-      if (!animalfeatures) throw new Error
-      return animalfeatures;
-    } catch (error) {
-      throw new NotFoundException(error.message, 'Tipo no encontrado')
-    }
-  }
-
-  async findAnimals(id: number): Promise<AnimalFeaturesDto> {
-    try {
-      const animalfeatures = await this.animalfeaturesRepository.findOne({
-        where: {
-          id
-        } as FindOptionsWhere<AnimalFeatures>,
-        relations: ['animals']  // Incluye la relación de los animales
-      });
+        id,
+      } as FindOptionsWhere<AnimalFeatures>,
+      relations: ['animal'], // Asegúrate de cargar las relaciones necesarias
+    });
   
-      if (!animalfeatures) throw new NotFoundException('Tipo no encontrado');
-      
-      return plainToInstance(AnimalFeaturesAnimalTypesDTO, animalfeatures); // Convierte a DTO
-    } catch (error) {
-      throw new NotFoundException(error.message, 'Tipo no encontrado');
+    if (!animalfeatures) {
+      throw new NotFoundException('Característica animal no encontrada', 'Tipo no encontrado');
     }
+  
+    // Transformar la entidad al DTO usando plainToInstance
+    return plainToInstance(AnimalFeaturesDto, animalfeatures, {
+      excludeExtraneousValues: true, // Excluir valores no expuestos en el DTO
+    });
   }
 
   async update(id: number, updateAnimalFeaturesDto: UpdateAnimalFeaturesDto) {

@@ -7,7 +7,6 @@ import { UpdateAdoptionDto } from './dto/update-adoption.dto';
 import { Adoption } from './entities/adoption.entity';
 import { plainToInstance } from 'class-transformer';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
-import { AnimalShelter } from '../animalshelter/entities/animalshelter.entity';
 import { User } from '../user/entities/user.entity';
 import { Animal } from '../animal/entities/animal.entity';
 
@@ -16,7 +15,7 @@ export class AdoptionService {
   constructor(
     @InjectRepository(Adoption)
     private readonly adoptionRepository: Repository<Adoption>,
-    @InjectRepository(AnimalShelter)
+    @InjectRepository(Animal)
     private readonly animalRepository: Repository<Animal>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,

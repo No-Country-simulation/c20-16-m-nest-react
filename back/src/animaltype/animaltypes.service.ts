@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Injectable, InternalSer
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateAnimalTypesDto } from './dto/create-animaltypes.dto';
-import { AnimalTypesAnimalDTO, AnimalTypesDto } from './dto/animaltypes.dto';
+import { AnimalTypesDto } from './dto/animaltypes.dto';
 import { UpdateAnimalTypesDto } from './dto/update-animaltypes.dto';
 import { AnimalTypes } from './entities/animaltypes.entity';
 import { plainToInstance } from 'class-transformer';
@@ -62,20 +62,6 @@ export class AnimalTypesService {
   }
 
   async findOne(id: number): Promise<AnimalTypesDto> {
-    const animaltypes = await this.animaltypesRepository.findOne({
-      where: {
-        id
-      } as FindOptionsWhere<AnimalTypes>
-    })
-    try {
-      if (!animaltypes) throw new Error
-      return animaltypes;
-    } catch (error) {
-      throw new NotFoundException(error.message, 'Tipo no encontrado')
-    }
-  }
-
-  async findAnimals(id: number): Promise<AnimalTypesDto> {
     try {
       const animaltypes = await this.animaltypesRepository.findOne({
         where: {
@@ -86,7 +72,7 @@ export class AnimalTypesService {
   
       if (!animaltypes) throw new NotFoundException('Tipo no encontrado');
       
-      return plainToInstance(AnimalTypesAnimalDTO, animaltypes); // Convierte a DTO
+      return plainToInstance(AnimalTypesDto, animaltypes); // Convierte a DTO
     } catch (error) {
       throw new NotFoundException(error.message, 'Tipo no encontrado');
     }
