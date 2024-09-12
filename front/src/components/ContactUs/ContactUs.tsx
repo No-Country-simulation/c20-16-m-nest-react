@@ -4,6 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { IconType } from "react-icons";
 import Link from "next/link";
+import FormContact from "./FormContact";
 
 interface ISocial {
   Icon: IconType;
@@ -45,18 +46,7 @@ export default function ContactUs() {
           ))}
         </div>
       </article>
-      <form className="flex flex-col gap-4">
-        <Input variant="flat" label="Nombre" className="w-full md:w-[450px] " />
-        <Input variant="flat" label="Email" className="w-full md:w-[450px]" />
-        <Textarea
-          variant="flat"
-          label="Mensaje"
-          className="w-full md:w-[450px]"
-        />
-        <button type="submit" color="primary" className="bg-primary py-3 px-8 rounded-full font-medium text-lg text-white w-full lg:w-fit">
-          Enviar
-        </button>
-      </form>
+      <FormContact />
     </section>
   );
 }
