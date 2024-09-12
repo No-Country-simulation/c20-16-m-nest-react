@@ -15,12 +15,12 @@ const socials: ISocial[] = [
   {
     Icon: FaFacebook,
     text: "Facebook",
-    link: "facebook.com",
+    link: "https://www.facebook.com",
   },
   {
     Icon: BiLogoInstagramAlt,
     text: "Instagram",
-    link: "instagram.com",
+    link: "https://instagram.com",
   },
   {
     Icon: IoMail,
