@@ -45,13 +45,13 @@ export default function FormRegister() {
         type="text"
         label="Nombre completo"
         variant="flat"
-        className="max-w-md"
+        className="max-w-md z-0"
       />
       <Input
         {...form.register("email")}
         label="Email"
         variant="flat"
-        className="max-w-md"
+        className="max-w-md z-0"
         isInvalid={!!form.formState.errors.email}
         errorMessage={form.formState.errors.email?.message}
       />
@@ -60,7 +60,7 @@ export default function FormRegister() {
         type={isVisible ? "text" : "password"}
         label="Contraseña"
         variant="flat"
-        className="max-w-md"
+        className="max-w-md z-0"
         endContent={
           <button
             className="focus:outline-none"
@@ -81,7 +81,7 @@ export default function FormRegister() {
         type="password"
         label="Confirmar contraseña"
         variant="flat"
-        className="max-w-md"
+        className="max-w-md z-0"
         isInvalid={!!form.formState.errors.passwordConfirm}
         errorMessage={form.formState.errors.passwordConfirm?.message}
       />
@@ -92,7 +92,7 @@ export default function FormRegister() {
       </p>
       <button
         type="submit"
-        className="bg-primary py-2 rounded-2xl text-white font-medium text-xl md:w-[215px] w-full mx-auto"
+        className="bg-primary py-2 rounded-full text-white font-medium text-xl md:w-[215px] w-full mx-auto"
         /*  color="primary" */
       >
         Crear cuenta

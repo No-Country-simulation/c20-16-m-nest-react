@@ -27,7 +27,7 @@ export default function FormLogin() {
         type="email"
         label="Usuario o email"
         variant="flat"
-        className="max-w-full"
+        className="max-w-full z-0"
         radius="lg"
         isInvalid={errors.email ? true : false}
         errorMessage="Email incorrecto"
@@ -37,7 +37,7 @@ export default function FormLogin() {
         key={"inside"}
         label="Password"
         variant="flat"
-        className="max-w-full "
+        className="max-w-full z-0"
         radius="lg"
         isInvalid={errors.password ? true : false}
         errorMessage="Contraseña incorrecto"
@@ -65,7 +65,7 @@ export default function FormLogin() {
       </p>
       <button
         type="submit"
-        className="bg-primary py-2 rounded-2xl text-white font-medium text-xl md:w-[215px] w-full mx-auto"
+        className="bg-primary py-2 rounded-full text-white font-medium text-xl md:w-[215px] w-full mx-auto"
       >
         Ingresar
       </button>

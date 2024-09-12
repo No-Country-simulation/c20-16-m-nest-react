@@ -7,6 +7,7 @@ import Link from "next/link";
 import Logo from "@/assets/global/logo.svg";
 import { HiMenu, HiX } from "react-icons/hi";
 import { usePathname } from "next/navigation";
+import { MdClose } from "react-icons/md";
 
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
@@ -80,10 +81,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-        textColor: "text-white",
-        bgColor: "bg-transparent",
-        bgColorMenu: "bg-secondary-black",
-      };
+          textColor: "text-white",
+          bgColor: "bg-transparent",
+          bgColorMenu: "bg-secondary-black",
+        };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -92,11 +93,11 @@ const Header: React.FC = () => {
 
   return (
     <header className={`w-full py-4 absolute z-10 ${bgColor}`}>
-      <div className="container mx-auto max-w-screen-xl flex items-center justify-between lg:justify-evenly px-4">
+      <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <Link href={"/"} className=" flex items-center space-x-2">
           <Image src={Logo} alt="Logo" width={150} height={150} />
-        </div>
+        </Link>
 
         {/* Navbar */}
         <nav
@@ -118,9 +119,10 @@ const Header: React.FC = () => {
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className={`${textColor} text-2xl`}
+            className={`text-primary text-2xl`}
           >
-            {isMenuOpen ? <HiX /> : <HiMenu />}
+            {/* {isMenuOpen ? <HiX /> : <HiMenu />} */}
+            <HiMenu />
           </button>
         </div>
 
@@ -133,14 +135,20 @@ const Header: React.FC = () => {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div
-          className={`"lg:hidden ${bgColorMenu} bg-opacity-90 animate-fade-right animate-duration-500"`}
+          className={`"lg:hidden bg-[#232323] fixed top-0 w-full h-screen animate-fade-right animate-duration-500" z-50`}
         >
-          <nav className="flex flex-col space-y-3 items-center">
+          <button
+            className="absolute text-primary text-2xl right-5 top-5 z-10"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <MdClose />
+          </button>
+          <nav className="flex flex-col space-y-3 items-start justify-center mx-auto h-full w-fit z-50">
             {navLinks.map(({ label, href }, index) => (
               <Link
                 key={label}
                 href={href}
-                className={`${textColor} flex items-center space-x-1 font-medium opacity-0 py-2 animate-fade-down animate-duration-500`}
+                className={`text-white flex items-center space-x-1 font-normal text-2xl opacity-0 py-2 animate-fade-down animate-duration-500`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <span>{label}</span>
@@ -162,7 +170,7 @@ const Header: React.FC = () => {
 const LoginButton: React.FC = () => (
   <Link
     href="/login"
-    className={`px-4 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:bg-accent hover:duration-300`}
+    className={` text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
   >
     <span>Iniciar sesión</span>
   </Link>
