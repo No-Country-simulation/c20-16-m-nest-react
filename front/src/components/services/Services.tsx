@@ -33,11 +33,11 @@ const listServices: Services[] = [
 
 export default function Services() {
   return (
-    <section className="flex flex-col gap-11 pt-12">
-      <h2 className="text-4xl text-primary font-medium text-center ">
+    <section className="flex flex-col gap-11 pt-12 max-w-[1440px] mx-auto px-3 lg:px-0">
+      <h2 className="text-4xl text-primary text-center font-semibold ">
         Que encontraras?{" "}
       </h2>
-      <ul className="flex items-center justify-around">
+      <ul className="flex items-center justify-center md:justify-between flex-wrap gap-y-8 gap-x-4">
         {listServices.map((item,index) => (
           <li className=" flex gap-x-5" key={index}>
             <div
@@ -45,7 +45,7 @@ export default function Services() {
             >
               {item.icon}
             </div>
-            <div className="flex flex-col justify-between max-w-[160px]">
+            <div className="flex flex-col gap-y-3 max-w-[160px]">
               <h4 className=" font-semibold text-2xl">{item.title} </h4>
               <p className=" font-normal text-base">{item.description}</p>
             </div>

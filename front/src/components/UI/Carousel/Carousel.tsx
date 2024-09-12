@@ -73,23 +73,28 @@ export default function Carousel() {
       >
         {listCarouselData.map((item, index) => (
           <SwiperSlide key={index} className="">
-            <article className="flex items-center justify-around gap-x-4 w-full h-full bg-[url('/images/background-hero-carousel.png')] bg-bottom bg-no-repeat bg-cover pt-24 pb-2">
-              <div className="max-w-[584px] w-full fled flex-col border">
-                <h1 className="text-6xl font-semibold text-primary pb-5">
+            <article className="flex flex-col lg:flex-row items-center justify-around gap-y-7 gap-x-4 w-full h-full bg-[url('/images/background-hero-carousel.png')] bg-bottom bg-no-repeat bg-cover pt-24 pb-2 px-3">
+              <div className="max-w-[584px] w-full fled flex-col">
+                <h1 className=" text-5xl md:text-6xl font-semibold text-primary pb-5 text-center lg:text-left">
                   {item.title}
                 </h1>
-                <p className=" text-white pb-5 text-xl font-normal">
+                <p className=" text-white pb-5 text-base md:text-xl font-normal text-center lg:text-left">
                   {item.description}
                 </p>
-                <button className="bg-primary py-3 px-4 rounded-full font-medium text-lg text-white">
+                <button className="bg-primary py-3 px-4 rounded-full font-medium text-lg text-white w-full lg:w-fit">
                   {item.textbutton}
                 </button>
               </div>
-              <div className="max-w-[530px] w-full h-fit">
+              <div className="max-w-[380px] lg:max-w-[530px] w-full h-fit">
                 <img
                   src={item.image.url}
-                  className="w-full h-full bg-cover"
+                  className=" hidden lg:block w-full h-full bg-cover"
                   alt={item.image.alt}
+                />
+                <img
+                  src="/images/background-hero-carousel-slide-1-responsive.png"
+                  className=" block lg:hidden w-full h-full bg-cover"
+                  alt="hero-slide-1-mobile"
                 />
               </div>
             </article>
