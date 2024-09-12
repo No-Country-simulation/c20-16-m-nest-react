@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import VeterinaryCard from "@/components/UI/VeterinaryCard";
 
 export default function Vets() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -39,6 +41,7 @@ export default function Vets() {
 
       const { Map } = await loader.importLibrary("maps");
       const { PlacesService } = await loader.importLibrary("places");
+      const { AdvancedMarkerElement } = await loader.importLibrary("marker");
 
       const mapOptions: google.maps.MapOptions = {
         center: location,
@@ -69,10 +72,22 @@ export default function Vets() {
 
       placesService.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-          console.log(results);
-          setPlaces(results);
-
           results.forEach((place) => {
+            if (place.place_id) {
+              placesService.getDetails(
+                { placeId: place.place_id },
+                (placeDetails, detailsStatus) => {
+                  if (
+                    detailsStatus ===
+                      google.maps.places.PlacesServiceStatus.OK &&
+                    placeDetails
+                  ) {
+                    setPlaces((prevPlaces) => [...prevPlaces, placeDetails]);
+                  }
+                }
+              );
+            }
+
             if (place.geometry && place.geometry.location) {
               new google.maps.marker.AdvancedMarkerElement({
                 map,
@@ -81,40 +96,17 @@ export default function Vets() {
               });
             }
           });
-        } else {
-          console.error("Error al buscar lugares: ", status);
         }
       });
     }
   }, [location, map, placesService]);
 
   return (
-    <div className="min-h-screen lg:px-28 my-12">
-      <div className="h-[500px] w-full" ref={mapRef}></div>
-      <div className="flex flex-col mt-4 gap-4">
-        {places.slice(0, 10).map((place) => (
-          <div
-            key={place.place_id}
-            className="flex justify-between p-4 border rounded-md shadow-sm"
-          >
-            <div>
-              <h4 className="font-semibold">{place.name}</h4>
-              <p>{place.vicinity}</p>
-              <p>{place.formatted_phone_number}</p>
-            </div>
-            {place.photos && place.photos[0] ? (
-              <img
-                src={place.photos[0].getUrl({ maxWidth: 200 })}
-                alt={place.name}
-              />
-            ) : (
-              <img
-                src="/images/cat-and-dog/amico.svg"
-                alt="Imagen predeterminada"
-                className="size-48"
-              />
-            )}
-          </div>
+    <div className="pt-20 min-h-screen px-2 lg:px-28">
+      <div className="h-[400px] md:h-[500px] w-full" ref={mapRef}></div>
+      <div className="flex flex-col items-center my-4 gap-4">
+        {places.slice(0, 15).map((place: google.maps.places.PlaceResult) => (
+          <VeterinaryCard key={place.place_id} place={place} />
         ))}
       </div>
     </div>

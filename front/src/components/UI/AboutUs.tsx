@@ -19,7 +19,7 @@ const listAboutMe: AboutmeData[] = [
     title: "Visión",
     description: ` Dar hogar a animalitos en situacion de calle, y que encuentren
             personas que los amen.`,
-    class: "top-[60px] -left-[270px] flex-row-reverse",
+    class: "top-[35px] -left-[270px] flex-row-reverse",
     classText: "text-right",
   },
   {
@@ -27,7 +27,7 @@ const listAboutMe: AboutmeData[] = [
     title: "Nuestro propósito",
     description: ` Dar hogar a animalitos en situacion de calle, y que encuentren
             personas que los amen.`,
-    class: "top-[60px] -right-[270px]",
+    class: "top-[35px] -right-[270px]",
     classText: "",
   },
   {
@@ -35,7 +35,7 @@ const listAboutMe: AboutmeData[] = [
     title: "Nuestro sueño",
     description: ` Dar hogar a animalitos en situacion de calle, y que encuentren
             personas que los amen.`,
-    class: "bottom-[70px] -left-[270px] flex-row-reverse",
+    class: "bottom-[40px] -left-[270px] flex-row-reverse",
     classText: "text-right",
   },
   {
@@ -43,7 +43,7 @@ const listAboutMe: AboutmeData[] = [
     title: "Misión",
     description: ` Dar hogar a animalitos en situacion de calle, y que encuentren
             personas que los amen.`,
-    class: "bottom-[70px] -right-[270px]",
+    class: "bottom-[40px] -right-[270px]",
     classText: "",
   },
 ];
@@ -51,9 +51,9 @@ const listAboutMe: AboutmeData[] = [
 export default function AboutUs() {
   return (
     <section className=" flex flex-col items-center justify-center gap-4 px-6 py-16 mt-4 w-full h-[700px ] bg-[url('/images/background-about-us.png')] bg-cover bg-top bg-no-repeat text-white">
-      <div className="size-fit relative">
+      <ul className="size-fit relative hidden lg:block">
         {listAboutMe.map((item, index) => (
-          <article
+          <li
             className={`flex gap-4 items-center w-fit max-w-[350px] absolute ${item.class}`}
             key={index}
           >
@@ -68,14 +68,65 @@ export default function AboutUs() {
                 {item.description}
               </p>
             </div>
-          </article>
+          </li>
         ))}
         <img
           src="/images/picture-about-us.png"
           alt="AboutUs Image"
-          className="size-60 md:size-[585px] "
+          className="w-full max-w-[485px] h-fit "
         />
-      </div>
+      </ul>
+      <ul className="size-fit relative lg:hidden flex flex-col gap-y-7">
+        {listAboutMe.map((item, index) =>
+          index > 1 ? (
+            <li
+              className={`flex gap-4 items-center w-fit max-w-[350px] ${item.class}`}
+              key={index}
+            >
+              <div className="p-6 bg-secondary-v3 rounded-full md:p-8 shadow-md">
+                {item.icon}
+              </div>
+              <div>
+                <h4 className={`font-semibold text-lg ${item.classText}`}>
+                  {item.title}
+                </h4>
+                <p className={`text-base font-normal ${item.classText}`}>
+                  {item.description}
+                </p>
+              </div>
+            </li>
+          ) : (
+            ""
+          )
+        )}
+        <img
+          src="/images/picture-about-us.png"
+          alt="AboutUs Image"
+          className="w-full max-w-[385px] h-fit "
+        />
+        {listAboutMe.map((item, index) =>
+          index < 2 ? (
+            <li
+              className={`flex gap-4 items-center w-fit max-w-[350px] ${item.class}`}
+              key={index}
+            >
+              <div className="p-6 bg-secondary-v3 rounded-full md:p-8 shadow-md">
+                {item.icon}
+              </div>
+              <div>
+                <h4 className={`font-semibold text-lg ${item.classText}`}>
+                  {item.title}
+                </h4>
+                <p className={`text-base font-normal ${item.classText}`}>
+                  {item.description}
+                </p>
+              </div>
+            </li>
+          ) : (
+            ""
+          )
+        )}
+      </ul>
     </section>
   );
 }
