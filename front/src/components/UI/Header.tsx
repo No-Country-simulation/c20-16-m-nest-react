@@ -92,7 +92,7 @@ const Header: React.FC = () => {
   );
 
   return (
-    <header className={`w-full py-4 absolute z-20 ${bgColor}`}>
+    <header className={`w-full h-full max-h-[96px] flex items-center absolute z-20 ${bgColor}`}>
       <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
         <Link href={"/"} className=" flex items-center space-x-2">
