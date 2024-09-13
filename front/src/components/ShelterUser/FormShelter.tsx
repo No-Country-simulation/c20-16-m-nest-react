@@ -1,6 +1,23 @@
 import { Input, Textarea } from "@nextui-org/react";
 
-const listFromData = [
+interface DataFormShelter {
+  title: string;
+  html: {
+    condition: boolean; //en caso que sea false sera un <textarea/>
+    type: string;
+    placeHolder: string;
+    name: string;
+    /* value: "" */
+  };
+}
+
+interface DataInputsDirect {
+  type: string;
+  placeHolder: string;
+  name: string;
+}
+
+const listFromData: DataFormShelter[] = [
   {
     title: "Nombre del refugio",
     html: {
@@ -14,7 +31,7 @@ const listFromData = [
   {
     title: "Descripcion",
     html: {
-      input: false,
+      condition: false,
       type: "text",
       placeHolder: "ej: Somos un refugio en ...",
       name: "description",
@@ -41,7 +58,7 @@ const listFromData = [
   },
 ];
 
-const directionInputs = [
+const directionInputs: DataInputsDirect[] = [
   {
     type: "text",
     placeHolder: "Provincia",
@@ -110,7 +127,7 @@ export default function () {
         </h5>
         {directionInputs.map((item, index) =>
           index === 2 ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
               <Input
                 type="text"
                 placeholder="Calle"
