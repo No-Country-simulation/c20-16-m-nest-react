@@ -17,7 +17,7 @@ export default function ReportFilterBtn() {
             <PopoverTrigger>
                 <Button
                     variant="ghost"
-                    className="bg-white shadow-lg rounded-full"
+                    className="bg-white shadow-lg rounded-full z-0"
                 >
                     <MdTune className="text-3xl" />
                 </Button>

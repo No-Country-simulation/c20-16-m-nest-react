@@ -1,88 +1,47 @@
 import React from "react";
 import { ReportCard } from "@/components/report/ReportCard";
-import Footer from "@/components/UI/Footer";
-import Header from "@/components/UI/Header";
 import { FaSearch } from "react-icons/fa";
 import ReportButton from "@/components/report/ReportButton";
 import ReportFilterBtn from "@/components/report/ReportFilterBtn";
+import { ReportCardProps } from "@/interfaces/ReportCard";
 
 const ReportPage: React.FC = () => {
-  const reports = [
-    // EJEMPLO
+  const reports: ReportCardProps[] = [
     {
       title: "Perro perdido en Junín",
       description:
         "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
+      images: {
+        urls: ["./images/image-collage-5.png"],
+      },
+      species: "dog",
+      sex: "macho",
+      location: {
+        street: "Av. Libertador",
+        number: 123,
+        province: "buenos_aires",
+        locality: "Junín",
+        postalCode: 6000,
+      },
     },
     {
-      title: "Perro perdido en La Plata",
+      title: "Gato perdido en La Plata",
       description:
-        "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "La Plata",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en Junín",
-      description:
-        "En la noche este perro entró asustado y sucio a mi garaje, es pequeño. No sé si tendrá dueño.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en Junín",
-      description:
-        "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en La Plata",
-      description:
-        "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "La Plata",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en Junín",
-      description:
-        "En la noche este perro entró asustado y sucio a mi garaje, es pequeño. No sé si tendrá dueño.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en Junín",
-      description:
-        "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en La Plata",
-      description:
-        "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
-      location: "La Plata",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
-    },
-    {
-      title: "Perro perdido en Junín",
-      description:
-        "En la noche este perro entró asustado y sucio a mi garaje, es pequeño. No sé si tendrá dueño.",
-      location: "Junín",
-      animalType: "Perro",
-      imageUrl: "./images/image-collage-5.png",
+        "Un gato ha estado rondando mi jardín, parece asustado. No tiene collar y no me atrevo a acercarme.",
+      images: {
+        urls: ["./images/image-collage-1.png"],
+      },
+      species: "cat",
+      sex: "hembra",
+      location: {
+        street: "Calle 50",
+        number: 456,
+        province: "buenos_aires",
+        locality: "La Plata",
+        postalCode: 1900,
+      },
     },
   ];
-
   return (
     <div className="flex flex-col min-h-screen text-white">
       <div className="pt-[2rem] flex-grow bg-[url('/images/background-report.png')] bg-bottom bg-no-repeat bg-cover overflow-hidden">
@@ -109,15 +68,14 @@ const ReportPage: React.FC = () => {
             key={index}
             title={report.title}
             description={report.description}
+            images={report.images}
+            species={report.species}
+            sex={report.sex}
             location={report.location}
-            animalType={report.animalType}
-            imageUrl={report.imageUrl}
-            /*  images={""} */
-            species={""}
-            sex={""}
           />
         ))}
-      </div>
+      </div>;
+
       <ReportButton />
     </div>
   );
