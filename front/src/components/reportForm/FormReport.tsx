@@ -127,19 +127,23 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
 
     if (files && files.length > 0) {
       const newImages = Array.from(files);
-      if (currentImages.length + newImages.length <= 6) {
-        const newPreviews = newImages.map((file) => URL.createObjectURL(file));
+      const newImageFiles = [...currentImages, ...newImages];
+      if (newImageFiles.length <= 6) {
+        const newPreviews = newImages.map((file) =>
+          URL.createObjectURL(file)
+        );
 
         setIsAdding(true);
-        setTimeout(() => setIsAdding(false), 300);
+        setTimeout(() => setIsAdding(false), 200);
 
         setImagePreviews((prev) => [...prev, ...newPreviews]);
-        setValue("images", [...currentImages, ...newImages]);
+        setValue("images", newImageFiles);
       } else {
         alert("Puedes subir un máximo de 6 imágenes");
       }
     }
   };
+
 
   const handleRemoveImage = (indexToRemove: number) => {
     setIsRemoving(indexToRemove);
@@ -157,7 +161,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
       setImagePreviews(updatedPreviews);
       setValue("images", updatedImages);
       setIsRemoving(null);
-    }, 300);
+    }, 200);
   };
 
   return (
@@ -283,21 +287,21 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
                         <div
                           key={index}
                           className={`relative w-full h-40 md:h-36 lg:h-48 flex-shrink-0 transition-all duration-300 transform ${isRemoving === index
-                            ? "opacity-0 scale-75"
+                            ? "opacity-0 scale-50"
                             : "opacity-100 scale-100"
                             } ${isAdding
-                              ? "opacity-0 scale-75"
+                              ? "opacity-0 scale-105"
                               : "opacity-100 scale-100"
                             }`}
                         >
                           <img
                             src={preview}
                             alt={`Upload Preview ${index + 1}`}
-                            className="w-full h-full object-cover rounded-3xl transition-opacity duration-300"
+                            className="w-full h-full object-cover rounded-3xl transition-opacity duration-200"
                           />
                           <button
                             type="button"
-                            className="absolute top-2 right-2 bg-accent text-white rounded-full p-2 hover:scale-110 hover:duration-300"
+                            className="absolute top-2 right-2 bg-accent text-white rounded-full p-2 hover:scale-110 hover:duration-200"
                             onClick={() => handleRemoveImage(index)}
                           >
                             <FaTrash size={16} />
@@ -306,10 +310,10 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
                       ))}
 
                       {imagePreviews.length < 6 && (
-                        <div className="border-dashed border-4 border-primary p-8 rounded-3xl flex items-center justify-center w-full h-40 lg:h-48 cursor-pointer transition-all duration-300 transform opacity-100 scale-100">
+                        <div className="border-dashed border-4 border-primary p-8 rounded-3xl flex items-center justify-center w-full h-40 lg:h-48 transition-all duration-200 transform opacity-100 scale-100">
                           <label
                             htmlFor="imageUploadMore"
-                            className="flex flex-col items-center text-center text-primary text-sm lg:text-base font-semibold cursor-pointer"
+                            className="flex flex-col items-center text-center text-primary text-sm lg:text-base font-semibold cursor-pointer hover:scale-105 hover:duration-150"
                           >
                             <FaPlus className="text-5xl text-shadow" />
                             Agregar más <br />
