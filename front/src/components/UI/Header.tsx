@@ -81,10 +81,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-          textColor: "text-white",
-          bgColor: "bg-transparent",
-          bgColorMenu: "bg-secondary-black",
-        };
+        textColor: "text-white",
+        bgColor: "bg-transparent",
+        bgColorMenu: "bg-secondary-black",
+      };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -92,7 +92,7 @@ const Header: React.FC = () => {
   );
 
   return (
-    <header className={`w-full py-4 absolute z-10 ${bgColor}`}>
+    <header className={`w-full py-4 absolute z-20 ${bgColor}`}>
       <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
         <Link href={"/"} className=" flex items-center space-x-2">

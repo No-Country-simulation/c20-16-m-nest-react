@@ -56,7 +56,9 @@ const formReportSchema = z.object({
   postalCode: z
     .number({ invalid_type_error: "Debe ingresar un número" })
     .min(1, { message: "El código postal es obligatorio" }),
-  images: z.array(z.instanceof(File)).optional(),
+  images: z
+    .array(z.instanceof(File), { invalid_type_error: "Debe subir al menos una imagen válida" })
+    .min(1, { message: "Debe subir al menos una imagen" }),
 });
 
 const species: Specie[] = [
@@ -102,11 +104,7 @@ interface FormReportProps {
 }
 
 const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const methods = useForm<FormData>({
     resolver: zodResolver(formReportSchema),
   });
 
@@ -152,8 +150,8 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
       const currentImages = getValues("images");
       const updatedImages = currentImages
         ? currentImages.filter(
-            (_: File, index: number) => index !== indexToRemove
-          )
+          (_: File, index: number) => index !== indexToRemove
+        )
         : [];
 
       setImagePreviews(updatedPreviews);
@@ -259,7 +257,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
               render={({ field }) => (
                 <>
                   {imagePreviews.length === 0 ? (
-                    <div className="border-dashed border-4 border-primary p-8 rounded-3xl flex flex-col items-center justify-center w-4/6 h-96">
+                    <div className={`border-dashed border-4 border-primary p-8 rounded-3xl flex flex-col items-center justify-center w-4/6 h-96 ${errors.images ? "border-red-500" : ""}`}>
                       <label
                         htmlFor="imageUpload"
                         className="cursor-pointer text-primary text-lg md:text-2xl text-center font-semibold"
@@ -275,21 +273,22 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
                         multiple
                         className="hidden"
                       />
+                      {errors.images && (
+                        <p className="text-red-500 mt-2">{errors.images.message}</p>
+                      )}
                     </div>
                   ) : (
                     <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4">
                       {imagePreviews.map((preview, index) => (
                         <div
                           key={index}
-                          className={`relative w-full h-40 md:h-36 lg:h-48 flex-shrink-0 transition-all duration-300 transform ${
-                            isRemoving === index
+                          className={`relative w-full h-40 md:h-36 lg:h-48 flex-shrink-0 transition-all duration-300 transform ${isRemoving === index
+                            ? "opacity-0 scale-75"
+                            : "opacity-100 scale-100"
+                            } ${isAdding
                               ? "opacity-0 scale-75"
                               : "opacity-100 scale-100"
-                          } ${
-                            isAdding
-                              ? "opacity-0 scale-75"
-                              : "opacity-100 scale-100"
-                          }`}
+                            }`}
                         >
                           <img
                             src={preview}
@@ -332,6 +331,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
                 </>
               )}
             />
+
           </div>
         </div>
         <div className="w-full flex justify-center md:justify-start">
@@ -343,7 +343,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
           </button>
         </div>
       </form>
-    </FormProvider>
+    </FormProvider >
   );
 };
 
