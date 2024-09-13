@@ -9,5 +9,6 @@ export const useTestCont = create((set) => {
     dec: () => {
       set((state: any) => ({ count: state.count - 1 }));
     },
+    
   };
 });
