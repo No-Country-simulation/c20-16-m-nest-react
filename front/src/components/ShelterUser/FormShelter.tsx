@@ -81,7 +81,7 @@ const directionInputs = [
 ];
 export default function () {
   return (
-    <form action="">
+    <form className="flex flex-col gap-y-3">
       {listFromData.map((item) => (
         <label className="flex flex-col gap-y-2" key={item.title}>
           <h5 className="text-lg font-normal text-primary">{item.title}</h5>
@@ -138,6 +138,9 @@ export default function () {
           )
         )}
       </label>
+      <button className="bg-primary py-2 rounded-full text-white font-medium text-lg md:w-[180px] w-full">
+        Aceptar
+      </button>
     </form>
   );
 }
