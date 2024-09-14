@@ -11,7 +11,7 @@ export default function Layoutlogin({
       <Header />
       <main className={`relative pt-24 flex`}>
         <AsideDashboard />
-        <section className=" p-3">{children}</section>
+        <section className="p-3 flex-1 items-center">{children}</section>
       </main>
     </div>
   );
