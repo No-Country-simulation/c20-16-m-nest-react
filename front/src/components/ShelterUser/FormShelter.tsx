@@ -5,17 +5,17 @@ import { Input, Textarea } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-interface allFormData {
-  name: string;
-  description: string;
-  email: string;
-  phone: string;
-  province: string;
-  locality: string;
-  street: string;
-  houseNumber: string;
-  cp: string;
-}
+/* interface allFormData {
+  name: any;
+  description: any;
+  email: any;
+  phone: any;
+  province: any;
+  locality: any;
+  street: any;
+  houseNumber: any;
+  cp: any;
+} */
 
 interface DataFormShelter {
   title: string;
