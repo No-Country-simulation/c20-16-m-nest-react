@@ -95,8 +95,8 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`w-full py-4 absolute z-50 ${bgColor}`}>
-      <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-4">
+    <header className={`w-full py-4 absolute z-50 ${bgColor} h-24 flex items-center`}>
+      <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-3">
         {/* Logo */}
         <Link href={"/"} className="flex items-center space-x-2" onClick={handleNavLinkClick}>
           <Image src={Logo} alt="Logo" width={150} height={150} />
