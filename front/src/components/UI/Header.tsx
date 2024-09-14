@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "@/interfaces/Header";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/assets/global/logo.svg";
-import { HiMenu, HiX } from "react-icons/hi";
+import { HiMenu } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 import { MdClose } from "react-icons/md";
+import { useMenuStore } from "@/context/zustang"; // Asegúrate de que la ruta sea correcta
 
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
@@ -67,10 +68,8 @@ const routeStyles: RouteStyles = {
 };
 
 const Header: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isMenuOpen, toggleMenu, closeMenu } = useMenuStore();
   const pathname = usePathname();
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const getStylesForRoute = (
     path: string
@@ -91,11 +90,15 @@ const Header: React.FC = () => {
     pathname || "/"
   );
 
+  const handleNavLinkClick = () => {
+    closeMenu();
+  };
+
   return (
-    <header className={`w-full h-full max-h-[96px] flex items-center absolute z-20 ${bgColor}`}>
+    <header className={`w-full py-4 absolute z-50 ${bgColor}`}>
       <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-4">
         {/* Logo */}
-        <Link href={"/"} className=" flex items-center space-x-2">
+        <Link href={"/"} className="flex items-center space-x-2" onClick={handleNavLinkClick}>
           <Image src={Logo} alt="Logo" width={150} height={150} />
         </Link>
 
@@ -108,6 +111,7 @@ const Header: React.FC = () => {
               key={label}
               href={href}
               className={`${textColor} text-xl flex items-center space-x-1 hover:scale-110 hover:duration-300`}
+              onClick={handleNavLinkClick}
             >
               <span>{label}</span>
             </Link>
@@ -121,35 +125,40 @@ const Header: React.FC = () => {
             aria-label="Toggle menu"
             className={`text-primary text-2xl`}
           >
-            {/* {isMenuOpen ? <HiX /> : <HiMenu />} */}
             <HiMenu />
           </button>
         </div>
 
         {/* Login */}
         <div className="hidden lg:flex lg:items-center">
-          <LoginButton />
+          <LoginButton onClickAction={handleNavLinkClick} />
         </div>
       </div>
 
       {/* Mobile menu */}
       {isMenuOpen && (
         <div
-          className={`"lg:hidden bg-[#232323] fixed top-0 w-full h-screen animate-fade-right animate-duration-500" z-50`}
+          className={`lg:hidden bg-[#232323] fixed top-0 w-full h-screen animate-fade-right animate-duration-500 z-50`}
         >
           <button
             className="absolute text-primary text-2xl right-5 top-5 z-10"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={closeMenu}
           >
             <MdClose />
           </button>
           <nav className="flex flex-col space-y-3 items-start justify-center mx-auto h-full w-fit z-50">
+            <div className="w-full flex justify-center py-2">
+              <Link href={"/"} className="flex items-center space-x-2" onClick={handleNavLinkClick}>
+                <Image src={Logo} alt="Logo" width={150} height={150} />
+              </Link>
+            </div>
             {navLinks.map(({ label, href }, index) => (
               <Link
                 key={label}
                 href={href}
                 className={`text-white flex items-center space-x-1 font-normal text-2xl opacity-0 py-2 animate-fade-down animate-duration-500`}
                 style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={handleNavLinkClick}
               >
                 <span>{label}</span>
               </Link>
@@ -158,7 +167,7 @@ const Header: React.FC = () => {
               className="mt-4 mx-auto opacity-0 animate-fade animate-duration-500"
               style={{ animationDelay: `${navLinks.length * 0.1}s` }}
             >
-              <LoginButton />
+              <LoginButton onClickAction={handleNavLinkClick} />
             </div>
           </nav>
         </div>
@@ -167,10 +176,15 @@ const Header: React.FC = () => {
   );
 };
 
-const LoginButton: React.FC = () => (
+interface LoginButtonProps {
+  onClickAction: () => void;
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ onClickAction }) => (
   <Link
     href="/login"
-    className={` text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
+    className={`text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
+    onClick={onClickAction}
   >
     <span>Iniciar sesión</span>
   </Link>

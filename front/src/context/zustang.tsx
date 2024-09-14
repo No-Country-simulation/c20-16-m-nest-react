@@ -1,14 +1,15 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
-export const useTestCont = create((set) => {
-  return {
-    count: 0,
-    inc: () => {
-      set((state: any) => ({ count: state.count + 1 }));
-    },
-    dec: () => {
-      set((state: any) => ({ count: state.count - 1 }));
-    },
-    
-  };
-});
+type MenuState = {
+  isMenuOpen: boolean
+  openMenu: () => void
+  closeMenu: () => void
+  toggleMenu: () => void
+}
+
+export const useMenuStore = create<MenuState>((set) => ({
+  isMenuOpen: false,
+  openMenu: () => set({ isMenuOpen: true }),
+  closeMenu: () => set({ isMenuOpen: false }),
+  toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
+}))
