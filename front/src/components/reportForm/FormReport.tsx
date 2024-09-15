@@ -10,13 +10,20 @@ import { Provincia } from "@/interfaces/FormReport/province";
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const formReportSchema = z.object({
-  title: z.string().min(1, { message: "El título es obligatorio" }),
-  description: z.string().min(1, { message: "La descripción es obligatoria" }),
+  title: z
+    .string()
+    .min(1, "Título requerido")
+    .refine(
+      (val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val),
+      { message: "El título no puede contener números ni caracteres que no sean letras." }
+    ),
+  description: z.string()
+    .min(20, "Descripción requerida, ingrese no menos de 20 carácteres."),
   species: z.enum(["dog", "cat"], {
-    errorMap: () => ({ message: "La especie es obligatoria" }),
+    errorMap: () => ({ message: "La especie es requerida" }),
   }),
   sex: z.enum(["macho", "hembra"], {
-    errorMap: () => ({ message: "El sexo es obligatorio" }),
+    errorMap: () => ({ message: "El sexo es requerido" }),
   }),
   province: z.enum(
     [
@@ -45,17 +52,23 @@ const formReportSchema = z.object({
       "tucuman",
     ],
     {
-      errorMap: () => ({ message: "La provincia es obligatoria" }),
+      errorMap: () => ({ message: "La provincia es requerida" }),
     }
   ),
-  locality: z.string().min(1, { message: "La localidad es obligatoria" }),
-  street: z.string().min(1, { message: "La calle es obligatoria" }),
+  locality: z.string().min(1, "Localidad requerida")
+    .refine((val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), { message: "La localidad no puede contener números ni caracteres que no sean letras." }),
+  street: z.string().min(1, "Calle requerida")
+    .refine((val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), { message: "La calle no puede contener números ni caracteres que no sean letras." }),
   number: z
-    .number({ invalid_type_error: "Debe ingresar un número" })
-    .min(1, { message: "La altura es obligatoria" }),
+    .string()
+    .min(1, "El número de casa es requerido")
+    .refine((val) => !val || !isNaN(Number(val)), { message: "Carácter inválido, por favor ingrese números." })
+    .transform((val) => (val ? Number(val) : undefined)),
   postalCode: z
-    .number({ invalid_type_error: "Debe ingresar un número" })
-    .min(1, { message: "El código postal es obligatorio" }),
+    .string()
+    .min(1, "El código postal es requerido")
+    .refine((val) => !val || !isNaN(Number(val)), { message: "Carácter inválido, por favor ingrese números." })
+    .transform((val) => (val ? Number(val) : undefined)),
   images: z
     .array(z.instanceof(File), { invalid_type_error: "Debe subir al menos una imagen válida" })
     .min(1, { message: "Debe subir al menos una imagen" }),
@@ -186,7 +199,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
             />
             <Select
               {...register("species")}
-              label="Selecciona especie"
+              label="Selecciona especie de tu mascotita"
               isInvalid={!!errors.species}
               errorMessage={errors.species?.message}
             >
@@ -198,7 +211,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
             </Select>
             <Select
               {...register("sex")}
-              label="Selecciona el sexo"
+              label="Selecciona el sexo de tu mascotita"
               isInvalid={!!errors.sex}
               errorMessage={errors.sex?.message}
             >
@@ -237,8 +250,8 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
                 className="w-4/6"
               />
               <Input
-                {...register("number", { valueAsNumber: true })}
-                label="Altura"
+                {...register("number")}
+                label="Altura/número"
                 variant="flat"
                 isInvalid={!!errors.number}
                 errorMessage={errors.number?.message}
@@ -246,7 +259,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
               />
             </div>
             <Input
-              {...register("postalCode", { valueAsNumber: true })}
+              {...register("postalCode")}
               label="Código Postal"
               variant="flat"
               isInvalid={!!errors.postalCode}
@@ -261,7 +274,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
               render={({ field }) => (
                 <>
                   {imagePreviews.length === 0 ? (
-                    <div className={`border-dashed border-4 border-primary p-8 rounded-3xl flex flex-col items-center justify-center w-4/6 h-96 ${errors.images ? "border-red-500" : ""}`}>
+                    <div className={`border-dashed border-4 border-primary p-8 rounded-3xl flex flex-col items-center justify-center w-full h-96 ${errors.images ? "border-red-500" : ""}`}>
                       <label
                         htmlFor="imageUpload"
                         className="cursor-pointer text-primary text-lg md:text-2xl text-center font-semibold"
