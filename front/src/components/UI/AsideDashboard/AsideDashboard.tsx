@@ -41,7 +41,7 @@ export default function AsideDashboard() {
   const path = usePathname();
   //console.log(path);
   return (
-    <aside className="bg-[#232323] w-full max-w-24 md:max-w-96 h-screen text-white flex flex-col items-end justify-between">
+    <aside className="bg-[#232323] w-full max-w-24 md:max-w-96 min-h-screen h-full sticky top-0 text-white flex flex-col items-end justify-between px-2">
       <ul className=" w-full md:max-w-60 pt-20 flex flex-col items-center md:items-start gap-y-6">
         {listMenuDashboard.map((menu, index) => (
           <li key={index}>
