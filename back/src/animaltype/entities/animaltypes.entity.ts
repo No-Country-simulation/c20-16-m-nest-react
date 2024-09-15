@@ -8,9 +8,6 @@ export class AnimalTypes extends CommonEntity {
     @Column({ nullable: false })
     name: string
 
-    @ManyToMany(() => AnimalShelter, (animalShelter) => animalShelter.animalTypes)
-    animalShelters: AnimalShelter[];
-
-    @OneToMany(() => Animal, (animal) => animal.idAnimalTypes, { cascade: true })
+    @OneToMany(() => Animal, (animal) => animal.animalTypes, { cascade: true })
     animal: Animal[];
 }

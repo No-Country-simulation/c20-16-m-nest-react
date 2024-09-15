@@ -31,7 +31,7 @@ export class DonationController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth('access-token')
   @ApiOkResponse({ description: `El ${entityName} ha sido restaurado` })
-  async restore(@Param('id') id: number): Promise<DonationDto> {
+  async restore(@Param('id') id: number) {
     return this.donationService.restore(id);
   }
 

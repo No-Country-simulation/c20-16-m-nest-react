@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsUrl, ArrayNotEmpty } from 'class-validator';
+import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
+import { AnimalShelterDto } from '../../animalshelter/dto/animalshelter.dto';
+import { AnimalFeatures } from '../../animalfeatures/entities/animalfeatures.entity';
 
 export class CreateAnimalDto {
     @ApiProperty({ description: 'Nombre del animal', example: 'Firulais' })
@@ -22,21 +25,20 @@ export class CreateAnimalDto {
     @IsString()
     observations?: string;
 
-    @ApiProperty({ description: 'ID del refugio donde está el animal', example: 1 })
+    @ApiProperty({ description: 'Refugio donde está el animal'})
     @IsNotEmpty()
-    @IsNumber()
-    idAnimalShelther: number;
+    animalShelther: AnimalShelter;
 
-    @ApiProperty({ description: 'ID del tipo de animal', example: 2 })
+    @ApiProperty({ description: 'Tipo de animal', example: 2 })
     @IsNotEmpty()
     @IsNumber()
     idAnimalTypes: number;
 
     @ApiProperty({ description: 'Lista de IDs de las características del animal', example: [1, 2] })
     @ArrayNotEmpty()
-    animalfeatures: number[];
+    animalFeatures: AnimalFeatures[];
 
-    @ApiProperty({ description: 'ID del estado del reporte asociado al animal', example: 1 })
+    @ApiProperty({ description: 'Estado del reporte asociado al animal'})
     @IsNotEmpty()
     @IsNumber()
     idReportState: number;

@@ -1,42 +1,20 @@
 [
     {
-        "name": "Negro",
-        "idAnimalTypes": 2
+        "name": "Negro"
     },
     {
-        "name": "Grande",
-        "idAnimalTypes": 2
+        "name": "Grande"
     },
     {
-        "name": "Grande",
-        "idAnimalTypes": 1
+        "name": "Manchado"
     },
     {
-        "name": "Manchado",
-        "idAnimalTypes": 5
+        "name": "Marron"
     },
     {
-        "name": "Marron",
-        "idAnimalTypes": 1
+        "name": "Mediano"
     },
     {
-        "name": "Mediano",
-        "idAnimalTypes": 1
-    },
-    {
-        "name": "Grande",
-        "idAnimalTypes": 5
-    },
-    {
-        "name": "Grande",
-        "idAnimalTypes": 4
-    },
-    {
-        "name": "Blanco",
-        "idAnimalTypes": 4
-    },
-    {
-        "name": "Manchado",
-        "idAnimalTypes": 5
+        "name": "Blanco"
     }
 ]

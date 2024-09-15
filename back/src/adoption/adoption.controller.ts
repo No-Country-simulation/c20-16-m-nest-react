@@ -32,7 +32,7 @@ export class AdoptionController {
   @ApiBearerAuth('access-token')
   @ApiOkResponse({ description: `El ${entityName} ha sido restaurado`, type: AdoptionDto })
   @ApiNotFoundResponse({ description: `El ${entityName} con el id proporcionado no fue encontrado` })
-  restore(@Param('id') id: number): Promise<AdoptionDto> {
+  restore(@Param('id') id: number) {
     return this.adoptionService.restore(id);
   }
 

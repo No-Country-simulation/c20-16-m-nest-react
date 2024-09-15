@@ -31,8 +31,8 @@ export class DonationService {
       donation.observations = createDonationDto.observations;
 
       // Transformar los IDs en entidades
-      donation.idAnimalShelther = await this.animalShelterRepository.findOneByOrFail({ id: createDonationDto.idAnimalShelther });
-      donation.idUser = await this.userRepository.findOneByOrFail({ id: createDonationDto.idUser });
+      donation.animalShelther = await this.animalShelterRepository.findOneByOrFail({ id: createDonationDto.animalShelther.id });
+      donation.user = await this.userRepository.findOneByOrFail({ id: createDonationDto.user.id });
 
       await this.donationRepository.save(donation);
       return plainToInstance(DonationDto, donation);
@@ -86,7 +86,7 @@ export class DonationService {
     })
     try {
       if (!donation) throw new Error
-      return donation;
+      return plainToInstance(DonationDto, donation);
     } catch (error) {
       throw new NotFoundException(error.message, 'Donation no encontrado')
     }
@@ -102,15 +102,15 @@ export class DonationService {
       if (updateDonationDto.observations !== undefined) updateData.observations = updateDonationDto.observations;
 
       // Transforma IDs en entidades
-      if (updateDonationDto.idAnimalShelther !== undefined) {
-        updateData.idAnimalShelther = await this.animalShelterRepository.findOneByOrFail({
-          id: updateDonationDto.idAnimalShelther,
+      if (updateDonationDto.animalShelther !== undefined) {
+        updateData.animalShelther = await this.animalShelterRepository.findOneByOrFail({
+          id: updateDonationDto.animalShelther.id,
         });
       }
 
-      if (updateDonationDto.idUser !== undefined) {
-        updateData.idUser = await this.userRepository.findOneByOrFail({
-          id: updateDonationDto.idUser,
+      if (updateDonationDto.user !== undefined) {
+        updateData.user = await this.userRepository.findOneByOrFail({
+          id: updateDonationDto.user.id,
         });
       }
 
