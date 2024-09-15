@@ -38,7 +38,7 @@ export class CreateAdoptionDto extends CommonDto {
     @IsNotEmpty()
     @IsNumber()
     @Type(() => Number)
-    idAnimal: number;
+    animal: number;
 
     @ApiProperty({
         description: 'ID del usuario que realiza la adopción', 
@@ -47,5 +47,5 @@ export class CreateAdoptionDto extends CommonDto {
     @IsNotEmpty()
     @IsNumber()
     @Type(() => Number)
-    idUser: number;
+    user: number;
 }

@@ -3,6 +3,9 @@
         "name": "Negro"
     },
     {
+        "name": "Grande"
+    },
+    {
         "name": "Manchado"
     },
     {
@@ -10,9 +13,6 @@
     },
     {
         "name": "Mediano"
-    },
-    {
-        "name": "Grande"
     },
     {
         "name": "Blanco"

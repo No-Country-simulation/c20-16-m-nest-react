@@ -1,6 +1,6 @@
 import { Animal } from "../../animal/entities/animal.entity";
 import { CommonEntity } from "../../common/entities/common.entity";
-import { Column, Entity, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { User } from "../../user/entities/user.entity";
 
 export enum AdoptionStatus {
@@ -21,8 +21,9 @@ export class Adoption extends CommonEntity {
     observations: string;
 
     @OneToOne(() => Animal, (animal) => animal.id)
-    idAnimal: Animal;
-
-    @OneToOne(() => User, (user) => user.adoption)
-    idUser: User;
+    @JoinColumn()
+    animal: Animal;
+    
+    @ManyToOne(() => User, (user) => user.adoptions)
+    user: User;
 }

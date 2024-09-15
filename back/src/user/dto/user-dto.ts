@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../user-role.enum';
-import { Donation } from '../../danation/entities/donation.entity';
-import { Adoption } from '../../adoption/entities/adoption.entity';
-import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
 import { CommonDto } from '../../common/dto/common.dto';
 import { DonationDto } from '../../danation/dto/donation.dto';
 import { AdoptionDto } from '../../adoption/dto/adoption.dto';
 import { AnimalShelterDto } from '../../animalshelter/dto/animalshelter.dto';
+import { Exclude } from 'class-transformer';
 
 export class UserDto extends CommonDto {
+    @Exclude()
+    password: string;
+
     @ApiProperty({ description: 'Nombre de usuario único', example: 'john_doe' })
     username: string;
 
@@ -57,7 +58,7 @@ export class UserDto extends CommonDto {
     donation?: DonationDto;
 
     @ApiProperty({ description: 'Adopción asociada al usuario', type: () => AdoptionDto, required: false })
-    adoption?: AdoptionDto;
+    adoptions?: AdoptionDto;
 
     @ApiProperty({ description: 'Refugio de animales asociado al usuario', type: () => AnimalShelterDto, required: false })
     animalShelter?: AnimalShelterDto;

@@ -30,8 +30,8 @@ export class AdoptionService {
       adoption.observations = createAdoptionDto.observations;
 
       // Transformar los IDs en entidades
-      adoption.idAnimal = await this.animalRepository.findOneByOrFail({ id: createAdoptionDto.idAnimal });
-      adoption.idUser = await this.userRepository.findOneByOrFail({ id: createAdoptionDto.idUser });
+      adoption.animal = await this.animalRepository.findOneByOrFail({ id: createAdoptionDto.animal });
+      adoption.user = await this.userRepository.findOneByOrFail({ id: createAdoptionDto.user });
 
       await this.adoptionRepository.save(adoption);
       return plainToInstance(AdoptionDto, adoption);
@@ -85,7 +85,7 @@ export class AdoptionService {
     })
     try {
       if (!adoption) throw new Error
-      return adoption;
+      return plainToInstance(AdoptionDto, adoption);
     } catch (error) {
       throw new NotFoundException(error.message, 'Adoption no encontrado')
     }
@@ -100,15 +100,15 @@ export class AdoptionService {
       if (updateAdoptionDto.observations !== undefined) updateData.observations = updateAdoptionDto.observations;
 
       // Transforma IDs en entidades
-      if (updateAdoptionDto.idAnimal !== undefined) {
-        updateData.idAnimal = await this.animalRepository.findOneByOrFail({
-          id: updateAdoptionDto.idAnimal,
+      if (updateAdoptionDto.animal !== undefined) {
+        updateData.animal = await this.animalRepository.findOneByOrFail({
+          id: updateAdoptionDto.animal,
         });
       }
 
-      if (updateAdoptionDto.idUser !== undefined) {
-        updateData.idUser = await this.userRepository.findOneByOrFail({
-          id: updateAdoptionDto.idUser,
+      if (updateAdoptionDto.user !== undefined) {
+        updateData.user = await this.userRepository.findOneByOrFail({
+          id: updateAdoptionDto.user,
         });
       }
 

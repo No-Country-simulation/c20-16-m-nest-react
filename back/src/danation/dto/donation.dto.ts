@@ -21,16 +21,15 @@ export class DonationDto extends CommonDto{
     @IsOptional()
     @IsString()
     observations?: string;
-
+    
+    @ApiProperty()
     @IsNotEmpty()
-    @IsNumber()
     @Type(() => AnimalShelter)
-    idAnimalShelther: AnimalShelter;
+    animalShelther: AnimalShelter;
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsNumber()
     @Type(() => User)
-    idUser: User;
+    user: User;
 }
 

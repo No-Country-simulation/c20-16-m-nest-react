@@ -62,14 +62,14 @@ export class User extends CommonEntity {
     roles: UserRole[];
 
     // Relación OneToOne inversa con Donation
-    @OneToOne(() => Donation, (donation) => donation.idUser)
-    donation: Donation;
+    @OneToMany(() => Donation, (donation) => donation.user)
+    donation: Donation[];
 
     // Relación OneToOne inversa con Adoption
-    @OneToOne(() => Adoption, (adoption) => adoption.idUser)
-    adoption: Adoption;
+    @OneToMany(() => Adoption, (adoption) => adoption.user)
+    adoptions: Adoption[];
 
     // Relación OneToOne inversa con AnimalShelter
-    @OneToOne(() => AnimalShelter, (animalShelter) => animalShelter.user)
-    animalShelter: AnimalShelter;
+    @OneToMany(() => AnimalShelter, (animalShelter) => animalShelter.user)
+    animalShelter: AnimalShelter[];
 }

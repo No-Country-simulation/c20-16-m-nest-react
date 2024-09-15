@@ -115,7 +115,7 @@ export class UserController {
         return this.userService.findOne(id);
     }
 
-    @Get(':username')
+    @Get('/name/:username')
     @ApiOkResponse({ description: 'Detalles del usuario por username', type: UserDto })
     @ApiNotFoundResponse({ description: 'Usuario no encontrado' })
     findOneByUsername(@Param('username') username: string) {
