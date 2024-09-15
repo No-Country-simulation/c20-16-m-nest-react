@@ -44,7 +44,7 @@ const routeStyles: RouteStyles = {
     bgColor: "bg-[#232323]",
     bgColorMenu: "bg-white",
   },
-  "/adoptionpets": {
+  "/adoptions": {
     textColor: "text-white",
     bgColor: "bg-[#232323]",
     bgColorMenu: "bg-white",
@@ -54,7 +54,7 @@ const routeStyles: RouteStyles = {
     bgColor: "bg-[#232323]",
     bgColorMenu: "bg-white",
   },
-  "/reportpets": {
+  "/report": {
     textColor: "text-white",
     bgColor: "bg-[#232323]",
     bgColorMenu: "bg-white",
