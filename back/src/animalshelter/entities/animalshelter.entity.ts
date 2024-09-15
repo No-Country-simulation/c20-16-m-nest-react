@@ -1,7 +1,7 @@
 import { Animal } from "../../animal/entities/animal.entity";
 import { AnimalTypes } from "../../animaltype/entities/animaltypes.entity";
 import { CommonEntity } from "../../common/entities/common.entity";
-import { Column, Entity, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable, ManyToOne } from "typeorm";
 import { User } from '../../user/entities/user.entity';
 import { Donation } from "../../danation/entities/donation.entity";
 
@@ -37,18 +37,16 @@ export class AnimalShelter extends CommonEntity {
     @Column({ nullable: true })
     openingHours: string;
 
-    @ManyToMany(() => AnimalTypes, (animalType) => animalType.animalShelters, { cascade: true })
+    @ManyToMany(() => AnimalTypes)
     @JoinTable()  // Tabla intermedia
     animalTypes: AnimalTypes[];
     
-    @OneToMany(() => Animal, (animal) => animal.idAnimalShelther, { cascade: true })
+    @OneToMany(() => Animal, (animal) => animal.animalShelther, { cascade: true })
     animal: Animal[];
 
-    @OneToMany(() => Donation, (donation) => donation.idAnimalShelther, { cascade: true })
+    @OneToMany(() => Donation, (donation) => donation.animalShelther, { cascade: true })
     donation: Donation[];
 
-    // Relación OneToOne con User, con clave foránea
-    @OneToOne(() => User, (user) => user.animalShelter)
-    @JoinColumn()  // Especifica que esta entidad contiene la clave foránea
+    @ManyToOne(() => User, (user) => user.animalShelter)
     user: User;
 }

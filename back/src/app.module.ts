@@ -25,10 +25,17 @@ import { AnimalTypesModule } from './animaltype/animaltypes.module';
 import { ReportStateModule } from './reportstate/reportstate.module';
 import { AnimalFeaturesModule } from './animalfeatures/animalfeatures.module';
 import { AdoptionModule } from './adoption/adoption.module';
-// import { DonationModule } from './danation/donation.module';
+import { ConfigModule } from '@nestjs/config';
+import { DonationModule } from './danation/donation.module';
 
 @Module({
   imports: [
+    // ConfigModule global para cargar variables de entorno
+    ConfigModule.forRoot({
+      isGlobal: true, // Hace que las variables sean accesibles en toda la aplicación
+    }),
+
+    // Configuración para servir archivos estáticos (HTML y uploads)
     ServeStaticModule.forRoot(
       {
         rootPath: join(__dirname, 'html'),
@@ -47,12 +54,12 @@ import { AdoptionModule } from './adoption/adoption.module';
     AnimalShelterModule,
     AnimalTypesModule,
     AnimalFeaturesModule,
-    // DonationModule,
+    DonationModule,
     FilesModule,
     ReportStateModule,
   ],
   controllers: [AppController],
-  providers: [ AppService, RolesGuard, ],
+  providers: [AppService, RolesGuard,],
   exports: [TypeOrmModule]
 })
 

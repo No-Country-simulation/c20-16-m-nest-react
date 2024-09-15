@@ -8,12 +8,16 @@ import { AnimalShelter } from './entities/animalshelter.entity';
 import { plainToInstance } from 'class-transformer';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { AnimalTypes } from '../animaltype/entities/animaltypes.entity';
+import { User } from '../user/entities/user.entity';
+import { Donation } from '../danation/entities/donation.entity';
 
 @Injectable()
 export class AnimalShelterService {
   constructor(
     @InjectRepository(AnimalShelter) private readonly animalshelterRepository: Repository<AnimalShelter>,
-    @InjectRepository(AnimalTypes) private readonly animalTypesRepository: Repository<AnimalTypes>
+    @InjectRepository(AnimalTypes) private readonly animalTypesRepository: Repository<AnimalTypes>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Donation) private readonly danotionRepository: Repository<Donation>
   ) { }
 
   async create(createAnimalShelterDto: CreateAnimalShelterDto) {

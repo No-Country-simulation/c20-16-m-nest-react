@@ -1,10 +1,8 @@
 import { AnimalTypes } from "../../animaltype/entities/animaltypes.entity";
 import { AnimalShelter } from "../../animalshelter/entities/animalshelter.entity";
 import { CommonEntity } from "../../common/entities/common.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToOne } from "typeorm";
-import { ReportState } from "../../reportstate/entities/reportstate.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
 import { AnimalFeatures } from "../../animalfeatures/entities/animalfeatures.entity";
-import { Adoption } from "../../adoption/entities/adoption.entity";
 
 @Entity('animal')
 export class Animal extends CommonEntity {
@@ -20,20 +18,13 @@ export class Animal extends CommonEntity {
     @Column({ nullable: true })
     observations: string;
 
-    @ManyToOne(() => AnimalShelter, (animalshelter) => animalshelter.id)
-    idAnimalShelther: number
+    @ManyToOne(() => AnimalShelter, (animalshelter) => animalshelter.animal)
+    animalShelther: AnimalShelter
 
-    @ManyToOne(() => AnimalTypes, (animaltypes) => animaltypes.id)
-    idAnimalTypes: number
+    @ManyToOne(() => AnimalTypes, (animaltypes) => animaltypes.animal)
+    animalTypes: AnimalTypes
 
-    @ManyToMany(() => AnimalFeatures, (animalfeatures) => animalfeatures.animal, { cascade: true })
+    @ManyToMany(() => AnimalFeatures)
     @JoinTable()
-    animalfeatures: number[]
-
-    @ManyToOne(() => ReportState, (reportstate) => reportstate.id)
-    idReportState: number
-
-    // Relación OneToOne inversa con Adoption
-    @OneToOne(() => Adoption, (adoption) => adoption.id)
-    idAdoption: number;
+    animalfeatures: AnimalFeatures[]
 }

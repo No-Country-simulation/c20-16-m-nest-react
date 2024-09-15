@@ -28,16 +28,15 @@ export class AnimalDto extends CommonDto {
     @IsString()
     observations?: string;
 
-    @ApiProperty({ description: 'ID del refugio donde está el animal', example: 1 })
+    @ApiProperty({ description: 'Refugio donde está el animal'})
     @IsNotEmpty()
-    @IsNumber()
-    idAnimalShelther: AnimalShelter;
+    @Type(() => AnimalShelter)
+    animalShelther: AnimalShelter;
 
-    @ApiProperty({ description: 'ID del tipo de animal', example: 2 })
+    @ApiProperty({ description: 'ID del tipo de animal'})
     @IsNotEmpty()
-    @IsNumber()
     @Type(() => AnimalTypesDto)
-    idAnimalTypes: AnimalTypesDto;
+    animalTypes: AnimalTypesDto;
 
     @ApiProperty({ description: 'Lista de características del animal', example: [{ id: 1, name: 'Pelaje corto' }, { id: 2, name: 'Ojos azules' }] })
     @IsNotEmpty()
