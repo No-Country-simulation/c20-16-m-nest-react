@@ -11,7 +11,7 @@ interface ReportProfile {
     sex: string;
     imageUrl: string;
 }
-// ejemplos
+
 const ReportTableProfile: React.FC = () => {
     const [reports, setReports] = useState<ReportProfile[]>([
         {

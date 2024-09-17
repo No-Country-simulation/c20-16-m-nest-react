@@ -31,9 +31,9 @@ const StatusTag: React.FC<StatusTagProps> = ({ status }) => {
     const { circleColor, textColor, backgroundColor } = getColorClass(status);
 
     return (
-        <div className={`w-1/2 flex items-center justify-center gap-3 rounded-full py-3 ${backgroundColor}`}>
-            <span className={`w-2.5 h-2.5 rounded-full ${circleColor}`}></span>
-            <span className={textColor}>{status}</span>
+        <div className={`w-2/3 md:w-1/2 flex items-center justify-center gap-1.5 md:gap-3 rounded-full py-2 ${backgroundColor}`}>
+            <span className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full ${circleColor}`}></span>
+            <span className={`${textColor} text-sm md:text-base`}>{status}</span>
         </div>
     );
 };
