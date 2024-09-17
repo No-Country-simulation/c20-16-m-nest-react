@@ -36,8 +36,8 @@ const ReportPage: React.FC = () => {
       location: {
         street: "Calle 50",
         number: 456,
-        province: "buenos_aires",
-        locality: "La Plata",
+        province: "san_juan",
+        locality: "Pocito",
         postalCode: 1900,
       },
     },
