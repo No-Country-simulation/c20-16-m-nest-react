@@ -21,24 +21,49 @@ export default function FormLogin() {
   const login = async (data: FromInputs) => {
     console.log(data);
     try {
-      const res = await axios.post(
-        "https://shrill-wylma-ddf-daniel-435828be.koyeb.app/api/v1/auth/login",
+      /* const res = await axios.post(
+        `https://shrill-wylma-ddf-daniel-435828be.koyeb.app/api/v1/auth/login`,
         {
-          mode: 'no-cors',
+          
           headers: {
             "Content-Type": "application/json",
           },
-          body: {
+          body: JSON.stringify({
             username: data.email,
             password: data.password,
+          }),
+        }
+      ); */
+      /* const res = await axios.post(
+        "https://shrill-wylma-ddf-daniel-435828be.koyeb.app/api/v1/auth/login",
+        JSON.stringify({
+          firstName: data.email,
+          lastName: data.password,
+        })
+      ); */
+      const res = await fetch(
+        `${process.env.URL}/api/v1/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
+          cache: "no-cache",
+          body: JSON.stringify({
+            username: data.email,
+            password: data.password,
+          }),
         }
       );
-      console.log(res);
+      if (res.ok) {
+        alert("logeado");
+        const response = await res.json();
+        Cookies.set('token-user', response.access_token)
+        console.log(response.access_token);
+      }
     } catch (error) {
       console.log(error);
     }
-    //Cookies.set("value", data);
   };
 
   return (
