@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
-import { Tooltip, Button } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 
 const ReportButton = () => {
     return (
