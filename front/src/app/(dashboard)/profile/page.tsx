@@ -28,28 +28,25 @@ const FormUserSchema = z.object({
   address: z.object({
     province: z
       .string()
-      .min(1, "Provincia requerida")
-      .refine((val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message:
-          "La Provincia no puede contener números ni caracteres que no sean letras.",
+      .optional()
+      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+        message: "La Provincia no puede contener números ni caracteres que no sean letras.",
       }),
     locality: z
       .string()
-      .min(1, "Localidad requerida")
-      .refine((val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message:
-          "La localidad no puede contener números ni caracteres que no sean letras.",
+      .optional()
+      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+        message: "La localidad no puede contener números ni caracteres que no sean letras.",
       }),
     street: z
       .string()
-      .min(1, "Calle requerida")
-      .refine((val) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message:
-          "La calle no puede contener números ni caracteres que no sean letras.",
+      .optional()
+      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+        message: "La calle no puede contener números ni caracteres que no sean letras.",
       }),
     houseNumber: z
       .string()
-      .min(1, "El número de casa es requerido")
+      .optional()
       .refine((val) => !val || !isNaN(Number(val)), {
         message: "Carácter inválido, por favor ingrese números.",
       })
@@ -62,7 +59,7 @@ const FormUserSchema = z.object({
         message: "Carácter inválido, por favor ingrese números.",
       })
       .transform((val) => (val ? Number(val) : undefined)),
-  }),
+  }).optional()
 });
 
 type FormData = z.infer<typeof FormUserSchema>;
@@ -97,14 +94,14 @@ const profile: React.FC = () => {
 
   return (
     <>
-      <div className="w-full flex justify-center py-8 mt-8">
-        <div className="w-full md:w-11/12 lg:w-10/12 xl:w-9/12 flex flex-col justify-center items-center">
+      <div className="w-full flex justify-center py-4 mt-4 md:py-8 md:mt-8">
+        <div className="w-full md:w-11/12 flex flex-col justify-center items-center">
           <div className="w-full flex justify-between items-start pb-8">
             <div className="flex flex-col gap-4 justify-evenly">
-              <h1 className="text-4xl text-primary font-bold py-2 ">
-                Bienvenido Pepito!
+              <h1 className="w-1/2 lg:w-full text-2xl md:text-3xl lg:text-4xl text-primary font-bold">
+                ¡Bienvenido Pepito!
               </h1>
-              <h2 className="text-2xl">Pepito Perez</h2>
+              <h2 className="text-base md:text-2xl">Pepito Perez</h2>
               <StatusTag status="Persona" />
             </div>
             <div>
@@ -112,7 +109,7 @@ const profile: React.FC = () => {
                 isBordered
                 color="primary"
                 src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                className="w-24 h-24 text-large"
+                className="w-16 h-16 md:w-24 md:h-24 text-large"
               />
             </div>
           </div>
@@ -125,11 +122,11 @@ const profile: React.FC = () => {
               <Input
                 {...register("name")}
                 type="text"
-                label="Nombre Completo"
+                placeholder="Nombre completo"
                 variant="flat"
                 isInvalid={!!errors.name}
                 errorMessage={errors.name?.message}
-                size="lg"
+                size="md"
               />
             </div>
             <div>
@@ -138,87 +135,87 @@ const profile: React.FC = () => {
                 {...register("email")}
                 isRequired
                 type="email"
-                label="Correo electrónico"
+                placeholder="Correo electrónico"
                 variant="flat"
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?.message}
-                size="lg"
+                size="md"
               />
             </div>
             <div>
               <span className="text-xl text-primary">Teléfono</span>
               <Input
                 {...register("phone")}
-                label="Número de teléfono (opcional)"
+                placeholder="Número de teléfono (opcional)"
                 type="number"
                 variant="flat"
                 isInvalid={!!errors.phone}
                 errorMessage={errors.phone?.message}
-                size="lg"
+                size="md"
               />
             </div>
             <div className="flex flex-col gap-3">
               <span className="text-xl text-primary">Dirección</span>
               <Input
                 {...register("address.province")}
-                label="Provincia"
+                placeholder="Provincia"
                 type="text"
                 variant="flat"
                 isInvalid={!!errors.address?.province}
                 errorMessage={errors.address?.province?.message}
-                size="lg"
+                size="md"
               />
               <Input
                 {...register("address.locality")}
-                label="Localidad"
+                placeholder="Localidad"
                 type="text"
                 variant="flat"
                 isInvalid={!!errors.address?.locality}
                 errorMessage={errors.address?.locality?.message}
-                size="lg"
+                size="md"
               />
               <div className="flex flex-row gap-4">
                 <Input
                   {...register("address.street")}
-                  label="Calle"
+                  placeholder="Calle"
                   type="text"
                   variant="flat"
                   isInvalid={!!errors.address?.street}
                   errorMessage={errors.address?.street?.message}
-                  size="lg"
+                  size="md"
                 />
                 <Input
                   {...register("address.houseNumber")}
-                  label="Altura/número"
+                  placeholder="Altura/número"
                   type="number"
                   variant="flat"
                   isInvalid={!!errors.address?.houseNumber}
                   errorMessage={errors.address?.houseNumber?.message}
-                  size="lg"
+                  size="md"
                 />
               </div>
               <Input
                 {...register("address.apartment")}
-                label="Piso/Departamento"
+                placeholder="Piso/Departamento"
                 type="text"
                 variant="flat"
                 isInvalid={!!errors.address?.apartment}
                 errorMessage={errors.address?.apartment?.message}
-                size="lg"
+                size="md"
               />
               <Input
                 {...register("address.postalCode")}
-                label="Código Postal"
+                placeholder="Código Postal"
                 type="number"
                 variant="flat"
                 isInvalid={!!errors.address?.postalCode}
                 errorMessage={errors.address?.postalCode?.message}
-                size="lg"
+                size="md"
               />
             </div>
             <Button
               type="submit"
-              className="w-1/12 bg-primary text-base text-white rounded-3xl"
+              className="w-full md:w-1/12 bg-primary text-base text-white rounded-3xl"
             >
               Guardar
             </Button>
