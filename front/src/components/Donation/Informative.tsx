@@ -1,9 +1,9 @@
 export default function Informative() {
   return (
-    <section className="px-3 flex gap-6 pt-12 w-full mx-auto max-w-[1440px]">
-      <article className="flex flex-col gap-y-5 items-center w-1/2">
-        <h2 className="text-4xl font-semibold text-primary">¿Quiemes somos?</h2>
-        <p className=" text-xl font-normal text-center">
+    <section className="px-3 flex flex-col md:flex-row gap-6 pt-12 w-full mx-auto max-w-[1440px]">
+      <article className="flex flex-col gap-y-5 items-center w-full md:w-1/2">
+        <h2 className="text-3xl md:text-4xl font-semibold text-primary">¿Quienes somos?</h2>
+        <p className=" text-base md:text-xl font-normal text-center">
           Lorem ipsum dolor sit amet consectetur. Id ut semper ullamcorper risus
           magna euismod ultrices est eu. Vel odio aliquam quisque eget
           ullamcorper nunc mauris. Non dictum purus accumsan dolor faucibus
@@ -13,9 +13,9 @@ export default function Informative() {
           dictum. Mus a nibh et sagittis vitae.
         </p>
       </article>
-      <article className="flex flex-col gap-y-5 items-center w-1/2">
-        <h2 className="text-4xl font-semibold text-primary">¿Quiemes somos?</h2>
-        <p className=" text-xl font-normal text-center">
+      <article className="flex flex-col gap-y-5 items-center w-full md:w-1/2">
+        <h2 className="text-3xl md:text-4xl font-semibold text-primary">¿Quiemes somos?</h2>
+        <p className="text-base md:text-xl font-normal text-center">
           Lorem ipsum dolor sit amet consectetur. Id ut semper ullamcorper risus
           magna euismod ultrices est eu. Vel odio aliquam quisque eget
           ullamcorper nunc mauris. Non dictum purus accumsan dolor faucibus

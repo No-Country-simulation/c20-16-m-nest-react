@@ -1,22 +1,19 @@
+import { DonationFollow } from "@/interfaces/DonationFollow";
 import { GiDogHouse } from "react-icons/gi";
 import { TbDogBowl } from "react-icons/tb";
 import { TfiWrite } from "react-icons/tfi";
-interface DonationPass {
-  icon: string;
-  title: string;
-  description: string;
-  style: string;
-}
 
-export default function StepToFollow({ list }: { list: DonationPass[] }) {
+export default function StepToFollow({ list }: { list: DonationFollow[] }) {
   return (
-    <section className="px-3 flex flex-col gap-y-6 mx-auto w-full max-w-[1440px] pt-12">
-      <h2 className="text-4xl font-semibold text-primary">¿Como donar?</h2>
-      <ul className="flex gap-4 w-full max-h-[360px]">
+    <section className="px-3 flex flex-col gap-y-6 mx-auto w-full max-w-[1440px] pt-12 ">
+      <h2 className=" text-center md:text-left text-3xl md:text-4xl font-semibold text-primary">
+        ¿Como donar?
+      </h2>
+      <ul className="flex gap-4 w-full h-fit flex-col lg:flex-row">
         {list.map((item, index) => (
           <li
             key={index}
-            className=" flex flex-col items-center gap-y-5 w-1/3 shadow-md px-2 py-3 rounded-2xl"
+            className=" flex flex-col items-center gap-y-5 lg:w-1/3 w-full shadow-md px-2 py-3 rounded-2xl"
           >
             <div className=" flex flex-col gap-y-3 items-center">
               <div

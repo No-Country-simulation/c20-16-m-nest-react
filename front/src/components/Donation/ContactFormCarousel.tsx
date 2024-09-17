@@ -9,17 +9,17 @@ const listImages: { url: string; alt: string }[] = [
 ];
 export default function () {
   return (
-    <section className="px-3 flex justify-between items-center gap-20 mx-auto w-full max-w-[1440px] py-12">
-      <article className="w-1/2 flex flex-col gap-y-6">
-        <h2 className="text-4xl font-semibold text-primary text-center">
+    <section className="px-3 flex flex-col md:flex-row justify-between items-center gap-20 mx-auto w-full max-w-[1440px] py-12" id="contact">
+      <article className="w-full md:w-1/2 flex flex-col gap-y-6">
+        <h2 className="text-3xl md:text-4xl font-semibold text-primary text-center">
           Donacion
         </h2>
         <form className=" flex flex-col gap-y-5">
           <Input variant="flat" placeholder="Nombre" />
           <Select placeholder="Selecciona refugio" className="">
-            <SelectItem key={1}>item 1</SelectItem>
-            <SelectItem key={2}>item 2</SelectItem>
-            <SelectItem key={3}>item 3</SelectItem>
+            <SelectItem key={1}>refugio 1</SelectItem>
+            <SelectItem key={2}>refugio 2</SelectItem>
+            <SelectItem key={3}>refugio 3</SelectItem>
           </Select>
           <Input
             type="number"
@@ -36,7 +36,7 @@ export default function () {
           </button>
         </form>
       </article>
-      <article className="w-1/2">
+      <article className="w-full md:w-1/2">
         <CarouselDonation list={listImages} />
       </article>
     </section>
