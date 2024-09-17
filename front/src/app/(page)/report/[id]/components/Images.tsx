@@ -4,6 +4,7 @@ import "swiper/css/pagination";
 import Image from "next/image";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { clsx } from "clsx";
 
 type Image = {
   src: string;
@@ -25,9 +26,9 @@ const images: Image[] = [
   },
 ];
 
-export default function Images() {
+export default function Images({ className }: { className?: string }) {
   return (
-    <div className="h-96 w-full">
+    <div className={clsx("h-96 w-full", className)}>
       <Swiper
         pagination={{ dynamicBullets: true }}
         modules={[Pagination]}
