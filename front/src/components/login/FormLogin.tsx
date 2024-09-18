@@ -39,7 +39,7 @@ export default function FormLogin() {
       alert("logeado");
       const response = await res;
       console.log(response.data);
-      Cookies.set("token-user", response.data.access_token);
+      Cookies.set("token-user", response.data.access_token/* ,{expires: 0.5} */);// La cookies dura 12hs
       setCookies();
       setTokenUser(response.access_token);
       router.push("/");

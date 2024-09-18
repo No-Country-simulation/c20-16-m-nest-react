@@ -27,6 +27,7 @@ export const LoginAction = create((set) => ({
 
 export const usersId = create((set) => ({
   user: {},
+
   /* setUser: async (id: any, token: any) => {
     try {
       const dataUser = await fetch(`${URLS.URL}/api/v1/users/${id}`, {
