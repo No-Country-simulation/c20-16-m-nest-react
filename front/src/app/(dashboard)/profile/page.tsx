@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, Button, Input } from "@nextui-org/react";
 import StatusTag from "@/components/profile/StatusBtn";
 import Cookies from "js-cookie";
+import { usersId } from "@/context/zustang";
 
 const FormUserSchema = z.object({
   name: z
@@ -26,46 +27,53 @@ const FormUserSchema = z.object({
       message: "Teléfono inválido",
     })
     .transform((val) => (val ? Number(val.replace("+", "")) : undefined)),
-  address: z.object({
-    province: z
-      .string()
-      .optional()
-      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message: "La Provincia no puede contener números ni caracteres que no sean letras.",
-      }),
-    locality: z
-      .string()
-      .optional()
-      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message: "La localidad no puede contener números ni caracteres que no sean letras.",
-      }),
-    street: z
-      .string()
-      .optional()
-      .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
-        message: "La calle no puede contener números ni caracteres que no sean letras.",
-      }),
-    houseNumber: z
-      .string()
-      .optional()
-      .refine((val) => !val || !isNaN(Number(val)), {
-        message: "Carácter inválido, por favor ingrese números.",
-      })
-      .transform((val) => (val ? Number(val) : undefined)),
-    apartment: z.string().optional(),
-    postalCode: z
-      .string()
-      .optional()
-      .refine((val) => !val || !isNaN(Number(val)), {
-        message: "Carácter inválido, por favor ingrese números.",
-      })
-      .transform((val) => (val ? Number(val) : undefined)),
-  }).optional()
+  address: z
+    .object({
+      province: z
+        .string()
+        .optional()
+        .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+          message:
+            "La Provincia no puede contener números ni caracteres que no sean letras.",
+        }),
+      locality: z
+        .string()
+        .optional()
+        .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+          message:
+            "La localidad no puede contener números ni caracteres que no sean letras.",
+        }),
+      street: z
+        .string()
+        .optional()
+        .refine((val) => !val || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(val), {
+          message:
+            "La calle no puede contener números ni caracteres que no sean letras.",
+        }),
+      houseNumber: z
+        .string()
+        .optional()
+        .refine((val) => !val || !isNaN(Number(val)), {
+          message: "Carácter inválido, por favor ingrese números.",
+        })
+        .transform((val) => (val ? Number(val) : undefined)),
+      apartment: z.string().optional(),
+      postalCode: z
+        .string()
+        .optional()
+        .refine((val) => !val || !isNaN(Number(val)), {
+          message: "Carácter inválido, por favor ingrese números.",
+        })
+        .transform((val) => (val ? Number(val) : undefined)),
+    })
+    .optional(),
 });
 
 type FormData = z.infer<typeof FormUserSchema>;
 
 const profile: React.FC = () => {
+  const { user }: any = usersId();
+  console.log(user);
   const {
     handleSubmit,
     register,
@@ -73,8 +81,8 @@ const profile: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(FormUserSchema),
     defaultValues: {
-      name: "Pepito Perez",
-      email: "pepito99perez@gmail.com",
+      name: user ? user.firstName : "hola",
+      email: user.email || " ",
       // phone: 0,
       address: {
         province: "",
@@ -87,9 +95,6 @@ const profile: React.FC = () => {
       // datos de ejemplo
     },
   });
-
- /*  const token = Cookies.get("token-user");
-  console.log(token); */
 
   const onSubmit = (data: FormData) => {
     console.log(data);
@@ -104,9 +109,11 @@ const profile: React.FC = () => {
           <div className="w-full flex justify-between items-start pb-8">
             <div className="flex flex-col gap-4 justify-evenly">
               <h1 className="w-1/2 lg:w-full text-2xl md:text-3xl lg:text-4xl text-primary font-bold">
-                ¡Bienvenido Pepito!
+                ¡Bienvenido {user?.username ? user?.username : "pepito"}!
               </h1>
-              <h2 className="text-base md:text-2xl">Pepito Perez</h2>
+              <h2 className="text-base md:text-2xl">
+                {user?.firstName ? user?.firstName : "Pepito perez"}
+              </h2>
               <StatusTag status="Persona" />
             </div>
             <div>
