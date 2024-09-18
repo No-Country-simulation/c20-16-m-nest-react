@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "@/interfaces/Header";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,8 @@ import Logo from "@/assets/global/logo.svg";
 import { HiMenu } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 import { MdClose } from "react-icons/md";
-import { useMenuStore } from "@/context/zustang"; // Asegúrate de que la ruta sea correcta
+import { useMenuStore, usersId } from "@/context/zustang"; // Asegúrate de que la ruta sea correcta
+import Cookies from "js-cookie";
 
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
@@ -69,7 +70,18 @@ const routeStyles: RouteStyles = {
 
 const Header: React.FC = () => {
   const { isMenuOpen, toggleMenu, closeMenu } = useMenuStore();
+  const [isToken, setIsToken] = useState(false);
   const pathname = usePathname();
+  const token = Cookies.get("token-user");
+  /* const { user }: any = usersId(); */
+
+  useEffect(() => {
+    if (token) {
+      setIsToken(true);
+    } else {
+      setIsToken(false);
+    }
+  }, [token]);
 
   const getStylesForRoute = (
     path: string
@@ -80,10 +92,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-        textColor: "text-white",
-        bgColor: "bg-transparent",
-        bgColorMenu: "bg-secondary-black",
-      };
+          textColor: "text-white",
+          bgColor: "bg-transparent",
+          bgColorMenu: "bg-secondary-black",
+        };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -95,10 +107,16 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`w-full py-4 absolute z-50 ${bgColor} h-24 flex items-center`}>
+    <header
+      className={`w-full py-4 absolute z-50 ${bgColor} h-24 flex items-center`}
+    >
       <div className="container mx-auto w-full max-w-[1440px] flex items-center justify-between lg:justify-evenly px-3">
         {/* Logo */}
-        <Link href={"/"} className="flex items-center space-x-2" onClick={handleNavLinkClick}>
+        <Link
+          href={"/"}
+          className="flex items-center space-x-2"
+          onClick={handleNavLinkClick}
+        >
           <Image src={Logo} alt="Logo" width={150} height={150} />
         </Link>
 
@@ -131,7 +149,26 @@ const Header: React.FC = () => {
 
         {/* Login */}
         <div className="hidden lg:flex lg:items-center">
-          <LoginButton onClickAction={handleNavLinkClick} />
+          {!isToken ? (
+            <Link
+              href="/login"
+              className={`text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
+              onClick={handleNavLinkClick}
+            >
+              <span>Iniciar sesión</span>
+            </Link>
+          ) : (
+            <Link
+              href={"/profile"}
+              className=" size-[60px] rounded-full border-1.5 border-primary overflow-hidden"
+            >
+              <img
+                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                className="w-full h-full bg-cover"
+                alt="imagen-de-perfil"
+              />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -148,7 +185,11 @@ const Header: React.FC = () => {
           </button>
           <nav className="flex flex-col space-y-3 items-start justify-center mx-auto h-full w-fit z-50">
             <div className="w-full flex justify-center py-2">
-              <Link href={"/"} className="flex items-center space-x-2" onClick={handleNavLinkClick}>
+              <Link
+                href={"/"}
+                className="flex items-center space-x-2"
+                onClick={handleNavLinkClick}
+              >
                 <Image src={Logo} alt="Logo" width={150} height={150} />
               </Link>
             </div>
@@ -164,10 +205,30 @@ const Header: React.FC = () => {
               </Link>
             ))}
             <div
-              className="mt-4 mx-auto opacity-0 animate-fade animate-duration-500"
+              className="mt-4 opacity-0 animate-fade animate-duration-500 w-full "
               style={{ animationDelay: `${navLinks.length * 0.1}s` }}
             >
-              <LoginButton onClickAction={handleNavLinkClick} />
+              !token ? (
+                <Link
+                  href="/login"
+                  className={`text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
+                  onClick={handleNavLinkClick}
+                >
+                  <span>Iniciar sesión</span>
+                </Link>
+              ) : (
+                <Link
+                  href={"/profile"}
+                  className="w-fit overflow-hidden flex items-center gap-x-3 border-t pt-3"
+                >
+                  <img
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                    className="size-[60px] rounded-full border-1.5 border-primary"
+                    alt="imagen-de-perfil"
+                  />
+                  <p className="text-white text-base ">Usuario</p>
+                </Link>
+              )
             </div>
           </nav>
         </div>
@@ -179,7 +240,7 @@ const Header: React.FC = () => {
 interface LoginButtonProps {
   onClickAction: () => void;
 }
-
+/* 
 const LoginButton: React.FC<LoginButtonProps> = ({ onClickAction }) => (
   <Link
     href="/login"
@@ -188,6 +249,6 @@ const LoginButton: React.FC<LoginButtonProps> = ({ onClickAction }) => (
   >
     <span>Iniciar sesión</span>
   </Link>
-);
+); */
 
 export default Header;
