@@ -5,35 +5,36 @@ export interface ReportCardProps {
     urls: string[];
     files?: File[];
   };
-  species: "dog" | "cat";
-  sex: "macho" | "hembra";
+  species: "Perro" | "Gato";
+  sex: "Macho" | "Hembra";
+  size: "Pequeño" | "Mediano" | "Grande";
   location: {
     street: string;
     number: number;
     province:
-      | "buenos_aires"
-      | "catamarca"
-      | "chaco"
-      | "chubut"
-      | "cordoba"
-      | "corrientes"
-      | "entre_rios"
-      | "formosa"
-      | "jujuy"
-      | "la_pampa"
-      | "la_rioja"
-      | "mendoza"
-      | "misiones"
-      | "neuquen"
-      | "rio_negro"
-      | "salta"
-      | "san_juan"
-      | "san_luis"
-      | "santa_cruz"
-      | "santa_fe"
-      | "santiago_del_estero"
-      | "tierra_del_fuego"
-      | "tucuman";
+      | "Buenos Aires"
+      | "Catamarca"
+      | "Chaco"
+      | "Chubut"
+      | "CÓrdoba"
+      | "Corrientes"
+      | "Entre RÍos"
+      | "Formosa"
+      | "Fujuy"
+      | "La Pampa"
+      | "La Rioja"
+      | "Mendoza"
+      | "Misiones"
+      | "Neuquén"
+      | "Río Negro"
+      | "Salta"
+      | "San Juan"
+      | "San Luis"
+      | "Santa Cruz"
+      | "Santa Fe"
+      | "Santiago del Estero"
+      | "Tierra del Fuego"
+      | "Tucumán";
     locality: string;
     postalCode: number;
   };
