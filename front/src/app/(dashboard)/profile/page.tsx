@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, Button, Input } from "@nextui-org/react";
 import StatusTag from "@/components/profile/StatusBtn";
+import Cookies from "js-cookie";
 
 const FormUserSchema = z.object({
   name: z
@@ -87,11 +88,15 @@ const profile: React.FC = () => {
     },
   });
 
+ /*  const token = Cookies.get("token-user");
+  console.log(token); */
+
   const onSubmit = (data: FormData) => {
     console.log(data);
     // para enviar al back
   };
 
+  //const {user} = setUser();
   return (
     <>
       <div className="w-full flex justify-center py-4 mt-4 md:py-8 md:mt-8">
