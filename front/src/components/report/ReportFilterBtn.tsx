@@ -5,219 +5,119 @@ import { MdTune } from "react-icons/md";
 import { useState } from "react";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 
-export default function ReportFilterBtn() {
-    const [expandedIndex, setExpandedIndex] = useState<number | null>(null); // Solo permite un item abierto a la vez
-    const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: string | null }>({
-        Especie: null,
-        Tamaño: null,
-        Sexo: null,
-        Provincia: null
+interface ReportFilterBtnProps {
+    onApplyFilters: (filters: {
+        species: string[];
+        size: string[];
+        sex: string[];
+        province: string[];
+    }) => void;
+}
+
+export default function ReportFilterBtn({ onApplyFilters }: ReportFilterBtnProps) {
+    const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+    const [selectedFilters, setSelectedFilters] = useState<{
+        species: string[];
+        size: string[];
+        sex: string[];
+        province: string[];
+    }>({
+        species: [],
+        size: [],
+        sex: [],
+        province: []
     });
-    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar la apertura del modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleSingleItem = (index: number) => {
-        // Si el índice ya está expandido, lo cerramos, sino lo expandimos y cerramos los demás
         setExpandedIndex(prevIndex => (prevIndex === index ? null : index));
     };
 
-    const handleFilter = (category: string, filter: string) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            [category]: prevFilters[category] === filter ? null : filter
-        }));
-        console.log(`Filtro aplicado: ${category} - ${filter}`);
+    const handleFilter = (category: keyof typeof selectedFilters, filter: string) => {
+        setSelectedFilters(prevFilters => {
+            const updatedCategory = prevFilters[category].includes(filter)
+                ? prevFilters[category].filter(item => item !== filter)
+                : [...prevFilters[category], filter];
+            return { ...prevFilters, [category]: updatedCategory };
+        });
     };
 
     const handleSearch = () => {
         console.log("Búsqueda realizada con los filtros:", selectedFilters);
-        // Aquí puedes agregar la lógica para procesar la búsqueda con los filtros seleccionados
+        onApplyFilters(selectedFilters);
+        setIsModalOpen(false);
     };
 
     const handleClearFilters = () => {
         setSelectedFilters({
-            Especie: null,
-            Tamaño: null,
-            Sexo: null,
-            Provincia: null
+            species: [],
+            size: [],
+            sex: [],
+            province: []
         });
-        console.log("Filtros reseteados.");
+    };
+
+    const filterOptions: Record<keyof typeof selectedFilters, string[]> = {
+        species: ["Perro", "Gato"],
+        size: ["Pequeño", "Mediano", "Grande"],
+        sex: ["Macho", "Hembra"],
+        province: ["Buenos Aires", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucumán"]
     };
 
     return (
         <>
-            {/* Botón que abre el Modal */}
             <Button variant="ghost" className="bg-white shadow-lg rounded-full z-0" onClick={() => setIsModalOpen(true)}>
                 <MdTune className="text-3xl" />
             </Button>
 
-            {/* Modal de filtros */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} placement="bottom-center" size="lg">
                 <ModalContent>
                     <ModalHeader>
-                        <h1 className="text-lg font-semibold">Filtros</h1>
+                        <div className="w-full flex justify-center">
+                            <h1 className="text-lg font-semibold">Búsqueda Avanzada</h1>
+                        </div>
                     </ModalHeader>
                     <ModalBody>
                         <div className="accordion flex flex-col gap-6">
-                            {/* Item 1: Especie */}
-                            <div className="border-b" aria-expanded={expandedIndex === 0}>
-                                <div className="w-full flex flex-col text-left text-lg border-1 border-primary rounded-3xl px-5 py-2">
-                                    <div className="w-full flex justify-between items-center">
-                                        <span>Especie</span>
-                                        <button className="w-auto" onClick={() => toggleSingleItem(0)}>
-                                            {expandedIndex === 0 ? (
-                                                <BiUpArrow className="text-3xl" />
-                                            ) : (
-                                                <BiDownArrow className="text-3xl" />
-                                            )}
-                                        </button>
-                                    </div>
-                                    <div className={`flex flex-col items-start pl-2 gap-3 overflow-y-scroll scrollbar-hide transition-max-height duration-300 ease-in-out ${expandedIndex === 0 ? 'max-h-40' : 'max-h-0'}`}>
-                                        <p className="w-48 md:w-72 lg:w-96 text-base">
-                                            Al seleccionar especie nos referimos a qué tipo de animal estás buscando. Si no aparece en la lista, puedes seleccionar otros.
-                                        </p>
-                                        <button
-                                            className={`${selectedFilters.Especie === "Perro" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Especie", "Perro")}
-                                        >
-                                            Perro
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Especie === "Gato" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Especie", "Gato")}
-                                        >
-                                            Gato
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Item 2: Tamaño */}
-                            <div className="border-b" aria-expanded={expandedIndex === 1}>
-                                <div className="w-full flex flex-col text-left text-lg border-1 border-primary rounded-3xl px-5 py-2">
-                                    <div className="w-full flex justify-between items-center">
-                                        <span>Tamaño</span>
-                                        <button className="w-auto" onClick={() => toggleSingleItem(1)}>
-                                            {expandedIndex === 1 ? (
-                                                <BiUpArrow className="text-3xl" />
-                                            ) : (
-                                                <BiDownArrow className="text-3xl" />
-                                            )}
-                                        </button>
-                                    </div>
-                                    <div className={`flex flex-col items-start pl-2 gap-3 overflow-y-scroll scrollbar-hide transition-max-height duration-300 ease-in-out ${expandedIndex === 1 ? 'max-h-40' : 'max-h-0'}`}>
-                                        <p className="w-48 md:w-72 lg:w-96 text-base">
-                                            Selecciona el tamaño de la mascota que estás buscando.
-                                        </p>
-                                        <button
-                                            className={`${selectedFilters.Tamaño === "Pequeño" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Tamaño", "Pequeño")}
-                                        >
-                                            Pequeño
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Tamaño === "Mediano" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Tamaño", "Mediano")}
-                                        >
-                                            Mediano
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Tamaño === "Grande" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Tamaño", "Grande")}
-                                        >
-                                            Grande
-                                        </button>
+                            {Object.entries(filterOptions).map(([category, options], index) => (
+                                <div key={category} className="border-b" aria-expanded={expandedIndex === index}>
+                                    <div className="w-full flex flex-col text-left text-lg border-1 border-primary rounded-3xl px-5 py-2">
+                                        <div className="w-full flex justify-between items-center">
+                                            <span>{{
+                                                species: 'Especie',
+                                                size: 'Tamaño',
+                                                sex: 'Sexo',
+                                                province: 'Provincia'
+                                            }[category]}</span>
+                                            <button className="w-auto" onClick={() => toggleSingleItem(index)}>
+                                                {expandedIndex === index ? (
+                                                    <BiUpArrow className="text-3xl" />
+                                                ) : (
+                                                    <BiDownArrow className="text-3xl" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        <div className={`flex flex-col items-start pl-2 gap-3 overflow-y-scroll scrollbar-hide transition-max-height duration-300 ease-in-out ${expandedIndex === index ? 'max-h-40' : 'max-h-0'}`}>
+                                            {options.map((option) => (
+                                                <button
+                                                    key={option}
+                                                    className={`${selectedFilters[category as keyof typeof selectedFilters].includes(option) ? "text-primary" : "text-black"}`}
+                                                    onClick={() => handleFilter(category as keyof typeof selectedFilters, option)}
+                                                >
+                                                    {option}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Item 3: Sexo */}
-                            <div className="border-b" aria-expanded={expandedIndex === 2}>
-                                <div className="w-full flex flex-col text-left text-lg border-1 border-primary rounded-3xl px-5 py-2">
-                                    <div className="w-full flex justify-between items-center">
-                                        <span>Sexo</span>
-                                        <button className="w-auto" onClick={() => toggleSingleItem(2)}>
-                                            {expandedIndex === 2 ? (
-                                                <BiUpArrow className="text-3xl" />
-                                            ) : (
-                                                <BiDownArrow className="text-3xl" />
-                                            )}
-                                        </button>
-                                    </div>
-                                    <div className={`flex flex-col items-start pl-2 gap-3 overflow-y-scroll scrollbar-hide transition-max-height duration-300 ease-in-out ${expandedIndex === 2 ? 'max-h-40' : 'max-h-0'}`}>
-                                        <p className="w-48 md:w-72 lg:w-96 text-base">
-                                            Selecciona el sexo de la mascota.
-                                        </p>
-                                        <button
-                                            className={`${selectedFilters.Sexo === "Macho" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Sexo", "Macho")}
-                                        >
-                                            Macho
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Sexo === "Hembra" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Sexo", "Hembra")}
-                                        >
-                                            Hembra
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Item 4: Provincia */}
-                            <div className="border-b" aria-expanded={expandedIndex === 3}>
-                                <div className="w-full flex flex-col text-left text-lg border-1 border-primary rounded-3xl px-5 py-2">
-                                    <div className="w-full flex justify-between items-center">
-                                        <span>Provincia</span>
-                                        <button className="w-auto" onClick={() => toggleSingleItem(3)}>
-                                            {expandedIndex === 3 ? (
-                                                <BiUpArrow className="text-3xl" />
-                                            ) : (
-                                                <BiDownArrow className="text-3xl" />
-                                            )}
-                                        </button>
-                                    </div>
-                                    <div className={`flex flex-col items-start pl-2 gap-3 overflow-y-scroll scrollbar-default transition-max-height duration-300 ease-in-out ${expandedIndex === 3 ? 'max-h-40' : 'max-h-0'}`}>
-                                        <p className="w-48 md:w-72 lg:w-96 text-base">
-                                            Elige la provincia en la que te encuentras o donde estás buscando.
-                                        </p>
-                                        <button
-                                            className={`${selectedFilters.Provincia === "Buenos Aires" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Provincia", "Buenos Aires")}
-                                        >
-                                            Buenos Aires
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Provincia === "Córdoba" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Provincia", "Córdoba")}
-                                        >
-                                            Córdoba
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Provincia === "Mendoza" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Provincia", "Mendoza")}
-                                        >
-                                            Mendoza
-                                        </button>
-                                        <button
-                                            className={`${selectedFilters.Provincia === "Santa Fe" ? "text-primary" : "text-black"}`}
-                                            onClick={() => handleFilter("Provincia", "Santa Fe")}
-                                        >
-                                            Santa Fe
-                                        </button>
-                                        {/* Puedes agregar más provincias aquí */}
-                                    </div>
-                                </div>
-                            </div>
+                            ))}
                         </div>
-
-                        {/* Botón para buscar */}
                         <div className="flex justify-center mt-6">
                             <Button color="primary" onClick={handleSearch}>
                                 Buscar
                             </Button>
                         </div>
 
-                        {/* Botón para limpiar filtros */}
                         <div className="flex justify-center mt-4">
                             <Button variant="ghost" onClick={handleClearFilters}>
                                 Limpiar Filtros

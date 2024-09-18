@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Button, Input } from "@nextui-org/react";
+import { Avatar, Button, divider, Input, Spinner } from "@nextui-org/react";
 import StatusTag from "@/components/profile/StatusBtn";
 import Cookies from "js-cookie";
 import { usersId } from "@/context/zustang";
@@ -73,7 +73,38 @@ type FormData = z.infer<typeof FormUserSchema>;
 
 const profile: React.FC = () => {
   const { user }: any = usersId();
-  console.log(user);
+  const [isUser, setIsUser]: any = useState();
+  const [isForm, setIsForm] = useState<FormData>({
+    name: "",
+    email: "",
+    // phone: 0,
+    address: {
+      province: "",
+      locality: "",
+      street: "",
+      // houseNumber: 0,
+      // apartment: 0,
+      // postalCode: 0,
+    },
+  });
+
+  useEffect(() => {
+    setIsUser(user);
+    setIsForm({
+      name: user?.firstName,
+      email: user?.email,
+      // phone: 0,
+      address: {
+        province: "",
+        locality: "",
+        street: "",
+        // houseNumber: 0,
+        // apartment: 0,
+        // postalCode: 0,
+      },
+    });
+  }, [user]);
+
   const {
     handleSubmit,
     register,
@@ -81,8 +112,8 @@ const profile: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(FormUserSchema),
     defaultValues: {
-      name: user ? user.firstName : "hola",
-      email: user.email || " ",
+      name: isForm.name,
+      email: isForm.email,
       // phone: 0,
       address: {
         province: "",
@@ -96,12 +127,31 @@ const profile: React.FC = () => {
     },
   });
 
+  const handleChangeValue = (e: {
+    target: { value: string; name: string };
+  }) => {
+    const { value, name } = e.target;
+    //console.log(name, value);
+    setIsForm({ ...isForm, [name]: value });
+  };
+
+  //console.log(isForm);
+
   const onSubmit = (data: FormData) => {
     console.log(data);
     // para enviar al back
   };
 
-  //const {user} = setUser();
+  //console.log(isUser)
+
+  if (!isUser) {
+    return (
+      <div className="flex w-full h-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="w-full flex justify-center py-4 mt-4 md:py-8 md:mt-8">
@@ -109,10 +159,10 @@ const profile: React.FC = () => {
           <div className="w-full flex justify-between items-start pb-8">
             <div className="flex flex-col gap-4 justify-evenly">
               <h1 className="w-1/2 lg:w-full text-2xl md:text-3xl lg:text-4xl text-primary font-bold">
-                ¡Bienvenido {user?.username ? user?.username : "pepito"}!
+                ¡Bienvenido {isUser?.username ? isUser?.username : "pepito"}!
               </h1>
               <h2 className="text-base md:text-2xl">
-                {user?.firstName ? user?.firstName : "Pepito perez"}
+                {isUser?.firstName ? isUser?.firstName : "Pepito perez"}
               </h2>
               <StatusTag status="Persona" />
             </div>
@@ -139,6 +189,9 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.name}
                 errorMessage={errors.name?.message}
                 size="md"
+                value={isForm.name}
+                name="name"
+                onChange={handleChangeValue}
               />
             </div>
             <div>
@@ -152,6 +205,9 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?.message}
                 size="md"
+                name="email"
+                value={isForm.email}
+                onChange={handleChangeValue}
               />
             </div>
             <div>
@@ -164,6 +220,8 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.phone}
                 errorMessage={errors.phone?.message}
                 size="md"
+                name="phone"
+                onChange={handleChangeValue}
               />
             </div>
             <div className="flex flex-col gap-3">
@@ -176,6 +234,8 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.address?.province}
                 errorMessage={errors.address?.province?.message}
                 size="md"
+                name="province"
+                onChange={handleChangeValue}
               />
               <Input
                 {...register("address.locality")}
@@ -185,6 +245,8 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.address?.locality}
                 errorMessage={errors.address?.locality?.message}
                 size="md"
+                name="locality"
+                onChange={handleChangeValue}
               />
               <div className="flex flex-row gap-4">
                 <Input
@@ -195,6 +257,8 @@ const profile: React.FC = () => {
                   isInvalid={!!errors.address?.street}
                   errorMessage={errors.address?.street?.message}
                   size="md"
+                  name="street"
+                  onChange={handleChangeValue}
                 />
                 <Input
                   {...register("address.houseNumber")}
@@ -204,6 +268,8 @@ const profile: React.FC = () => {
                   isInvalid={!!errors.address?.houseNumber}
                   errorMessage={errors.address?.houseNumber?.message}
                   size="md"
+                  name="houseNumber"
+                  onChange={handleChangeValue}
                 />
               </div>
               <Input
@@ -214,6 +280,8 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.address?.apartment}
                 errorMessage={errors.address?.apartment?.message}
                 size="md"
+                name="apartment"
+                onChange={handleChangeValue}
               />
               <Input
                 {...register("address.postalCode")}
@@ -223,6 +291,8 @@ const profile: React.FC = () => {
                 isInvalid={!!errors.address?.postalCode}
                 errorMessage={errors.address?.postalCode?.message}
                 size="md"
+                name="postalCode"
+                onChange={handleChangeValue}
               />
             </div>
             <Button

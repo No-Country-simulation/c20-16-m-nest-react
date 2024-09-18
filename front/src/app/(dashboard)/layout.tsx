@@ -5,6 +5,7 @@ import { usersId } from "@/context/zustang";
 import { URLS } from "@/data/cofigEnv";
 import { decodeJWT } from "@/services/deCode";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function Layoutlogin({
   children,
@@ -14,8 +15,11 @@ export default async function Layoutlogin({
   //const {setUser}: any =  usersId();
   const cookieStore = cookies();
   const token = cookieStore.get("token-user");
-  const { id }: any = decodeJWT(token?.value);
 
+  if (!token) {
+    redirect("/");
+  }
+  const { id }: any = decodeJWT(token?.value);
 
   //hacer una funcion aparte
   const userId = async (id: number, token: any) => {
@@ -30,7 +34,6 @@ export default async function Layoutlogin({
       const response = await dataUser.json();
       //console.log(response);
       return response;
-      
     } catch (error) {
       console.log(error);
     }
