@@ -15,7 +15,8 @@
         "province": "Buenos Aires",
         "locality": "Junín",
         "postalCode": 6000
-      }
+      },
+      "id": "0bb7"
     },
     {
       "title": "Gata perdida",
@@ -32,7 +33,8 @@
         "province": "San Juan",
         "locality": "Pocito",
         "postalCode": 1900
-      }
+      },
+      "id": "e32f"
     },
     {
       "title": "Gato perdido en Lavalle",
@@ -49,7 +51,8 @@
         "province": "Mendoza",
         "locality": "Lavalle",
         "postalCode": 1900
-      }
+      },
+      "id": "16ac"
     },
     {
       "title": "Perrita perdida en Nogolí, San Luis",
@@ -66,6 +69,41 @@
         "province": "San Luis",
         "locality": "Nogolí",
         "postalCode": 6000
+      },
+      "id": "1b98"
+    },
+    {
+      "id": "a22a",
+      "title": "Perro Negro en  Zona Norte perdido y sustado",
+      "description": "asdadjaosidjaoidnaodnoandonsdasd",
+      "images": {
+        "urls": ["./images/reports/dog2.jpg"]
+      },
+      "species": "dog",
+      "sex": "macho",
+      "location": {
+        "street": "General Rivas",
+        "number": 4891,
+        "province": "buenos_aires",
+        "locality": "Gonzalez Catan",
+        "postalCode": 1759
+      }
+    },
+    {
+      "id": "5b44",
+      "title": "gato lastimado en Salta",
+      "description": "djnaouduauhsdiagdsyaihdaihdiuahsd",
+      "images": {
+        "urls": ["./images/reports/dog2.jpg"]
+      },
+      "species": "cat",
+      "sex": "hembra",
+      "location": {
+        "street": "Avenida Eva Perón",
+        "number": 2200,
+        "province": "cordoba",
+        "locality": "gatspets",
+        "postalCode": 1708
       }
     }
   ]

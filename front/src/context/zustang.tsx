@@ -51,7 +51,37 @@ export const usersId = create((set) => ({
 export const aplyJson = create((set) => ({
   allReportAnimals: [],
   getReportAnimals: async () => {
-    const res = await axios.get("http://localhost:8000/reportAnimals");
-    set({ allReportAnimals: res.data });
+    try {
+      const res = await axios.get("http://localhost:8000/reportAnimals");
+      set({ allReportAnimals: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  postReportAnimals: async (data: any) => {
+    try {
+      const res = await axios.post("http://localhost:8000/reportAnimals", {
+        title: data.title,
+        description: data.description,
+        images: {
+          urls: data.images.url,
+        },
+        species: data.species,
+        sex: data.sex,
+        size: data.size,
+        location: {
+          street: data.street,
+          number: data.number,
+          province: data.province,
+          locality: data.locality,
+          postalCode: data.postalCode,
+        },
+      });
+      const response = res;
+      console.log(response.data)
+      alert("Enviado con exito ");
+    } catch (error) {
+      console.log(error);
+    }
   },
 }));

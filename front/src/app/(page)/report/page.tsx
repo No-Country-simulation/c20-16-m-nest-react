@@ -6,6 +6,7 @@ import ReportButton from "@/components/report/ReportButton";
 import ReportFilterBtn from "@/components/report/ReportFilterBtn";
 import { ReportCardProps } from "@/interfaces/ReportCard";
 import { aplyJson } from "@/context/zustang";
+import { Spinner } from "@nextui-org/react";
 
 const ReportPage: React.FC = () => {
   const allReports: ReportCardProps[] = [
@@ -85,14 +86,6 @@ const ReportPage: React.FC = () => {
 
   const { allReportAnimals, getReportAnimals }: any = aplyJson();
 
-  useEffect(() => {
-    getReportAnimals();
-  }, []);
-
-  useEffect(() => {
-    setFilteredReports(allReportAnimals);
-  }, [allReportAnimals]);
-
   const [filteredReports, setFilteredReports] =
     useState<ReportCardProps[]>(allReportAnimals);
   const [searchTerm, setSearchTerm] = useState("");
@@ -103,8 +96,18 @@ const ReportPage: React.FC = () => {
     sex: [] as string[],
     province: [] as string[],
   });
+  const [loadingReport, setLoadingRepots] = useState(false);
 
-  console.log(filteredReports);
+  useEffect(() => {
+    getReportAnimals();
+  }, []);
+
+  useEffect(() => {
+    setFilteredReports(allReportAnimals);
+    setLoadingRepots(true);
+  }, [allReportAnimals]);
+
+  console.log(allReportAnimals);
 
   const applyFilters = (newFilters: {
     species: string[];
@@ -113,7 +116,7 @@ const ReportPage: React.FC = () => {
     province: string[];
   }) => {
     setFilters(newFilters);
-    const filtered = allReports.filter((report) => {
+    const filtered = allReportAnimals.filter((report: any) => {
       return (
         (newFilters.species.length === 0 ||
           newFilters.species.includes(report.species)) &&
@@ -126,7 +129,7 @@ const ReportPage: React.FC = () => {
     });
 
     const searchFiltered = filtered.filter(
-      (report) =>
+      (report: any) =>
         report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         report.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -136,13 +139,17 @@ const ReportPage: React.FC = () => {
   };
 
   const handleSearch = () => {
-    const searchFiltered = allReports.filter(
-      (report) =>
+    const searchFiltered = allReportAnimals.filter(
+      (report: any) =>
         report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         report.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     applyFilters(filters);
   };
+
+  /* if(!allReportAnimals){
+    return(<div>Cargando....</div>)
+  } */
 
   return (
     <div className="flex flex-col min-h-screen text-white">
@@ -171,6 +178,13 @@ const ReportPage: React.FC = () => {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
+        {!loadingReport ? (
+          <div className="flex w-full h-full items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        ) : (
+          ""
+        )}
         {noResults ? (
           <div className="w-full flex justify-center p-4">
             <div className="w-1/2 h-96 flex flex-col items-center justify-center text-center gap-8">
