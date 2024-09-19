@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 const navLinks: NavLink[] = [
   { label: "Reporte", href: "/report" },
   { label: "Donación", href: "/donation" },
-  { label: "Adopción", href: "/adoption" },
+  { label: "Adopción", href: "/adoptions" },
   { label: "Veterinarias", href: "/veterinary" },
   { label: "Refugios", href: "/shelter" },
 ];
@@ -65,6 +65,11 @@ const routeStyles: RouteStyles = {
     bgColor: "bg-[#232323]",
     bgColorMenu: "bg-white",
   },
+  "/adoptionpets": {
+    textColor: "text-white",
+    bgColor: "bg-[#232323]",
+    bgColorMenu: "bg-white",
+  },
   // se va agregando mas pages de ser necesario ir customizando, al igual que las propiedades, si las propiedades no se encuentran definidas por defecto devuelve los valores de matchingRoute, (ver abajo).
 };
 
@@ -92,10 +97,10 @@ const Header: React.FC = () => {
     return matchingRoute
       ? routeStyles[matchingRoute]
       : {
-          textColor: "text-white",
-          bgColor: "bg-transparent",
-          bgColorMenu: "bg-secondary-black",
-        };
+        textColor: "text-white",
+        bgColor: "bg-transparent",
+        bgColorMenu: "bg-secondary-black",
+      };
   };
 
   const { textColor, bgColor, bgColorMenu } = getStylesForRoute(
@@ -209,25 +214,25 @@ const Header: React.FC = () => {
               style={{ animationDelay: `${navLinks.length * 0.1}s` }}
             >
               !token ? (
-                <Link
-                  href="/login"
-                  className={`text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
-                  onClick={handleNavLinkClick}
-                >
-                  <span>Iniciar sesión</span>
-                </Link>
+              <Link
+                href="/login"
+                className={`text-lg px-8 py-2 my-4 text-white bg-primary flex items-center space-x-1 rounded-full shadow-lg animate-fade animate-duration-500 animate-delay-700 hover:duration-300`}
+                onClick={handleNavLinkClick}
+              >
+                <span>Iniciar sesión</span>
+              </Link>
               ) : (
-                <Link
-                  href={"/profile"}
-                  className="w-fit overflow-hidden flex items-center gap-x-3 border-t pt-3"
-                >
-                  <img
-                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                    className="size-[60px] rounded-full border-1.5 border-primary"
-                    alt="imagen-de-perfil"
-                  />
-                  <p className="text-white text-base ">Usuario</p>
-                </Link>
+              <Link
+                href={"/profile"}
+                className="w-fit overflow-hidden flex items-center gap-x-3 border-t pt-3"
+              >
+                <img
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                  className="size-[60px] rounded-full border-1.5 border-primary"
+                  alt="imagen-de-perfil"
+                />
+                <p className="text-white text-base ">Usuario</p>
+              </Link>
               )
             </div>
           </nav>
