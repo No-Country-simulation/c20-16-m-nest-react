@@ -50,6 +50,7 @@ export const usersId = create((set) => ({
 
 export const aplyJson = create((set) => ({
   allReportAnimals: [],
+  imagesUpload: [],
   getReportAnimals: async () => {
     try {
       const res = await axios.get("http://localhost:8000/reportAnimals");
@@ -78,8 +79,24 @@ export const aplyJson = create((set) => ({
         },
       });
       const response = res;
-      console.log(response.data)
+      console.log(response.data);
       alert("Enviado con exito ");
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  postImageUpload: async (data: any) => {
+    /*let imageName = images[0].name;
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/diucgnfdh/ReportsAnimals/upload",
+      {
+        imageName,
+      }
+    ); */
+    try {
+      const res = await axios.post("/api/upload", {
+        data,
+      });
     } catch (error) {
       console.log(error);
     }

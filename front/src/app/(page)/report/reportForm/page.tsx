@@ -4,10 +4,12 @@ import { useForm, FormProvider } from "react-hook-form";
 import FormReport from "@/components/reportForm/FormReport";
 import axios from "axios";
 import { aplyJson } from "@/context/zustang";
+import path from "path";
+import { bytes } from "@/services/images";
 
 const ReportFormPage: React.FC = () => {
   const methods = useForm();
-  const { postReportAnimals }: any = aplyJson();
+  const { postReportAnimals, postImageUpload }: any = aplyJson();
   const handleSubmit = (data: any) => {
     const formData = new FormData();
     formData.append("reportData", JSON.stringify(data));
@@ -15,10 +17,15 @@ const ReportFormPage: React.FC = () => {
     if (data.images) {
       data.images.forEach((image: File) => formData.append("images", image));
     }
-    console.log(data);
-    console.log("Enviando datos del formulario...", formData);
+    //const bytes = data.images.map((item): any => item.arrayBuffer());
+    bytes(data.images[0]);
+    /* const bytes = await data.images[0];
+    const buffer = Buffer.from(valueBytes);
+    path.join(process.cwd(), "public/images/reports/nesw", data.images[0].name); */
     
-    postReportAnimals(data);
+    //postImageUpload(data.images);
+
+    //postReportAnimals(data);
     /* const res = axios.post("http://localhost:8000/reportAnimals", {
       title: data.title,
       description: data.description,
