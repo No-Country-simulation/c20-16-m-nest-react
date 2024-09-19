@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 import { URLS } from "@/data/cofigEnv";
+import axios from "axios";
 
 type MenuState = {
   isMenuOpen: boolean;
@@ -44,5 +45,13 @@ export const usersId = create((set) => ({
       console.log(error);
     }
   }, */
-  setUser: (data: any) => set({user: data})
+  setUser: (data: any) => set({ user: data }),
+}));
+
+export const aplyJson = create((set) => ({
+  allReportAnimals: [],
+  getReportAnimals: async () => {
+    const res = await axios.get("http://localhost:8000/reportAnimals");
+    set({ allReportAnimals: res.data });
+  },
 }));

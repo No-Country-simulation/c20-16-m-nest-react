@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportCard } from "@/components/report/ReportCard";
 import { FaSearch } from "react-icons/fa";
 import ReportButton from "@/components/report/ReportButton";
 import ReportFilterBtn from "@/components/report/ReportFilterBtn";
 import { ReportCardProps } from "@/interfaces/ReportCard";
+import { aplyJson } from "@/context/zustang";
 
 const ReportPage: React.FC = () => {
   const allReports: ReportCardProps[] = [
@@ -82,7 +83,18 @@ const ReportPage: React.FC = () => {
     },
   ];
 
-  const [filteredReports, setFilteredReports] = useState<ReportCardProps[]>(allReports);
+  const { allReportAnimals, getReportAnimals }: any = aplyJson();
+
+  useEffect(() => {
+    getReportAnimals();
+  }, []);
+
+  useEffect(() => {
+    setFilteredReports(allReportAnimals);
+  }, [allReportAnimals]);
+
+  const [filteredReports, setFilteredReports] =
+    useState<ReportCardProps[]>(allReportAnimals);
   const [searchTerm, setSearchTerm] = useState("");
   const [noResults, setNoResults] = useState(false);
   const [filters, setFilters] = useState({
@@ -92,6 +104,8 @@ const ReportPage: React.FC = () => {
     province: [] as string[],
   });
 
+  console.log(filteredReports);
+
   const applyFilters = (newFilters: {
     species: string[];
     size: string[];
@@ -99,18 +113,22 @@ const ReportPage: React.FC = () => {
     province: string[];
   }) => {
     setFilters(newFilters);
-    const filtered = allReports.filter(report => {
+    const filtered = allReports.filter((report) => {
       return (
-        (newFilters.species.length === 0 || newFilters.species.includes(report.species)) &&
-        (newFilters.size.length === 0 || newFilters.size.includes(report.size)) &&
+        (newFilters.species.length === 0 ||
+          newFilters.species.includes(report.species)) &&
+        (newFilters.size.length === 0 ||
+          newFilters.size.includes(report.size)) &&
         (newFilters.sex.length === 0 || newFilters.sex.includes(report.sex)) &&
-        (newFilters.province.length === 0 || newFilters.province.includes(report.location.province))
+        (newFilters.province.length === 0 ||
+          newFilters.province.includes(report.location.province))
       );
     });
 
-    const searchFiltered = filtered.filter(report =>
-      report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      report.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const searchFiltered = filtered.filter(
+      (report) =>
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        report.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredReports(searchFiltered);
@@ -118,9 +136,10 @@ const ReportPage: React.FC = () => {
   };
 
   const handleSearch = () => {
-    const searchFiltered = allReports.filter(report =>
-      report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      report.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const searchFiltered = allReports.filter(
+      (report) =>
+        report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        report.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     applyFilters(filters);
   };
@@ -140,13 +159,12 @@ const ReportPage: React.FC = () => {
                 className="p-2 pr-10 rounded-full text-black w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               />
               <FaSearch
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-black text-2xl cursor-pointer"
                 onClick={handleSearch}
               />
-
             </div>
             <ReportFilterBtn onApplyFilters={applyFilters} />
           </div>
@@ -157,16 +175,16 @@ const ReportPage: React.FC = () => {
           <div className="w-full flex justify-center p-4">
             <div className="w-1/2 h-96 flex flex-col items-center justify-center text-center gap-8">
               <img src="/svg/cat-and-dog/amico.svg" alt="gatoyperro" />
-              <span className="text-3xl text-gray-600">¡No se han encontrado mascotas con las características proporcionadas!</span>
+              <span className="text-3xl text-gray-600">
+                ¡No se han encontrado mascotas con las características
+                proporcionadas!
+              </span>
             </div>
           </div>
         ) : (
           <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8">
             {filteredReports.map((report, index) => (
-              <ReportCard
-                key={index}
-                {...report}
-              />
+              <ReportCard key={index} {...report} />
             ))}
           </div>
         )}

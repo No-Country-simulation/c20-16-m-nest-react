@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "jsonServer": "json-server --watch /src/json/reportsAnimals.json"
+    "jsonServer": "json-server --watch src/json/reportsAnimals.json --port 8000"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
