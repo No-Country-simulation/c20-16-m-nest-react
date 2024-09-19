@@ -16,7 +16,7 @@ export interface ReportCardProps {
       | "Catamarca"
       | "Chaco"
       | "Chubut"
-      | "CÓrdoba"
+      | "Córdoba"
       | "Corrientes"
       | "Entre RÍos"
       | "Formosa"
