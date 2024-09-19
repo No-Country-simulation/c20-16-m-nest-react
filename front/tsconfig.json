@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/api/upload/route.js"  ],
+, "src/app/api/upload/route.js", "src/services/fireBase.ts"  ],
   "exclude": [
     "node_modules"
   ]

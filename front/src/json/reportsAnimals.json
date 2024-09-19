@@ -199,51 +199,6 @@
         "postalCode": 4400
       },
       "id": "8b3d"
-    },
-    {
-      "id": "ef7a",
-      "title": "asdadasd",
-      "description": "asdkajsdoiajdoai doajdaod jaojd91198 18d 19d2ud1 d",
-      "images": {},
-      "species": "dog",
-      "sex": "macho",
-      "location": {
-        "street": "General Rivas",
-        "number": 4891,
-        "province": "buenos_aires",
-        "locality": "González Catán",
-        "postalCode": 1759
-      }
-    },
-    {
-      "id": "13a1",
-      "title": "sdadasd",
-      "description": "asdaioshdaod haiodjaosjd",
-      "images": {},
-      "species": "dog",
-      "sex": "macho",
-      "location": {
-        "street": "General Rivas",
-        "number": 4891,
-        "province": "corrientes",
-        "locality": "Gonzalez Catan",
-        "postalCode": 1759
-      }
-    },
-    {
-      "id": "fd0e",
-      "title": "sadaksdjaodjaoids",
-      "description": "asdajsdhasudha dhasid haisdhiuhadi ahdd91hd1989d 12",
-      "images": {},
-      "species": "dog",
-      "sex": "macho",
-      "location": {
-        "street": "General Rivas",
-        "number": 4891,
-        "province": "buenos_aires",
-        "locality": "González Catán",
-        "postalCode": 1759
-      }
     }
   ]
 }

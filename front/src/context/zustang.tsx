@@ -1,7 +1,8 @@
-import { create } from "zustand";
-import Cookies from "js-cookie";
-import { URLS } from "@/data/cofigEnv";
 import axios from "axios";
+import { redirect } from 'next/navigation';
+import { create } from "zustand";
+
+/* const router = useRouter(); */
 
 type MenuState = {
   isMenuOpen: boolean;
@@ -51,6 +52,7 @@ export const usersId = create((set) => ({
 export const aplyJson = create((set) => ({
   allReportAnimals: [],
   imagesUpload: [],
+  isLoading: true,
   getReportAnimals: async () => {
     try {
       const res = await axios.get("http://localhost:8000/reportAnimals");
@@ -65,7 +67,14 @@ export const aplyJson = create((set) => ({
         title: data.title,
         description: data.description,
         images: {
-          urls: data.images.url,
+          urls: [
+            "/images/reports/news/image-1.jpg",
+            "/images/reports/news/image-2.jpg",
+            "/images/reports/news/image-3.jpg",
+            "/images/reports/news/image-4.jpg",
+            "/images/reports/news/image-5.jpg",
+            "/images/reports/news/image-6.jpg",
+          ],
         },
         species: data.species,
         sex: data.sex,
@@ -80,7 +89,14 @@ export const aplyJson = create((set) => ({
       });
       const response = res;
       console.log(response.data);
-      alert("Enviado con exito ");
+      setTimeout(() => {
+        alert("Enviado con exito ");
+        set({ isLoading: true });
+        /* router.push("/report"); */
+        //redirect("/report")
+        window.location.href = "/report"
+      }, 2000);
+      /* alert("Enviado con exito "); */
     } catch (error) {
       console.log(error);
     }
@@ -101,4 +117,5 @@ export const aplyJson = create((set) => ({
       console.log(error);
     }
   },
+  setIsLoading: () => set({ isLoading: false }),
 }));

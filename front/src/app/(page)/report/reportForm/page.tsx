@@ -1,15 +1,14 @@
 "use client";
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
 import FormReport from "@/components/reportForm/FormReport";
-import axios from "axios";
+import LoadingSpinner from "@/components/UI/LoadingSpinner/LoadingSpinner";
 import { aplyJson } from "@/context/zustang";
-import path from "path";
-import { bytes } from "@/services/images";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 const ReportFormPage: React.FC = () => {
   const methods = useForm();
-  const { postReportAnimals, postImageUpload }: any = aplyJson();
+  const { postReportAnimals, postImageUpload, isLoading, setIsLoading }: any =
+    aplyJson();
   const handleSubmit = (data: any) => {
     const formData = new FormData();
     formData.append("reportData", JSON.stringify(data));
@@ -17,15 +16,12 @@ const ReportFormPage: React.FC = () => {
     if (data.images) {
       data.images.forEach((image: File) => formData.append("images", image));
     }
-    //const bytes = data.images.map((item): any => item.arrayBuffer());
-    bytes(data.images[0]);
-    /* const bytes = await data.images[0];
-    const buffer = Buffer.from(valueBytes);
-    path.join(process.cwd(), "public/images/reports/nesw", data.images[0].name); */
-    
-    //postImageUpload(data.images);
 
-    //postReportAnimals(data);
+    setIsLoading();
+    //postImageUpload(data.images);
+    /* let imagesFinal = data.images.map((item: any) => uploadFile(item))
+    console.log(imagesFinal) */
+    postReportAnimals(data);
     /* const res = axios.post("http://localhost:8000/reportAnimals", {
       title: data.title,
       description: data.description,
@@ -49,14 +45,18 @@ const ReportFormPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center pt-32">
-      <div className="w-11/12 md:w-10/12">
-        <h1 className="w-full text-4xl text-primary font-bold mb-8 text-left">
-          Reportar Mascota
-        </h1>
-        <FormProvider {...methods}>
-          <FormReport onSubmit={handleSubmit} />
-        </FormProvider>
-      </div>
+      {isLoading ? (
+        <div className="w-11/12 md:w-10/12">
+          <h1 className="w-full text-4xl text-primary font-bold mb-8 text-left">
+            Reportar Mascota
+          </h1>
+          <FormProvider {...methods}>
+            <FormReport onSubmit={handleSubmit} />
+          </FormProvider>
+        </div>
+      ) : (
+        <LoadingSpinner />
+      )}
     </div>
   );
 };
