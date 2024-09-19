@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ReportCard } from "@/components/report/ReportCard";
 import { FaSearch } from "react-icons/fa";
 import ReportButton from "@/components/report/ReportButton";
@@ -80,6 +80,116 @@ const ReportPage: React.FC = () => {
         postalCode: 6000,
       },
     },
+    {
+      title: "Gata encontrada en La Plata",
+      description:
+        "Gata encontrada cerca de un parque, es muy amigable y dócil. Pelaje negro con blanco, parece estar buscando a su dueño.",
+      images: {
+        urls: ["./images/reports/cat3.jpg"],
+      },
+      species: "Gato",
+      sex: "Hembra",
+      size: "Pequeño",
+      location: {
+        street: "Calle 7",
+        number: 456,
+        province: "Buenos Aires",
+        locality: "La Plata",
+        postalCode: 1900,
+      },
+    },
+    {
+      title: "Perra perdida en Rosario",
+      description:
+        "Perra blanca encontrada caminando por el barrio, parece perdida. No tiene collar, de tamaño grande y tranquila.",
+      images: {
+        urls: ["./images/reports/dog3.jpg"],
+      },
+      species: "Perro",
+      sex: "Hembra",
+      size: "Grande",
+      location: {
+        street: "Calle Córdoba",
+        number: 789,
+        province: "Santa Fe",
+        locality: "Rosario",
+        postalCode: 2000,
+      },
+    },
+    {
+      title: "Perro encontrado en Bariloche",
+      description:
+        "Este perro grande y peludo fue encontrado en la ruta cerca de Bariloche. Parece estar acostumbrado al frío y es muy amigable.",
+      images: {
+        urls: ["./images/reports/dog4.jpg"],
+      },
+      species: "Perro",
+      sex: "Macho",
+      size: "Grande",
+      location: {
+        street: "Ruta 40",
+        number: 1122,
+        province: "Río Negro",
+        locality: "San Carlos de Bariloche",
+        postalCode: 8400,
+      },
+    },
+    {
+      title: "Gato visto en Mendoza",
+      description:
+        "Este gato fue visto en el centro de Mendoza. Es de pelaje marrón y está bien cuidado. Parece doméstico y está perdido.",
+      images: {
+        urls: ["./images/reports/cat4.jpg"],
+      },
+      species: "Gato",
+      sex: "Macho",
+      size: "Pequeño",
+      location: {
+        street: "Calle San Martín",
+        number: 101,
+        province: "Mendoza",
+        locality: "Mendoza",
+        postalCode: 5500,
+      },
+    },
+    {
+      title: "Perra perdida en Córdoba",
+      description:
+        "Esta perra estuvo rondando por el barrio desde hace unos días. Es de tamaño pequeño, con pelaje blanco y marrón, muy amigable.",
+      images: {
+        urls: ["./images/reports/dog5.jpeg"],
+      },
+      species: "Perro",
+      sex: "Hembra",
+      size: "Pequeño",
+      location: {
+        street: "Av. Colón",
+        number: 333,
+        province: "Córdoba",
+        locality: "Córdoba",
+        postalCode: 5000,
+      },
+    },
+    {
+      title: "Gato perdido en Salta",
+      description:
+        "Se perdió mi gatito hace 2 días. Es un siamés de ojos azules, muy manso. Si alguien lo vio, por favor contácteme.",
+      images: {
+        urls: ["./images/reports/cat5.jpeg"],
+      },
+      species: "Gato",
+      sex: "Macho",
+      size: "Pequeño",
+      location: {
+        street: "Calle Güemes",
+        number: 555,
+        province: "Salta",
+        locality: "Salta",
+        postalCode: 4400,
+      },
+    },
+    // cards de ejemplo, funcionalidad front por ahora
+
   ];
 
   const [filteredReports, setFilteredReports] = useState<ReportCardProps[]>(allReports);
@@ -99,30 +209,37 @@ const ReportPage: React.FC = () => {
     province: string[];
   }) => {
     setFilters(newFilters);
-    const filtered = allReports.filter(report => {
-      return (
-        (newFilters.species.length === 0 || newFilters.species.includes(report.species)) &&
-        (newFilters.size.length === 0 || newFilters.size.includes(report.size)) &&
-        (newFilters.sex.length === 0 || newFilters.sex.includes(report.sex)) &&
-        (newFilters.province.length === 0 || newFilters.province.includes(report.location.province))
-      );
-    });
-
-    const searchFiltered = filtered.filter(report =>
-      report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      report.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    setFilteredReports(searchFiltered);
-    setNoResults(searchFiltered.length === 0);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const filtered = allReports.filter(report => {
+        const matchesFilters =
+          (filters.species.length === 0 || filters.species.includes(report.species)) &&
+          (filters.size.length === 0 || filters.size.includes(report.size)) &&
+          (filters.sex.length === 0 || filters.sex.includes(report.sex)) &&
+          (filters.province.length === 0 || filters.province.includes(report.location.province));
+
+        const matchesSearch =
+          report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.species.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.sex.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.size.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.location.province.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          report.location.locality.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesFilters && matchesSearch;
+      });
+
+      setFilteredReports(filtered);
+      setNoResults(filtered.length === 0);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm, filters, allReports]);
+
   const handleSearch = () => {
-    const searchFiltered = allReports.filter(report =>
-      report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      report.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    applyFilters(filters);
+    setSearchTerm(searchTerm);
   };
 
   return (
@@ -136,7 +253,7 @@ const ReportPage: React.FC = () => {
             <div className="relative w-full md:w-3/4 lg:w-2/6">
               <input
                 type="text"
-                placeholder="Buscar mascota..."
+                placeholder="Buscar mascota por titulo, localidad, provincia, etc..."
                 className="p-2 pr-10 rounded-full text-black w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
