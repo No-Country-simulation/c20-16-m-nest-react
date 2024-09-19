@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "jsonServer": "json-server --watch /src/json/reportsAnimals.json"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
@@ -22,6 +23,7 @@
     "dotenv": "^16.4.5",
     "framer-motion": "^11.3.30",
     "js-cookie": "^3.0.5",
+    "json-server": "^1.0.0-beta.2",
     "jwt-decode": "^4.0.0",
     "next": "14.2.6",
     "react": "^18",

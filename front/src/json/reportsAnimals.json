@@ -1,0 +1,28 @@
+{
+  "reportAnimals": [
+    {
+      "id": 1111,
+      "title": "Perro perdido en Junín",
+      "description": "Este perro estuvo afuera de mi casa llorando toda la noche, parece que sí tiene dueño porque se lo ve cuidado. No tiene collar.",
+      "images": {
+        "urls": [
+          "./images/reports/dog1.jpeg",
+          "./images/reports/dog1.jpeg",
+          "./images/reports/dog1.jpeg",
+          "./images/reports/dog1.jpeg",
+          "./images/reports/dog1.jpeg"
+        ]
+      },
+      "species": "Perro",
+      "sex": "Macho",
+      "size": "Mediano",
+      "location": {
+        "street": "Av. Libertador",
+        "number": 123,
+        "province": "Buenos Aires",
+        "locality": "Junín",
+        "postalCode": 6000
+      }
+    }
+  ]
+}
