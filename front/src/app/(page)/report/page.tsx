@@ -5,6 +5,8 @@ import { FaSearch } from "react-icons/fa";
 import ReportButton from "@/components/report/ReportButton";
 import ReportFilterBtn from "@/components/report/ReportFilterBtn";
 import { ReportCardProps } from "@/interfaces/ReportCard";
+import { aplyJson } from "@/context/zustang";
+import { Spinner } from "@nextui-org/react";
 
 const ReportPage: React.FC = () => {
   const allReports: ReportCardProps[] = [
@@ -192,7 +194,10 @@ const ReportPage: React.FC = () => {
 
   ];
 
-  const [filteredReports, setFilteredReports] = useState<ReportCardProps[]>(allReports);
+  const { allReportAnimals, getReportAnimals }: any = aplyJson();
+
+  const [filteredReports, setFilteredReports] =
+    useState<ReportCardProps[]>(allReportAnimals);
   const [searchTerm, setSearchTerm] = useState("");
   const [noResults, setNoResults] = useState(false);
   const [filters, setFilters] = useState({
@@ -201,6 +206,18 @@ const ReportPage: React.FC = () => {
     sex: [] as string[],
     province: [] as string[],
   });
+  const [loadingReport, setLoadingRepots] = useState(false);
+
+  useEffect(() => {
+    getReportAnimals();
+  }, []);
+
+  useEffect(() => {
+    setFilteredReports(allReportAnimals);
+    setLoadingRepots(true);
+  }, [allReportAnimals]);
+
+  console.log(allReportAnimals);
 
   const applyFilters = (newFilters: {
     species: string[];
@@ -213,7 +230,7 @@ const ReportPage: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const filtered = allReports.filter(report => {
+      const filtered = allReportAnimals.filter((report: any) => {
         const matchesFilters =
           (filters.species.length === 0 || filters.species.includes(report.species)) &&
           (filters.size.length === 0 || filters.size.includes(report.size)) &&
@@ -236,11 +253,15 @@ const ReportPage: React.FC = () => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, filters, allReports]);
+  }, [searchTerm, filters, allReportAnimals]);
 
   const handleSearch = () => {
     setSearchTerm(searchTerm);
   };
+
+  /* if(!allReportAnimals){
+    return(<div>Cargando....</div>)
+  } */
 
   return (
     <div className="flex flex-col min-h-screen text-white">
@@ -257,33 +278,39 @@ const ReportPage: React.FC = () => {
                 className="p-2 pr-10 rounded-full text-black w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               />
               <FaSearch
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary-black text-2xl cursor-pointer"
                 onClick={handleSearch}
               />
-
             </div>
             <ReportFilterBtn onApplyFilters={applyFilters} />
           </div>
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
+        {!loadingReport ? (
+          <div className="flex w-full h-full items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        ) : (
+          ""
+        )}
         {noResults ? (
           <div className="w-full flex justify-center p-4">
             <div className="w-1/2 h-96 flex flex-col items-center justify-center text-center gap-8">
               <img src="/svg/cat-and-dog/amico.svg" alt="gatoyperro" />
-              <span className="text-3xl text-gray-600">¡No se han encontrado mascotas con las características proporcionadas!</span>
+              <span className="text-3xl text-gray-600">
+                ¡No se han encontrado mascotas con las características
+                proporcionadas!
+              </span>
             </div>
           </div>
         ) : (
           <div className="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8">
             {filteredReports.map((report, index) => (
-              <ReportCard
-                key={index}
-                {...report}
-              />
+              <ReportCard key={index} {...report} />
             ))}
           </div>
         )}

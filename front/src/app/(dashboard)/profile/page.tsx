@@ -142,7 +142,7 @@ const profile: React.FC = () => {
     // para enviar al back
   };
 
-  console.log(isUser)
+  //console.log(isUser)
 
   if (!isUser) {
     return (

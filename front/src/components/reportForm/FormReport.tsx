@@ -157,6 +157,7 @@ const FormReport: React.FC<FormReportProps> = ({ onSubmit }) => {
     }
   };
 
+  //console.log(imagePreviews);
 
   const handleRemoveImage = (indexToRemove: number) => {
     setIsRemoving(indexToRemove);
