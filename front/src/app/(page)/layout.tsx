@@ -9,7 +9,7 @@ export default function LayoutPages({
   return (
     <div>
       <Header />
-      <main className={``}>{children}</main>
+      <main className={`min-h-screen`}>{children}</main>
       <Footer />
     </div>
   );

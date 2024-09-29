@@ -22,6 +22,7 @@ const config: Config = {
           v1: "#3947CD",
           v2: "#4839CD",
           v3: "#A139CD",
+          v3light: "#A139CD4D",
           black: "#232323",
         },
         accent: "#CD3956",

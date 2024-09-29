@@ -27,8 +27,8 @@ const Footer: React.FC = () => {
     { label: "Reporte", href: "/report" },
     { label: "Donación", href: "/donation" },
     { label: "Adopción", href: "/adoption" },
-    { label: "Veterinarias", href: "/veterinaries" },
-    { label: "Refugios", href: "/shelters" },
+    { label: "Veterinarias", href: "/veterinary" },
+    { label: "Refugios", href: "/shelter" },
   ];
 
   const sessionLinks: NavLink[] = [
@@ -112,11 +112,29 @@ const Footer: React.FC = () => {
           </ul>
         </div>
         <div className="w-full lg:w-1/4 mb-4 lg:mb-0 text-center">
-          <h3 className="text-xl font-semibold">Contact</h3>
+          <h3 className="text-xl font-semibold">Contacto</h3>
           <div className="flex justify-center space-x-4">
-            <FaFacebook aria-label="Facebook" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
-            <FaInstagram aria-label="Instagram" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
-            <FaEnvelope aria-label="Email" className="hover:text-secondary-black hover:duration-300 cursor-pointer" size={32} />
+            <Link href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+              <FaFacebook
+                aria-label="Facebook"
+                className="hover:text-secondary-black hover:duration-300 cursor-pointer"
+                size={32}
+              />
+            </Link>
+            <Link href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+              <FaInstagram
+                aria-label="Instagram"
+                className="hover:text-secondary-black hover:duration-300 cursor-pointer"
+                size={32}
+              />
+            </Link>
+            <Link href="mailto:your-email@example.com" target="_blank" rel="noopener noreferrer">
+              <FaEnvelope
+                aria-label="Email"
+                className="hover:text-secondary-black hover:duration-300 cursor-pointer"
+                size={32}
+              />
+            </Link>
           </div>
         </div>
       </div>
@@ -148,21 +166,13 @@ const Footer: React.FC = () => {
             <Link href="https://linkedin.com/in/martin-bejarano" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Martin Bejarano
             </Link>
-            <span> BACKEND DEVELOPMENT: </span>
+            <span> | </span>
             <Link href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
               Daniel Cazabat
             </Link>
-            <span> | </span>
-            <Link href="https://www.linkedin.com/in/ornella-ferrario-988223169" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
-              Ornella Ferrario
-            </Link>
-            <span> | </span>
-            <Link href="https://" target="_blank" rel="noopener noreferrer" style={highlightStyle}>
-              Luca Consiglio
-            </Link>
-            <span> | </span>
-            <Link href="https://github.com/DieCau" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
-              Diego Caucota
+            <span> BACKEND DEVELOPMENT: </span>
+            <Link href="https://www.linkedin.com/in/dacazabat" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
+              Daniel Cazabat
             </Link>
             <span> TESTER: </span>
             <Link href="https://www.linkedin.com/in/agustinmahona" target="_blank" rel="noopener noreferrer" style={highlightStyle} className="hover:text-secondary-black hover:duration-300">
