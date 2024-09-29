@@ -1,7 +1,7 @@
 import { CommonEntity } from '../../common/entities/common.entity';
 import { Entity, Column, OneToOne, OneToMany } from 'typeorm';
 import { AnimalShelter } from '../../animalshelter/entities/animalshelter.entity';
-import { UserRole } from '../user-role.enum';
+import { UserRole } from '../../common/decorators/user-role.enum';
 import { Donation } from '../../danation/entities/donation.entity';
 import { Adoption } from '../../adoption/entities/adoption.entity';
 

@@ -7,7 +7,7 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiForbiddenResponse, Ap
 import { AuthGuard } from '@nestjs/passport';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Roles } from '../common/decorators/roles.decorator';
-import { UserRole } from '../user/user-role.enum';
+import { UserRole } from '../common/decorators/user-role.enum';
 
 const entityName = 'Refugio';
 const itemxpega = 10;

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserRole } from '../user-role.enum';
+import { UserRole } from '../../common/decorators/user-role.enum';
 import { CommonDto } from '../../common/dto/common.dto';
 import { DonationDto } from '../../danation/dto/donation.dto';
 import { AdoptionDto } from '../../adoption/dto/adoption.dto';

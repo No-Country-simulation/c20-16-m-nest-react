@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString, Length } from "class-validator";
 
+
 export class CreateUserDto {
     @ApiProperty({
         description: 'Nombre de usuario único para el registro. Debe contener entre 6 y 15 caracteres.',
@@ -85,7 +86,7 @@ export class CreateUserDto {
 
     @ApiProperty({
         description: 'Fecha de nacimiento del usuario. Formato ISO.',
-        example: '31-12-1969',
+        example: '1969-12-31',
         required: false,
     })
     @IsDate()
